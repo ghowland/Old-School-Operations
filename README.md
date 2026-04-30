@@ -5,7 +5,7 @@
 
 ## by Geoffrey Howland
 
-[Amazon Kindle Book - $2.99](https://www.amazon.com/dp/B0GX2XC5V8)
+[Amazon Kindle Edition - $2.99](https://www.amazon.com/dp/B0GX2XC5V8)
 
 #
 
