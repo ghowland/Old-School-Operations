@@ -1350,9 +1350,9 @@ return \"Hello World!\".
 
 Let\'s look at the decorator code I have created:
 
-\# Decorator
 
 ```python
+# Decorator
 def HelloWorldDecorator(function_reference):
     def DecoratorInside():
         # Call the Function we are wrapping
