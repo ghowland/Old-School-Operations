@@ -4817,22 +4817,22 @@ set of permissions.
 Let\'s say that this will be the input data for this Algorithm, in YAML
 format:
 
+```yaml
 type: ensure_directory_exists
-
-path: /Users/ghowland/projects/OpsEngAuto/sections
-
-mode: 755
-
-user: ghowland
-
-group: staff
+    path: /Users/ghowland/projects/OpsEngAuto/sections
+    mode: 755
+    user: ghowland
+    group: staff
+```
 
 When the function that executes this Algorithm runs against this data it
 will ensure that a directory like this is created, if it doesn\'t exist:
 
-\$ ls -ld sections
+```bash
+$ ls -ld sections
 
 drwxr-xr-x 346 ghowland staff 11764 Aug 23 00:48 sections
+```
 
 If the directory does exist, then it ensures that the mode, user and
 group are correct.
@@ -4861,26 +4861,24 @@ ensure a number of directories exist.
 For example, consider this YAML data that lists YAML paths for our above
 *ensure_directory_exists* data:
 
+```yaml
 ensure_directory_exists:
-
-\- /Users/ghowland/projects/dirs/OpsEngAuto_sections.yaml
-
-\- /Users/ghowland/projects/dirs/OpsEngAuto_toc_backups.yaml
-
-\- /Users/ghowland/projects/dirs/something_else.yaml
+    - /Users/ghowland/projects/dirs/OpsEngAuto_sections.yaml
+    - /Users/ghowland/projects/dirs/OpsEngAuto_toc_backups.yaml
+    - /Users/ghowland/projects/dirs/something_else.yaml
+```
 
 If we wrote some Python like this, we can iterate (go over each item in
 the list) like this:
 
-directory_data = LoadYaml(\'/path/to/ensure_directory_exists.yaml\')
-
-paths = directory_data\[\'ensure_directory_exists\'\]
+```python
+directory_data = LoadYaml('/path/to/ensure_directory_exists.yaml')
+paths = directory_data['ensure_directory_exists']
 
 for path in paths:
-
-dir_data = LoadYaml(path)
-
-EnsureDirectoryExistsIdempotentFunction(dir_data)
+    dir_data = LoadYaml(path)
+    EnsureDirectoryExistsIdempotentFunction(dir_data)
+```
 
 This code assumes a LoadYaml() and
 EnsureDirectoryExistsIdempotentFunction() exist for convenience, and do
@@ -5022,12 +5020,14 @@ that I would have about 208,000 words at the end of the book.
 
 I have been checking my percentage complete, such as currently:
 
+```
 Total Sections: 301 Populated Sections: 54 Current Goal: Populate Empty
 Sections: 247 (Done: 17.9%)
 
 Lines: 2197
 
 Words: 37668
+```
 
 And the sections and word percentages to completion have almost kept
 perfect alignment the entire time I have been writing this work.
