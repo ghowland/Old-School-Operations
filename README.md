@@ -5036,14 +5036,12 @@ Yesterday was:
 
 ```python
 >>> 33000 / 200000.
-
 0.165
 ```
 And today (with the above quote):
 
 ```python
 >>> 37600 / 200000.
-
 0.188
 ```
 
