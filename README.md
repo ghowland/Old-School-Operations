@@ -5,6 +5,8 @@
 
 ## by Geoffrey Howland
 
+[Amazon Kindle Book - $2.99](https://www.amazon.com/dp/B0GX2XC5V8)
+
 [[Part I: The Foundation]](#part-i-the-foundation)
 
 > [[Chapter 1: Foundations of Operational
