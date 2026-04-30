@@ -553,8 +553,7 @@ automatable task, but the regularity of updating the automation logic
 should happen far less frequently, and is more knowledge-work than
 data-entry work.
 
-![](./images/media/image21.png){width="6.5in"
-height="2.4444444444444446in"}
+![](./images/media/image21.png)
 
 Knowledge work is more stimulating, and known to be something that needs
 reviews and tests, whereas manual data-entry work is more prone to
@@ -1071,8 +1070,7 @@ if processes are not followed, the dashboards may mislead you that a
 deployment has not occurred, when something was indeed pushed to
 production.
 
-![](./images/media/image48.png){width="6.5in"
-height="5.819444444444445in"}
+![](./images/media/image48.png)
 
 ### 2.3 Knowability - What Can and Cannot Be Known
 
@@ -1380,8 +1378,7 @@ result.
 This is another aspect of Logic\'s being on the Unknowable side of the
 spectrum, due to its ability to contain very high complexity.
 
-![](./images/media/image34.png){width="6.5in"
-height="4.347222222222222in"}
+![](./images/media/image34.png)
 
 ##  
 
@@ -1437,8 +1434,7 @@ format which I could parse from a CSV file.
 This shows the dynamic nature of Data, while still providing us with
 consistent information that can be used by humans or Logic.
 
-![](./images/media/image20.png){width="6.5in"
-height="4.847222222222222in"}
+![](./images/media/image20.png)
 
 ### 3.1.1 Data Source Properties
 
@@ -1547,8 +1543,7 @@ does not. You should use the language you are comfortable with, but you
 should understand that language changes also change their meaning and
 understandability.
 
-![](./images/media/image31.png){width="6.5in"
-height="4.180555555555555in"}
+![](./images/media/image31.png)
 
 ### 3.2 Logic - The Executable Shell
 
@@ -1917,10 +1912,7 @@ your Logic, and provide as many safe guards as is warranted by the needs
 of your organization to provide that the Logic works cleanly with the
 Data.
 
-![](./images/media/image45.png){width="6.5in"
-height="3.8472222222222223in"}
-
-#  
+![](./images/media/image45.png)
 
 # Part II: Thinking Systemically - Tools for Mastering Complexity
 
@@ -2152,8 +2144,7 @@ your troubleshooting and diagnostic ability, which in turn blocks
 maximum creative ability, because you cannot inspect and improve what
 you can't understand.
 
-![](./images/media/image22.png){width="6.5in"
-height="4.166666666666667in"}
+![](./images/media/image22.png)
 
 ### 5.1 Inputs, Outputs and Side-Effects: The Universal Machine
 
@@ -2323,8 +2314,7 @@ change, the inputs, outputs and side-effects did not change, and yet we
 are able to look at the problem in a completely different way, and take
 different lessons and gather different information from it.
 
-![](./images/media/image35.png){width="6.5in"
-height="4.611111111111111in"}
+![](./images/media/image35.png)
 
 ### 5.3 Slicing the Pie - Comprehensive vs. Aggregated Systems
 
@@ -2395,8 +2385,7 @@ model it that way, or can be seen as a list of boolean axes, or could be
 used in any other way you want to model data if you have a different
 goal for your visualization.
 
-![](./images/media/image30.png){width="6.5in"
-height="3.9166666666666665in"}
+![](./images/media/image30.png)
 
 For purposes of discussion and illustration we can be fairly fluid about
 our definitions, and decisions on where to slice, because they are
@@ -3334,8 +3323,7 @@ as \"best\" that it would be better to reframe as \"better\"? What
 tangible benefits could this immediately bring you, from this change in
 your thinking and decision making abilities?
 
-![](./images/media/image41.png){width="6.5in"
-height="2.5416666666666665in"}
+![](./images/media/image41.png)
 
 ### 6.6 Fashion Oriented Engineering
 
@@ -5570,8 +5558,7 @@ solving them in a way where you have less work to do tomorrow than you
 did today, even through growth. That is the operational discipline I
 have developed and am trying to pass on with this book.
 
-![](./images/media/image47.png){width="6.5in"
-height="4.333333333333333in"}
+![](./images/media/image47.png)
 
 ### Discord Server
 
