@@ -3,7 +3,7 @@
 
 ![](./images/media/image23.png)
 
-## Geoffrey Howland
+## by Geoffrey Howland
 
 [[Part I: The Foundation]](#part-i-the-foundation)
 
