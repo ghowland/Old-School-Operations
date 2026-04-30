@@ -1312,13 +1312,12 @@ perhaps in some circumstances this means that variables are not
 completely knowable, and there might be circumstances where we have a
 high confidence that a program will halt, like this pseudo-code:
 
+```c
 int main()
-
 {
-
-return 1;
-
+    return 1;
 }
+```
 
 We can be reasonably sure that if this program compiles, and there are
 no problems with dynamically linked libraries, and there are not somehow
@@ -1332,11 +1331,13 @@ Take for example this Python code snippet which uses a Decorator. It\'s
 OK if you don\'t know Python or aren\'t familiar with Decorators,
 because it\'s just an example and I\'ll explain my meaning of it.
 
-\@HelloWorldDecorator
+```python
+@HelloWorldDecorator
 
 def HelloWorldFunction():
 
-return \'Hello World!\'
+return 'Hello World!\'
+```
 
 If the \"@HelloWorldDecorator\" wasn\'t there, this would read like a
 beginning Hello World! program, as when you call the
@@ -1353,17 +1354,15 @@ Let\'s look at the decorator code I have created:
 
 \# Decorator
 
+```python
 def HelloWorldDecorator(function_reference):
-
-def DecoratorInside():
-
-\# Call the Function we are wrapping
-
-intitial_result = function_reference()
-
-return intitial_result.replace(\'Hello\', \'Goodbye\')
+    def DecoratorInside():
+        # Call the Function we are wrapping
+        initial_result = function_reference()
+        return initial_result.replace(\'Hello\', \'Goodbye\')
 
 return DecoratorInside
+```
 
 The decorator code creates the required wrapper for the functions, as
 that is what decorators do in Python, and it calls the function
