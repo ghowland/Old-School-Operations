@@ -5034,15 +5034,18 @@ perfect alignment the entire time I have been writing this work.
 
 Yesterday was:
 
-\>\>\> 33000 / 200000.
+```python
+>>> 33000 / 200000.
 
 0.165
-
+```
 And today (with the above quote):
 
-\>\>\> 37600 / 200000.
+```python
+>>> 37600 / 200000.
 
 0.188
+```
 
 18.8% word vs 17.9% sections, in terms of estimated completion.
 
