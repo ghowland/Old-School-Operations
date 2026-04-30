@@ -1,34 +1,9 @@
+# Old School Operations
+## 25 Year of System Adminstration and SRE
+
 ![](./images/media/image23.png){width="6.5in" height="3.625in"}
 
-# Geoffrey Howland 
-
-# 
-
-# 
-
-# 
-
-# 
-
-# 
-
-# 
-
-# 
-
-# 
-
-# 
-
-# 
-
-# 
-
-# 
-
-# 
-
-# [©]{.mark} 2026 Geoffrey Howland 
+## Geoffrey Howland
 
 [[Part I: The Foundation]{.underline}](#part-i-the-foundation)
 
