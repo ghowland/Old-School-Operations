@@ -1,5 +1,5 @@
 # Old School Operations
-## 25 Year of System Adminstration and SRE
+## 25 Year of System Administration and SRE
 
 ![](./images/media/image23.png)
 
