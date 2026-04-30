@@ -1,209 +1,209 @@
 # Old School Operations
 ## 25 Year of System Adminstration and SRE
 
-![](./images/media/image23.png){width="6.5in" height="3.625in"}
+![](./images/media/image23.png)
 
 ## Geoffrey Howland
 
-[[Part I: The Foundation]{.underline}](#part-i-the-foundation)
+[[Part I: The Foundation]](#part-i-the-foundation)
 
 > [[Chapter 1: Foundations of Operational
-> Thinking]{.underline}](#chapter-1-foundations-of-operational-thinking)
+> Thinking]](#chapter-1-foundations-of-operational-thinking)
 >
-> [[1.1 My Background]{.underline}](#my-background)
+> [[1.1 My Background]](#my-background)
 >
-> [[1.1.1 Work Environments]{.underline}](#work-environments)
+> [[1.1.1 Work Environments]](#work-environments)
 >
 > [[1.2 The Strategic Importance of
-> Operations]{.underline}](#the-strategic-importance-of-operations)
+> Operations]](#the-strategic-importance-of-operations)
 >
 > [[1.3 The Promise of
-> Automation]{.underline}](#the-promise-of-automation)
+> Automation]](#the-promise-of-automation)
 >
 > [[1.4 Operations is About
-> Control]{.underline}](#operations-is-about-control)
+> Control]](#operations-is-about-control)
 >
 > [[Chapter 2: Real vs. Virtual - Understanding What We Work
-> With]{.underline}](#chapter-2-real-vs.-virtual---understanding-what-we-work-with)
+> With]](#chapter-2-real-vs.-virtual---understanding-what-we-work-with)
 >
 > [[2.1 The Differences Between Real and
-> Virtual]{.underline}](#the-differences-between-real-and-virtual)
+> Virtual]](#the-differences-between-real-and-virtual)
 >
 > [[2.2 Knowability and Trusting
-> Information]{.underline}](#knowability-and-trusting-information)
+> Information]](#knowability-and-trusting-information)
 >
 > [[2.3 Knowability - What Can and Cannot Be
-> Known]{.underline}](#knowability---what-can-and-cannot-be-known)
+> Known]](#knowability---what-can-and-cannot-be-known)
 >
 > [[2.3.1 Reality: The Physical - The Limits of
-> Knowability]{.underline}](#reality-the-physical---the-limits-of-knowability)
+> Knowability]](#reality-the-physical---the-limits-of-knowability)
 >
 > [[2.3.2 Virtual: The Un-Real - What Can and Cannot Be Fully
-> Known]{.underline}](#virtual-the-un-real---what-can-and-cannot-be-fully-known)
+> Known]](#virtual-the-un-real---what-can-and-cannot-be-fully-known)
 >
 > [[2.3.2.1 The Unknowability of Logic (Practical
-> Implications)]{.underline}](#the-unknowability-of-logic-practical-implications)
+> Implications)]](#the-unknowability-of-logic-practical-implications)
 >
 > [[Chapter 3: Data is King, Logic is Shell - The Foundation of Reliable
-> Systems]{.underline}](#chapter-3-data-is-king-logic-is-shell---the-foundation-of-reliable-systems)
+> Systems]](#chapter-3-data-is-king-logic-is-shell---the-foundation-of-reliable-systems)
 >
 > [[3.1 Data - The Knowable
-> Foundation]{.underline}](#data---the-knowable-foundation)
+> Foundation]](#data---the-knowable-foundation)
 >
-> [[3.1.1 Data Source Properties]{.underline}](#data-source-properties)
+> [[3.1.1 Data Source Properties]](#data-source-properties)
 >
 > [[3.2 Logic - The Executable
-> Shell]{.underline}](#logic---the-executable-shell)
+> Shell]](#logic---the-executable-shell)
 >
 > [[3.3 Data's Primacy over
-> Logic]{.underline}](#datas-primacy-over-logic)
+> Logic]](#datas-primacy-over-logic)
 >
 > [[3.3.1 Data is More Trustworthy Than
-> Logic]{.underline}](#data-is-more-trustworthy-than-logic)
+> Logic]](#data-is-more-trustworthy-than-logic)
 >
 > [[3.3.2 When Valid Data Breaks
-> Logic]{.underline}](#when-valid-data-breaks-logic)
+> Logic]](#when-valid-data-breaks-logic)
 
 [[Part II: Thinking Systemically - Tools for Mastering
-Complexity]{.underline}](#part-ii-thinking-systemically---tools-for-mastering-complexity)
+Complexity]](#part-ii-thinking-systemically---tools-for-mastering-complexity)
 
 > [[Chapter 4: What is a System? - Mapping the Operational
-> World]{.underline}](#chapter-4-what-is-a-system---mapping-the-operational-world)
+> World]](#chapter-4-what-is-a-system---mapping-the-operational-world)
 >
 > [[Chapter 5: Systemic Thinking - Tools for Mastering
-> Complexity]{.underline}](#chapter-5-systemic-thinking---tools-for-mastering-complexity)
+> Complexity]](#chapter-5-systemic-thinking---tools-for-mastering-complexity)
 >
 > [[5.1 Inputs, Outputs and Side-Effects: The Universal
-> Machine]{.underline}](#inputs-outputs-and-side-effects-the-universal-machine)
+> Machine]](#inputs-outputs-and-side-effects-the-universal-machine)
 >
 > [[5.2 The Philosopher\'s Knife - Slicing Ideas for
-> Clarity]{.underline}](#the-philosophers-knife---slicing-ideas-for-clarity)
+> Clarity]](#the-philosophers-knife---slicing-ideas-for-clarity)
 >
 > [[5.3 Slicing the Pie - Comprehensive vs. Aggregated
-> Systems]{.underline}](#slicing-the-pie---comprehensive-vs.-aggregated-systems)
+> Systems]](#slicing-the-pie---comprehensive-vs.-aggregated-systems)
 >
 > [[Chapter 6: Axiomatic Engineering - Principled Decision
-> Making]{.underline}](#chapter-6-axiomatic-engineering---principled-decision-making)
+> Making]](#chapter-6-axiomatic-engineering---principled-decision-making)
 >
-> [[6.1 What is Engineering?]{.underline}](#what-is-engineering)
+> [[6.1 What is Engineering?]](#what-is-engineering)
 >
 > [[6.1.1 Understanding Engineering as a
-> Process]{.underline}](#understanding-engineering-as-a-process)
+> Process]](#understanding-engineering-as-a-process)
 >
-> [[6.1.2 The Use of Resources]{.underline}](#the-use-of-resources)
+> [[6.1.2 The Use of Resources]](#the-use-of-resources)
 >
 > [[6.2 Attribute Axes and
-> Prioritization]{.underline}](#attribute-axes-and-prioritization)
+> Prioritization]](#attribute-axes-and-prioritization)
 >
 > [[6.3 Prioritization in Practice: The 90-9-0.9%
-> Rule]{.underline}](#prioritization-in-practice-the-90-9-0.9-rule)
+> Rule]](#prioritization-in-practice-the-90-9-0.9-rule)
 >
 > [[6.4 Impersonal Decision
-> Making]{.underline}](#impersonal-decision-making)
+> Making]](#impersonal-decision-making)
 >
 > [[6.5 The Problem with \"The
-> Best\"]{.underline}](#the-problem-with-the-best)
+> Best\"]](#the-problem-with-the-best)
 >
 > [[6.6 Fashion Oriented
-> Engineering]{.underline}](#fashion-oriented-engineering)
+> Engineering]](#fashion-oriented-engineering)
 
 [[Part III: Operational Dynamics - Applying Principles to People and
-Environments]{.underline}](#part-iii-operational-dynamics---applying-principles-to-people-and-environments)
+Environments]](#part-iii-operational-dynamics---applying-principles-to-people-and-environments)
 
 > [[Chapter 7: Humans - Their Unique Role in
-> Operations]{.underline}](#chapter-7-humans---their-unique-role-in-operations)
+> Operations]](#chapter-7-humans---their-unique-role-in-operations)
 >
 > [[Chapter 8: Operational Environments - Security Zones and Lifecycle
-> Management]{.underline}](#chapter-8-operational-environments---security-zones-and-lifecycle-management)
+> Management]](#chapter-8-operational-environments---security-zones-and-lifecycle-management)
 >
 > [[8.1 Defining Operational
-> Environments]{.underline}](#defining-operational-environments)
+> Environments]](#defining-operational-environments)
 >
 > [[8.2 The Production
-> Environment]{.underline}](#the-production-environment)
+> Environment]](#the-production-environment)
 >
-> [[8.3 Tiered Security Zones]{.underline}](#tiered-security-zones)
+> [[8.3 Tiered Security Zones]](#tiered-security-zones)
 >
 > [[Chapter 9: Operational Logic vs. Application Logic - Different
 > Goals, Different
-> Code]{.underline}](#chapter-9-operational-logic-vs.-application-logic---different-goals-different-code)
+> Code]](#chapter-9-operational-logic-vs.-application-logic---different-goals-different-code)
 >
 > [[9.1 The Fundamental
-> Distinction]{.underline}](#the-fundamental-distinction)
+> Distinction]](#the-fundamental-distinction)
 >
 > [[9.2 Many Applications, One Operational
-> Environment]{.underline}](#many-applications-one-operational-environment)
+> Environment]](#many-applications-one-operational-environment)
 >
 > [[9.3 Designing for Resilient Operational
-> Logic]{.underline}](#designing-for-resilient-operational-logic)
+> Logic]](#designing-for-resilient-operational-logic)
 >
 > [[Chapter 10: Scaling and Control - The \"0, 1, Infinity\"
-> Principle]{.underline}](#chapter-10-scaling-and-control---the-0-1-infinity-principle)
+> Principle]](#chapter-10-scaling-and-control---the-0-1-infinity-principle)
 >
 > [[10.1 Understanding Distributed
-> Systems]{.underline}](#understanding-distributed-systems)
+> Systems]](#understanding-distributed-systems)
 >
 > [[10.2 The \"0, 1, Infinity\"
-> Rule]{.underline}](#the-0-1-infinity-rule)
+> Rule]](#the-0-1-infinity-rule)
 >
 > [[10.3 The Production Environment as a Distributed Operating System
-> (DOS)]{.underline}](#the-production-environment-as-a-distributed-operating-system-dos)
+> (DOS)]](#the-production-environment-as-a-distributed-operating-system-dos)
 
 [[Part IV: In Practice - Concrete
-Applications]{.underline}](#part-iv-in-practice---concrete-applications)
+Applications]](#part-iv-in-practice---concrete-applications)
 
 > [[Chapter 11: Evaluating Changes - A Principled
-> Approach]{.underline}](#chapter-11-evaluating-changes---a-principled-approach)
+> Approach]](#chapter-11-evaluating-changes---a-principled-approach)
 >
 > [[Chapter 12: Applied Algorithmic Properties - Building Reliable
-> Automation]{.underline}](#chapter-12-applied-algorithmic-properties---building-reliable-automation)
+> Automation]](#chapter-12-applied-algorithmic-properties---building-reliable-automation)
 >
 > [[12.1 Fundamental Algorithmic Properties in
-> Operations]{.underline}](#fundamental-algorithmic-properties-in-operations)
+> Operations]](#fundamental-algorithmic-properties-in-operations)
 >
 > [[12.2 Idempotency - Consistent Results Every
-> Time]{.underline}](#idempotency---consistent-results-every-time)
+> Time]](#idempotency---consistent-results-every-time)
 >
 > [[12.3 Iteration and Algorithmic
-> Application]{.underline}](#iteration-and-algorithmic-application)
+> Application]](#iteration-and-algorithmic-application)
 >
 > [[Chapter 13: Know the Present - Data Collection and Modeling for
-> Control]{.underline}](#chapter-13-know-the-present---data-collection-and-modeling-for-control)
+> Control]](#chapter-13-know-the-present---data-collection-and-modeling-for-control)
 >
 > [[13.1 Evaluating the Environment: Knowing the
-> Present]{.underline}](#evaluating-the-environment-knowing-the-present)
+> Present]](#evaluating-the-environment-knowing-the-present)
 >
-> [[13.1.1 When to Use Statistics]{.underline}](#when-to-use-statistics)
+> [[13.1.1 When to Use Statistics]](#when-to-use-statistics)
 >
 > [[13.2 Modeling for Understanding and
-> Control]{.underline}](#modeling-for-understanding-and-control)
+> Control]](#modeling-for-understanding-and-control)
 >
 > [[13.2.1 Black-Boxing the World with Universal
-> Machines]{.underline}](#black-boxing-the-world-with-universal-machines)
+> Machines]](#black-boxing-the-world-with-universal-machines)
 >
 > [[Chapter 14: Engineering Your Path - Tools, Practice, and
-> Wisdom]{.underline}](#chapter-14-engineering-your-path---tools-practice-and-wisdom)
+> Wisdom]](#chapter-14-engineering-your-path---tools-practice-and-wisdom)
 >
 > [[14.1 Engineering as a Continuous
-> Practice]{.underline}](#engineering-as-a-continuous-practice)
+> Practice]](#engineering-as-a-continuous-practice)
 >
 > [[14.2 The Role of Philosophy: Asking
-> \"Why?\"]{.underline}](#the-role-of-philosophy-asking-why)
+> \"Why?\"]](#the-role-of-philosophy-asking-why)
 >
 > [[14.3 Simplifying SLO, SLA and
-> SLI]{.underline}](#simplifying-slo-sla-and-sli)
+> SLI]](#simplifying-slo-sla-and-sli)
 >
-> [[14.4 Old School Reading List]{.underline}](#old-school-reading-list)
+> [[14.4 Old School Reading List]](#old-school-reading-list)
 
-[[Conclusion]{.underline}](#conclusion)
+[[Conclusion]](#conclusion)
 
 > [[What this book didn't cover: The
-> OpsDB]{.underline}](#what-this-book-didnt-cover-the-opsdb)
+> OpsDB]](#what-this-book-didnt-cover-the-opsdb)
 >
 > [[What I hope you take from this
-> book]{.underline}](#what-i-hope-you-take-from-this-book)
+> book]](#what-i-hope-you-take-from-this-book)
 >
-> [[Discord Server]{.underline}](#discord-server)
+> [[Discord Server]](#discord-server)
 
 # Part I: The Foundation
 
@@ -254,7 +254,7 @@ end-user websites)
 
 You can see my abbreviated job history at LinkedIn:
 
-[[https://www.linkedin.com/in/ghowland]{.underline}](https://www.linkedin.com/in/ghowland)
+[[https://www.linkedin.com/in/ghowland]](https://www.linkedin.com/in/ghowland)
 
 At Google, I started in the Sysops team in 2003, and was later
 transferred to the SRE Ads Backend team as the first group of 8 "ops"
@@ -482,7 +482,7 @@ present reality and less dogmatic simplicity, which frequently ignores
 any local data and instead focuses on following idealistic principles.
 If a principle sounds too idealistic, it probably is.
 
-![](./images/media/image44.png){width="6.5in" height="3.625in"}
+![](./images/media/image44.png)
 
 ### 1.3 The Promise of Automation
 
@@ -660,7 +660,7 @@ make more cases on why I believe this is the central tenet of Operations
 and why understanding what you do have good control over, and do not
 have good control over is very valuable and actionable information.
 
-![](./images/media/image24.png){width="6.5in" height="3.625in"}
+![](./images/media/image24.png)
 
 ##  
 
@@ -770,7 +770,7 @@ more disagreements in the future, and it will hinder our communication
 about the more interesting and relevant parts of engineering and
 automation. Please, bear with me here.
 
-![](./images/media/image19.png){width="6.5in" height="3.625in"}
+![](./images/media/image19.png)
 
 So. We have real books, devices, you are real, I am real, but your
 understanding and my understanding of things is not real, and even the
@@ -886,7 +886,7 @@ any given time, and am doing my best to partition this into a small
 stream of data that can be turned into understandable language. It\'s a
 lossy process, at best, but it\'s the best I am currently able to do.
 
-![](./images/media/image33.png){width="6.5in" height="3.625in"}
+![](./images/media/image33.png)
 
 ### 2.2 Knowability and Trusting Information
 
@@ -920,7 +920,7 @@ What you experience and work with directly constitutes your actual
 context: Reality and Local. Information that is not directly related to
 your context may not be directly applicable: Virtual and Abstract.
 
-![](./images/media/image51.png){width="6.5in" height="3.625in"}
+![](./images/media/image51.png)
 
 Let\'s create an example, a problem for us to solve. We\'ll be doing a
 lot of this during the course of the book, so to get the most out of
@@ -1159,7 +1159,7 @@ This is a completely theoretical example, but it illustrates that there
 are things we know, but not completely (temperature), and there are
 things we do not know at all about Real things.
 
-![](./images/media/image53.png){width="6.5in" height="3.625in"}
+![](./images/media/image53.png)
 
 ### 2.3.2 Virtual: The Un-Real - What Can and Cannot Be Fully Known
 
@@ -1257,7 +1257,7 @@ to mind in the future, write them down, and over time more and more may
 start to come to you. This is a process that becomes easier and more
 useful over time, as you practice it.
 
-![](./images/media/image27.png){width="6.5in" height="3.625in"}
+![](./images/media/image27.png)
 
 ### 2.3.2.1 The Unknowability of Logic (Practical Implications)
 
@@ -1592,7 +1592,7 @@ validate data, and perform side-effect type actions where we do things
 like copy data to different locations, remove it, create directories,
 start and stop services, as well as anything else we could do manually.
 
-![](./images/media/image38.png){width="6.5in" height="3.625in"}
+![](./images/media/image38.png)
 
 Essentially Logic is the way we take action through digital means, where
 we would otherwise take actions manually.
@@ -1734,7 +1734,7 @@ how to achieve a goal, and so again the Data gains primacy over the
 Logic in being the key element. The \"tool\" Logic only exists to
 transform the Data.
 
-![](./images/media/image25.png){width="6.5in" height="3.625in"}
+![](./images/media/image25.png)
 
 ### 3.3.1 Data is More Trustworthy Than Logic
 
@@ -1766,7 +1766,7 @@ that you should not corrupt your data with your code, but this is the
 path I have taken to understanding where to place priorities, and how to
 approach working, and they have served me well.
 
-![](./images/media/image26.png){width="6.5in" height="3.875in"}
+![](./images/media/image26.png)
 
 ### 3.3.2 When Valid Data Breaks Logic
 
@@ -1950,7 +1950,7 @@ Historically, in the computer industry, a system was often referred to
 as a single machine with an operating system on it, and the environment
 that was then configured on top of that to create a working environment.
 
-![](./images/media/image42.png){width="6.5in" height="3.625in"}
+![](./images/media/image42.png)
 
 A system was sometimes a machine\'s hardware, an operating system was
 also a system, and the eventual configured environment was a system.
@@ -2093,7 +2093,7 @@ from, because they are not limited by the nature of the actual
 components; they can be extended in any way you can think of, and this
 can assist you in your goals.
 
-![](./images/media/image18.png){width="6.5in" height="3.625in"}
+![](./images/media/image18.png)
 
 ##  
 
@@ -2207,7 +2207,7 @@ Universal Machine, we can always drop into the method of talking about a
 component. or service, or physical machine, or any type of thing, and
 how it operates in a chain or process of events.
 
-![](./images/media/image9.png){width="6.5in" height="3.625in"}
+![](./images/media/image9.png)
 
 ### 5.2 The Philosopher\'s Knife - Slicing Ideas for Clarity
 
@@ -2466,7 +2466,7 @@ there is an infinite amount of detail that can be applied, but the
 entire space of the rectangle is being \"owned\" by some topic, and is
 being further divided down as we zoom-in to more details.
 
-![](./images/media/image28.png){width="6.5in" height="3.625in"}
+![](./images/media/image28.png)
 
 With the Aggregate model (which is a system, but not in the \"Systemic
 Thinking\" sense of the word), only the bottom parts of the space are
@@ -2576,7 +2576,7 @@ risks, etc, implement the plan, evaluate the implementation, whether we
 met our success criteria, and update the documentation based on the new
 state of the environment and resources.
 
-![](./images/media/image15.png){width="6.5in" height="3.625in"}
+![](./images/media/image15.png)
 
 ### 6.1.1 Understanding Engineering as a Process
 
@@ -2723,7 +2723,7 @@ success of your organization.
 
 Using resources efficiently is of prime importance for any engineer.
 
-![](./images/media/image4.png){width="6.5in" height="3.625in"}
+![](./images/media/image4.png)
 
 ### 6.2 Attribute Axes and Prioritization
 
@@ -3085,7 +3085,7 @@ anything to do in levels 1 to 4, so it is currently the top priority\",
 which is clear, numerical, and does not use potentially confusing
 decimal numbers for normal communication purposes.
 
-![](./images/media/image52.png){width="6.5in" height="3.625in"}
+![](./images/media/image52.png)
 
 The labelled tier structures can be replaced with their numerical
 equivalents to perform quantitative analysis whenever it is needed.
@@ -3174,7 +3174,7 @@ Having a \"Recursive Tree of Scales\" in which I map all my values to,
 means that any time a value changes, the entire tree will need to
 rebalance.
 
-![](./images/media/image40.png){width="6.5in" height="3.625in"}
+![](./images/media/image40.png)
 
 If the \"A\" side was heavier, but something was removed and added to
 the \"B\" side, or something was merely made heavier on the \"B\" side,
@@ -3244,7 +3244,7 @@ instead of enumerating things that were visible without reasoning, but
 both methods of defining properties are acceptable. Remember how you
 came to them, in case they need re-evaluation.
 
-![](./images/media/image1.png){width="6.5in" height="3.625in"}
+![](./images/media/image1.png)
 
 In engineering we are not generally interested in the \"worst\" outcome
 as a result, except when we need to brainstorm in finding potential
@@ -3542,7 +3542,7 @@ have to specify all environment requirements. Why? Because we are 100%
 Specificity at 1.0. This means absolutely everything must be specified,
 if this spectrum or axis is to have real meaning.
 
-![](./images/media/image43.png){width="6.5in" height="3.625in"}
+![](./images/media/image43.png)
 
 Taking this into account, maybe my example using 0.75 for that level of
 specificity isn\'t nearly detailed or specific enough, but on first
@@ -3634,7 +3634,7 @@ monitoring and alerting on things we care about?
 
 All of these will change every time you change what Operational
 Environment classification you are
-in.![](./images/media/image17.png){width="6.5in" height="3.625in"}
+in.![](./images/media/image17.png)
 
 ### 8.2 The Production Environment
 
@@ -3783,7 +3783,7 @@ Roughly these 4 tiers break down into:
 
 -   Resource specific: \"Is the specific resource in question special?\"
 
-![](./images/media/image7.png){width="6.5in" height="3.625in"}
+![](./images/media/image7.png)
 
 ##  
 
@@ -3954,7 +3954,7 @@ the details. Without meta information about the environment, Operational
 Logic will not be able to make the same kind of decisions that a Human
 performing Manual changes would have access to.
 
-![](./images/media/image46.png){width="6.5in" height="3.625in"}
+![](./images/media/image46.png)
 
 ### 9.2 Many Applications, One Operational Environment
 
@@ -4076,7 +4076,7 @@ writing about that in non-Operational literature that covers the current
 understanding of how to do that, and that is not the focus for
 Operational Engineers.
 
-![](./images/media/image13.png){width="6.5in" height="3.625in"}
+![](./images/media/image13.png)
 
 ### 9.3 Designing for Resilient Operational Logic
 
@@ -4120,7 +4120,7 @@ troubleshoot, and your Operational Logic needs to be as straight-forward
 and simple as it can be, so that when problems occur, they can be
 troubleshot and resolved quickly.
 
-![](./images/media/image16.png){width="6.5in" height="5.375in"}
+![](./images/media/image16.png)
 
 Operations teams are also generally (at most organizations) much smaller
 than their Application Engineering departments, so this must also be
@@ -4262,7 +4262,7 @@ work does not need to specifically occur, and yet the goals are still
 achieved. If this sounds a lot like what I referred to as \"removing
 Classes of Work\", it is because it is exactly that.
 
-![](./images/media/image5.png){width="6.5in" height="3.625in"}
+![](./images/media/image5.png)
 
 ### 10.3 The Production Environment as a Distributed Operating System (DOS)
 
@@ -4336,7 +4336,7 @@ It\'s a big deal, and I predict whether this terminology is adopted or
 not, that in the future we will end up seeing Production Environments in
 this way, because of the efficiencies that this will lead to.
 
-![](./images/media/image49.png){width="6.5in" height="3.625in"}
+![](./images/media/image49.png)
 
 #  
 
@@ -4422,7 +4422,7 @@ that we are removing the option of using sequential copies again,
 because it will not scale, and will create work for us again in the
 future.
 
-![](./images/media/image14.png){width="6.5in" height="3.625in"}
+![](./images/media/image14.png)
 
 Since we just went over how to create an Axiom, let\'s do it now.
 However, since we are working with a specific scenario and have not yet
@@ -4494,7 +4494,7 @@ develop, as the complexity of parallel process communication, locking
 and other issues can be ignored, and sequential processing is a default
 for many implementation languages (and all the primary Operational
 related languages, from any environment I\'ve worked
-in).![](./images/media/image29.png){width="6.5in" height="3.625in"}
+in).![](./images/media/image29.png)
 
 -   Finally, I state that even splitting the job across multiple
     servers, which may allow the sequential processing to have
@@ -4606,7 +4606,7 @@ here, and then let\'s prioritize them for ranking purposes, and finally
 we can assign values to all of the Attribute Axes, and then look at what
 their Prioritization tells us about what our options are.
 
-![](./images/media/image54.png){width="6.5in" height="3.625in"}
+![](./images/media/image54.png)
 
 One important concept to always be aware of when designing a solution is
 Centralization. Let\'s create that spectrum:
@@ -4678,7 +4678,7 @@ who can talk the loudest, who is better at arguing and the most
 important, who has the most social capital to spend on \"winning\" the
 current discussion.
 
-![](./images/media/image8.png){width="6.5in" height="3.625in"}
+![](./images/media/image8.png)
 
 Since we are looking for Engineering clarity as opposed to \"winning\"
 through rhetoric, we must make our best efforts to perform this work
@@ -4780,7 +4780,7 @@ scale better than the previous one, so I am leaving room for
 more-scalable solutions, but indicating that it is clearly superior to
 the Push option in this single Attribute Axis.
 
-![](./images/media/image36.png){width="6.5in" height="3.625in"}
+![](./images/media/image36.png)
 
 ## Chapter 12: Applied Algorithmic Properties - Building Reliable Automation
 
@@ -4898,7 +4898,7 @@ EnsureDirectoryExistsIdempotentFunction() exist for convenience, and do
 what they say they do. This will iterate over our list of YAML files
 that contain our directory data, to Idempotently ensure they exist.
 
-![](./images/media/image6.png){width="6.5in" height="3.625in"}
+![](./images/media/image6.png)
 
 ##  
 
@@ -5021,7 +5021,7 @@ you read this, but changed your mind after you read it?
 How can you use this perspective to improve your efficient use of your
 resources?
 
-![](./images/media/image2.png){width="6.5in" height="3.625in"}
+![](./images/media/image2.png)
 
 ### 13.1.1 When to Use Statistics
 
@@ -5072,7 +5072,7 @@ Apparently there is some kind of statistical force requiring me to write
 a certain number of words a day, a certain number of sections a day, and
 so on.
 
-![](./images/media/image12.png){width="6.5in" height="3.625in"}
+![](./images/media/image12.png)
 
 ### 13.2 Modeling for Understanding and Control
 
@@ -5164,7 +5164,7 @@ consider yourself a proficient modeler, you should take any attempt to
 start creating more models when opportunities arise, as practice
 improves all skills.
 
-![](./images/media/image11.png){width="6.5in" height="3.625in"}
+![](./images/media/image11.png)
 
 ### 13.2.1 Black-Boxing the World with Universal Machines
 
@@ -5196,7 +5196,7 @@ interface, we can model anything and everything. We can Black-Box the
 World, or wrap the world full of \"black boxes\", which contain
 something that has the signature of the Universal Machine (IOSE).
 
-![](./images/media/image32.png){width="6.5in" height="3.625in"}
+![](./images/media/image32.png)
 
 ##  
 
@@ -5267,7 +5267,7 @@ Let\'s create an event that occurs and exercises these components, as a
 sequence:
 
 -   An end-user requests a file from the remote web server:
-    [[http://www.domain.com/images/unstoppabletrex.png]{.underline}](http://www.domain.com/images/unstoppabletrex.png)
+    [[http://www.domain.com/images/unstoppabletrex.png]](http://www.domain.com/images/unstoppabletrex.png)
 
 -   The request performs operations outside of this system (LAN,
     routing, DNS, etc), but eventually opens a TCP socket to port 80 on
@@ -5304,7 +5304,7 @@ We can similarly create the model of \"the file does not exist\", the
 web server may do something similar, except return a 404 File Not Found
 static content result.
 
-![](./images/media/image37.png){width="6.5in" height="3.625in"}
+![](./images/media/image37.png)
 
 In the case of a more dynamic system, the web server could proxy the
 request to an application server, which then makes database calls and
@@ -5368,15 +5368,15 @@ and Anti-Intelligent actions. Try not to let the negative sounding name
 cause you to avoid this information, it is a very important set of
 thoughts he has encoded there-in.
 
-[[http://www.amazon.com/The-Basic-Laws-Human-Stupidity-ebook/dp/B005ZX622C]{.underline}](http://www.amazon.com/The-Basic-Laws-Human-Stupidity-ebook/dp/B005ZX622C)
+[[http://www.amazon.com/The-Basic-Laws-Human-Stupidity-ebook/dp/B005ZX622C]](http://www.amazon.com/The-Basic-Laws-Human-Stupidity-ebook/dp/B005ZX622C)
 
-[[http://harmful.cat-v.org/people/basic-laws-of-human-stupidity/]{.underline}](http://harmful.cat-v.org/people/basic-laws-of-human-stupidity/)
+[[http://harmful.cat-v.org/people/basic-laws-of-human-stupidity/]](http://harmful.cat-v.org/people/basic-laws-of-human-stupidity/)
 
 These start to illustrate the differences between Intelligence and
 Wisdom, to me, and will hopefully (over the course of the material)
 become clearer and useful to you as well.
 
-![](./images/media/image10.png){width="6.5in" height="3.625in"}
+![](./images/media/image10.png)
 
 Cipolla's article taught me how to create a personal philosophy of "Win,
 Win, Win":
@@ -5450,7 +5450,7 @@ expands to meet any closer inspection. What is true from one
 perspective, or frame of values, is false from another. Its flexibility
 to reframe data is infinite.
 
-![](./images/media/image3.png){width="6.5in" height="3.625in"}
+![](./images/media/image3.png)
 
 ### 14.3 Simplifying SLO, SLA and SLI
 
@@ -5469,17 +5469,17 @@ Let me give you simplest versions of these:
 
 -   OS Internals: [[The Design And Implementation Of The Freebsd
     Operating
-    System]{.underline}](https://www.amazon.com/Design-Implementation-FreeBSD-Operating-System/dp/0201702452/)
+    System]](https://www.amazon.com/Design-Implementation-FreeBSD-Operating-System/dp/0201702452/)
 
 -   Networking: [[Interconnections: Bridges, Routers, Switches, and
     Internetworking
-    Protocols]{.underline}](https://www.amazon.com/Interconnections-Bridges-Switches-Internetworking-Protocols/dp/0201634481/)
+    Protocols]](https://www.amazon.com/Interconnections-Bridges-Switches-Internetworking-Protocols/dp/0201634481/)
 
 -   Network Protocols: [[UNIX Network
-    Programming]{.underline}](https://www.amazon.com/UNIX-Network-Programming-Richard-Stevens/dp/0139498761/)
+    Programming]](https://www.amazon.com/UNIX-Network-Programming-Richard-Stevens/dp/0139498761/)
 
 -   Clusters: [[In Search of
-    Clusters]{.underline}](https://www.amazon.com/Search-Clusters-2nd-Gregory-Pfister/dp/0138997098/)
+    Clusters]](https://www.amazon.com/Search-Clusters-2nd-Gregory-Pfister/dp/0138997098/)
 
 # Conclusion
 
@@ -5502,8 +5502,8 @@ human labor to satisfy.
 
 The general idea is well known: have a Source of Truth. But, you have
 many areas of operations, so how do you wrap them all together to
-understand and automate the entire set?\
-\
+understand and automate the entire set?
+
 You have an OpsDb that you create by modeling your own organizations
 actual operational procedures and data, and then pointing that data at
 the real sources or dashboards for them so they can be inspected
@@ -5534,18 +5534,18 @@ better, but it's also a lot of work and these days the higher floor ops
 tools (K8s/etc) give you a starting place that didn't exist for most of
 my career.
 
-![](./images/media/image39.png){width="6.5in" height="3.625in"}
+![](./images/media/image39.png)
 
 If you are interested in the unfinished original book, you can find it
 here:
 
-[[https://github.com/ghowland/OpsEngAuto]{.underline}](https://github.com/ghowland/OpsEngAuto)
+[[https://github.com/ghowland/OpsEngAuto]](https://github.com/ghowland/OpsEngAuto)
 
 If you want to see an early version of this, and a working example of
 Alignment, you can look at my Red Eye Monitor design for AWS I created
 in 2009:
 
-[[https://redeyemon.sourceforge.net/]{.underline}](https://redeyemon.sourceforge.net/)
+[[https://redeyemon.sourceforge.net/]](https://redeyemon.sourceforge.net/)
 
 ## What I hope you take from this book
 
@@ -5583,6 +5583,6 @@ If there is enough interest, I will create some events around this to
 help with community building:
 
 Old School Ops server:
-[[https://discord.gg/Fhhqd338u]{.underline}](https://discord.gg/Fhhqd338u)
+[[https://discord.gg/Fhhqd338u]](https://discord.gg/Fhhqd338u)
 
-![](./images/media/image50.png){width="6.5in" height="3.625in"}
+![](./images/media/image50.png)
