@@ -2931,7 +2931,7 @@ scale of 100 vs 90, it is possible that the 5X performance could win the
 \"point comparison\" just because of the \"5x\" scaling value being used
 in some calculation.
 
-(availability) 100 \< 450 (performance)
+`(availability) 100 \< 450 (performance)`
 
 Being \"10%\" close to the top item, it may seem more fluid, in that
 \"this time\" we will still keep availability over consistency (not
@@ -2955,19 +2955,19 @@ worth \"90\", and Performance is worth \"9\".
 Even if we took a very naive algorithm of \"5x performance is 5x the
 value\", we get \"90\" vs. \"45\", and Availability is still on top.
 
-(availability) 90 \> 45 (performance 5x)
+`(availability) 90 \> 45 (performance 5x)`
 
 If we change the value to \"10x performance\", then we get \"90\" vs.
 \"90\" and while the positions match, we still know Availability is #1,
 and so it is clear that availability is still our top priority in this
 case.
 
-(availability) 90 \>= 90 (performance 10x)
+`(availability) 90 \>= 90 (performance 10x)`
 
 If we change the value to \"100x performance\", we would get \"90\"
 versus \"900\" and it is clear that performance has true value.
 
-(availability) 90 \< 900 (performance 100x)
+`(availability) 90 \< 900 (performance 100x)`
 
 What it means in reality is that we have a new Caching Layer. With 100x
 performance (or even considerably less), it is worth it to try to
