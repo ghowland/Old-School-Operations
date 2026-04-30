@@ -1333,10 +1333,8 @@ because it\'s just an example and I\'ll explain my meaning of it.
 
 ```python
 @HelloWorldDecorator
-
 def HelloWorldFunction():
-
-return 'Hello World!\'
+    return 'Hello World!\'
 ```
 
 If the \"@HelloWorldDecorator\" wasn\'t there, this would read like a
