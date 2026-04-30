@@ -1334,7 +1334,7 @@ because it\'s just an example and I\'ll explain my meaning of it.
 ```python
 @HelloWorldDecorator
 def HelloWorldFunction():
-    return 'Hello World!\'
+    return 'Hello World!'
 ```
 
 If the \"@HelloWorldDecorator\" wasn\'t there, this would read like a
@@ -1357,7 +1357,7 @@ def HelloWorldDecorator(function_reference):
     def DecoratorInside():
         # Call the Function we are wrapping
         initial_result = function_reference()
-        return initial_result.replace(\'Hello\', \'Goodbye\')
+        return initial_result.replace('Hello', 'Goodbye')
 
 return DecoratorInside
 ```
