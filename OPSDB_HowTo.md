@@ -32,6 +32,10 @@ A reader who tries to start with INFRA-1 (the taxonomy) gets a vocabulary lesson
 
 The order in this guide gives you the context first, then the architecture, then the path to building it, then the details, then the vocabulary that lets you talk about all of it abstractly.
 
+![Fig. 1: The five stages of the reading path - each layer builds on the prior, from context at the center to taxonomy at the outer ring.](./figures/reading_guide_01_five_stage_onion.png)
+
+![Fig. 2: Paper dependency graph - which papers inform which, with stage colors marking the comprehension order.](./figures/reading_guide_02_dependency_dag.png)
+
 ---
 
 ## Stage 1 — What you get and what it is
@@ -171,6 +175,8 @@ What you get from INFRA-8:
 
 After INFRA-8 you understand the framework that keeps the runner population consistent and that closes the gap in runner authority enforcement that the prior papers left.
 
+![Fig. 4: Reading order with section pointers - the specific sections within each paper that the guide directs readers to.](./figures/reading_guide_04_section_pointers.png)
+
 ---
 
 ## Stage 5 — The taxonomy
@@ -212,6 +218,8 @@ The full picture. You understand:
 
 You have the architecture, the route to building it, the structural details of each layer, and the language to discuss it precisely. The OpsDB process is fully specified across the nine papers; this guide is the path through them.
 
+![Fig. 6: Knowledge stack - what you can do after each stage, with capabilities accumulating from Stage 1 to Stage 5.](./figures/reading_guide_06_knowledge_stack.png)
+
 ---
 
 ## A note on re-reading
@@ -222,8 +230,11 @@ Phase 1 work refers back to INFRA-2 §5 and INFRA-9 §3. Phase 2 work refers bac
 
 The first read is for comprehension. Subsequent reads are for reference. The reading order in this guide is for the first read; the numbered order is for the reference structure.
 
+![Fig. 3: Stage-to-paper mapping - what each paper gives you, organized by reading stage.](./figures/reading_guide_03_stage_mapping.png)
+
 ---
 
 ## The starting point
 
 If you have not yet read any of the papers, your next click is [INFRA-7 — The OpsDB: A Substrate for Coherent Operations](https://github.com/ghowland/papers/blob/main/papers/papers/INFRA/HOWL-INFRA-7-2026/manuscript.md). That paper introduces the architecture from first principles for a reader who has not encountered it before. By the end of INFRA-7 you'll know whether the rest of the series is worth your time. If it is, continue with INFRA-2 and follow the order this guide specifies.
+
