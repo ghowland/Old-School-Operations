@@ -5529,13 +5529,18 @@ my career.
 If you are interested in the unfinished original book, you can find it
 here:
 
-[[https://github.com/ghowland/OpsEngAuto]](https://github.com/ghowland/OpsEngAuto)
+[https://github.com/ghowland/OpsEngAuto](https://github.com/ghowland/OpsEngAuto)
 
 If you want to see an early version of this, and a working example of
 Alignment, you can look at my Red Eye Monitor design for AWS I created
 in 2009:
 
-[[https://redeyemon.sourceforge.net/]](https://redeyemon.sourceforge.net/)
+[https://redeyemon.sourceforge.net/](https://redeyemon.sourceforge.net/)
+
+I created an OpsDB spec using LLMs, find an overview of the papers here:
+
+[https://github.com/ghowland/Old-School-Operations/blob/main/OPSDB_HowTo.md](https://github.com/ghowland/Old-School-Operations/blob/main/OPSDB_HowTo.md)
+
 
 ## What I hope you take from this book
 
