@@ -10,15 +10,15 @@ The series is fully specified — every architectural commitment, every discipli
 
 The papers in the order a new reader should approach them:
 
-1. [OPSDB-1 — The OpsDB: A Substrate for Coherent Operations](https://github.com/ghowland/papers/blob/main/papers/papers/INFRA/OPSDB-1/manuscript.md) — what it is and what you get
-2. [OPSDB-2 — OpsDB Design](https://github.com/ghowland/papers/blob/main/papers/papers/INFRA/OPSDB-2/manuscript.md) — the architectural commitments
-3. [OPSDB-3 — OpsDB Implementation Path](https://github.com/ghowland/papers/blob/main/papers/papers/INFRA/OPSDB-3/manuscript.md) — how to build it
-4. [OPSDB-4 — An Example OpsDB Schema](https://github.com/ghowland/papers/blob/main/papers/papers/INFRA/OPSDB-4/manuscript.md) — what the data looks like
-5. [OPSDB-5 — OpsDB Runner Design](https://github.com/ghowland/papers/blob/main/papers/papers/INFRA/OPSDB-5/manuscript.md) — the operational logic layer
-6. [OPSDB-6 — OpsDB API Layer](https://github.com/ghowland/papers/blob/main/papers/papers/INFRA/OPSDB-6/manuscript.md) — the governance gate
-7. [OPSDB-7 — OpsDB Schema Construction](https://github.com/ghowland/papers/blob/main/papers/papers/INFRA/OPSDB-7/manuscript.md) — how the schema itself is built
-8. [OPSDB-8 — The OpsDB Shared Library Suite](https://github.com/ghowland/papers/blob/main/papers/papers/INFRA/OPSDB-8/manuscript.md) — the framework around the runners
-9. [OPSDB-9 — Infrastructure Taxonomy](https://github.com/ghowland/papers/blob/main/papers/papers/INFRA/OPSDB-9/manuscript.md) — the vocabulary that grounds all of it
+1. [OPSDB-1 — The OpsDB: A Substrate for Coherent Operations](https://github.com/ghowland/Old-School-Operations/blob/main/opsdb//OPSDB-1/manuscript.md) — what it is and what you get
+2. [OPSDB-2 — OpsDB Design](https://github.com/ghowland/Old-School-Operations/blob/main/opsdb//OPSDB-2/manuscript.md) — the architectural commitments
+3. [OPSDB-3 — OpsDB Implementation Path](https://github.com/ghowland/Old-School-Operations/blob/main/opsdb//OPSDB-3/manuscript.md) — how to build it
+4. [OPSDB-4 — An Example OpsDB Schema](https://github.com/ghowland/Old-School-Operations/blob/main/opsdb//OPSDB-4/manuscript.md) — what the data looks like
+5. [OPSDB-5 — OpsDB Runner Design](https://github.com/ghowland/Old-School-Operations/blob/main/opsdb//OPSDB-5/manuscript.md) — the operational logic layer
+6. [OPSDB-6 — OpsDB API Layer](https://github.com/ghowland/Old-School-Operations/blob/main/opsdb//OPSDB-6/manuscript.md) — the governance gate
+7. [OPSDB-7 — OpsDB Schema Construction](https://github.com/ghowland/Old-School-Operations/blob/main/opsdb//OPSDB-7/manuscript.md) — how the schema itself is built
+8. [OPSDB-8 — The OpsDB Shared Library Suite](https://github.com/ghowland/Old-School-Operations/blob/main/opsdb//OPSDB-8/manuscript.md) — the framework around the runners
+9. [OPSDB-9 — Infrastructure Taxonomy](https://github.com/ghowland/Old-School-Operations/blob/main/opsdb//OPSDB-9/manuscript.md) — the vocabulary that grounds all of it
 
 This order is intentional. The next sections explain why.
 
@@ -40,7 +40,7 @@ The order in this guide gives you the context first, then the architecture, then
 
 ## Stage 1 — What you get and what it is
 
-**Read [OPSDB-1](https://github.com/ghowland/papers/blob/main/papers/papers/INFRA/OPSDB-1/manuscript.md) first.**
+**Read [OPSDB-1](https://github.com/ghowland/Old-School-Operations/blob/main/opsdb//OPSDB-1/manuscript.md) first.**
 
 OPSDB-1 is the introduction to the architecture for a reader who has not encountered it before. It opens with §2 describing the operational state most organizations are currently in — fragmented tooling, scattered evidence, audit-as-quarterly-project, drift discovered during incidents — and frames the OpsDB as the architectural alternative to that state.
 
@@ -57,7 +57,7 @@ After OPSDB-1 you should be able to decide whether your organization would benef
 
 ## Stage 2 — The architectural commitments
 
-**Read [OPSDB-2](https://github.com/ghowland/papers/blob/main/papers/papers/INFRA/OPSDB-2/manuscript.md) second.**
+**Read [OPSDB-2](https://github.com/ghowland/Old-School-Operations/blob/main/opsdb//OPSDB-2/manuscript.md) second.**
 
 OPSDB-1 describes what the architecture produces. OPSDB-2 specifies what the architecture *is* — the design document. This is where the load-bearing commitments are made explicit and the reasoning behind each is stated.
 
@@ -75,7 +75,7 @@ After OPSDB-2 you understand the architecture's commitments and the reasoning be
 
 ## Stage 3 — How to build it
 
-**Read [OPSDB-3](https://github.com/ghowland/papers/blob/main/papers/papers/INFRA/OPSDB-3/manuscript.md) third.**
+**Read [OPSDB-3](https://github.com/ghowland/Old-School-Operations/blob/main/opsdb//OPSDB-3/manuscript.md) third.**
 
 OPSDB-3 specifies the implementation path. The architecture is large enough that attempting to build it all at once produces a multi-quarter project that delivers nothing usable until the end; OPSDB-3 specifies six phases that each deliver something operational and validate the team's understanding before moving on.
 
@@ -97,7 +97,7 @@ After OPSDB-3 you have a route. You know the order in which the architectural pi
 
 The detail papers specify the structural specifications behind each layer. Read them in this order, with the framing that you're filling in the details of a route you already understand.
 
-### [OPSDB-4 — An Example OpsDB Schema](https://github.com/ghowland/papers/blob/main/papers/papers/INFRA/OPSDB-4/manuscript.md)
+### [OPSDB-4 — An Example OpsDB Schema](https://github.com/ghowland/Old-School-Operations/blob/main/opsdb//OPSDB-4/manuscript.md)
 
 What the data looks like. ~150 entity types covering hardware, virtualization, Kubernetes, cloud resources, services, runners, schedules, policies, configuration, cached observation, authority pointers, documentation metadata, monitoring, evidence, change management, audit, and the schema's record of itself.
 
@@ -111,7 +111,7 @@ What you get from OPSDB-4:
 
 OPSDB-4 is one example. Your organization adapts it to your operational reality, adding domains you operate that aren't covered and trimming domains you don't operate. The structural patterns transfer; the specific entity types are your decision.
 
-### [OPSDB-5 — OpsDB Runner Design](https://github.com/ghowland/papers/blob/main/papers/papers/INFRA/OPSDB-5/manuscript.md)
+### [OPSDB-5 — OpsDB Runner Design](https://github.com/ghowland/Old-School-Operations/blob/main/opsdb//OPSDB-5/manuscript.md)
 
 The operational logic layer. The runner pattern in one sentence: get from the OpsDB, act in the world, set to the OpsDB.
 
@@ -127,7 +127,7 @@ What you get from OPSDB-5:
 
 After OPSDB-5 you understand the active layer that operates around the substrate.
 
-### [OPSDB-6 — OpsDB API Layer](https://github.com/ghowland/papers/blob/main/papers/papers/INFRA/OPSDB-6/manuscript.md)
+### [OPSDB-6 — OpsDB API Layer](https://github.com/ghowland/Old-School-Operations/blob/main/opsdb//OPSDB-6/manuscript.md)
 
 The governance gate. The API is the only path; every operation flows through the same enforcement sequence.
 
@@ -143,7 +143,7 @@ What you get from OPSDB-6:
 
 After OPSDB-6 you understand the gate where governance happens.
 
-### [OPSDB-7 — OpsDB Schema Construction](https://github.com/ghowland/papers/blob/main/papers/papers/INFRA/OPSDB-7/manuscript.md)
+### [OPSDB-7 — OpsDB Schema Construction](https://github.com/ghowland/Old-School-Operations/blob/main/opsdb//OPSDB-7/manuscript.md)
 
 How the schema itself is constructed and evolved. The schema is data — YAML files in a git repository — processed by a deterministic loader that produces both the relational database structure and the API's validation metadata from the same source.
 
@@ -158,7 +158,7 @@ What you get from OPSDB-7:
 
 After OPSDB-7 you understand how the long-lived schema artifact is governed, evolved, and kept synchronized with the operational substrate.
 
-### [OPSDB-8 — The OpsDB Shared Library Suite](https://github.com/ghowland/papers/blob/main/papers/papers/INFRA/OPSDB-8/manuscript.md)
+### [OPSDB-8 — The OpsDB Shared Library Suite](https://github.com/ghowland/Old-School-Operations/blob/main/opsdb//OPSDB-8/manuscript.md)
 
 The framework around the runners. OPSDB-5 promised that runners stay small because the libraries do the heavy lifting; OPSDB-8 specifies what the libraries are.
 
@@ -181,7 +181,7 @@ After OPSDB-8 you understand the framework that keeps the runner population cons
 
 ## Stage 5 — The taxonomy
 
-**Read [OPSDB-9](https://github.com/ghowland/papers/blob/main/papers/papers/INFRA/OPSDB-9/manuscript.md) last.**
+**Read [OPSDB-9](https://github.com/ghowland/Old-School-Operations/blob/main/opsdb//OPSDB-9/manuscript.md) last.**
 
 OPSDB-9 establishes the vocabulary the rest of the series uses. It separates three things commonly conflated: mechanisms (what does work), properties (what is claimed), and principles (what governs assembly).
 
@@ -236,5 +236,5 @@ The first read is for comprehension. Subsequent reads are for reference. The rea
 
 ## The starting point
 
-If you have not yet read any of the papers, your next click is [OPSDB-1 — The OpsDB: A Substrate for Coherent Operations](https://github.com/ghowland/papers/blob/main/papers/papers/INFRA/OPSDB-1/manuscript.md). That paper introduces the architecture from first principles for a reader who has not encountered it before. By the end of OPSDB-1 you'll know whether the rest of the series is worth your time. If it is, continue with OPSDB-2 and follow the order this guide specifies.
+If you have not yet read any of the papers, your next click is [OPSDB-1 — The OpsDB: A Substrate for Coherent Operations](https://github.com/ghowland/Old-School-Operations/blob/main/opsdb//OPSDB-1/manuscript.md). That paper introduces the architecture from first principles for a reader who has not encountered it before. By the end of OPSDB-1 you'll know whether the rest of the series is worth your time. If it is, continue with OPSDB-2 and follow the order this guide specifies.
 
