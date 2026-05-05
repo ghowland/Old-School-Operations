@@ -30,8 +30,6 @@ A reader who tries to start with OPSDB-9 (the taxonomy) gets a vocabulary lesson
 
 The order in this guide gives you the context first, then the architecture, then the path to building it, then the details, then the vocabulary that lets you talk about all of it abstractly.
 
-![Fig. 1: The five stages of the reading path - each layer builds on the prior, from context at the center to taxonomy at the outer ring.](./figures/reading_guide_01_five_stage_onion.png)
-
 ![Fig. 2: Paper dependency graph - which papers inform which, with stage colors marking the comprehension order.](./figures/reading_guide_02_dependency_dag.png)
 
 ---
