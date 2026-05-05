@@ -7,11 +7,11 @@
 
 ## Abstract
 
-The shared library suite is the framework that keeps OpsDB-coordinated runners small and consistent. INFRA-4 introduced the suite as a category and made the case that runners stay small because the libraries do the heavy lifting; this paper specifies what the libraries are, what contracts they expose, what the library/runner boundary looks like, and how the suite enforces policy at world-side action time. The suite is a contract specification, not an implementation; multiple implementations of the same library can coexist (different languages, different transports), but they expose the same contract that runners are written against.
+The shared library suite is the framework that keeps OpsDB-coordinated runners small and consistent. OPSDB-5 introduced the suite as a category and made the case that runners stay small because the libraries do the heavy lifting; this paper specifies what the libraries are, what contracts they expose, what the library/runner boundary looks like, and how the suite enforces policy at world-side action time. The suite is a contract specification, not an implementation; multiple implementations of the same library can coexist (different languages, different transports), but they expose the same contract that runners are written against.
 
 The paper specifies the contract for each library category: the OpsDB API client (the mandatory client every runner uses), world-side substrate libraries (Kubernetes operations, cloud operations, host operations, container/registry operations, secret backend access, identity provider operations, monitoring authority operations, authority pointer resolution), coordination and resilience libraries (retry, circuit breaker, hedger, bulkhead, failover routing), observation libraries (logging, metrics, tracing — mandatory and uniform across the runner population), notification libraries (email, chat, page, ticket creation), templating and rendering libraries (deliberately dumb), git and version-control libraries.
 
-The structural payoff is two-sided policy enforcement. The API gate (INFRA-5) enforces policy at OpsDB write time. The library suite enforces policy at world-side action time. Runner declarations — `runner_*_target` bridges, `runner_capability` rows, `runner_report_key` rows — are the input to both. A runner cannot, through any path, perform an action outside its declared scope: OpsDB writes are caught at the gate, world-side actions are caught at the library. The library suite is the operational realization of "one way to do each thing" applied to runner-world interaction.
+The structural payoff is two-sided policy enforcement. The API gate (OPSDB-6) enforces policy at OpsDB write time. The library suite enforces policy at world-side action time. Runner declarations — `runner_*_target` bridges, `runner_capability` rows, `runner_report_key` rows — are the input to both. A runner cannot, through any path, perform an action outside its declared scope: OpsDB writes are caught at the gate, world-side actions are caught at the library. The library suite is the operational realization of "one way to do each thing" applied to runner-world interaction.
 
 What this paper does not specify: implementation languages, specific function signatures, deployment topologies for the libraries themselves, or specific runner implementations that consume them.
 
@@ -21,9 +21,9 @@ What this paper does not specify: implementation languages, specific function si
 
 ### 1.1 What this paper completes
 
-INFRA-4 specified the runner pattern. Runners read from the OpsDB, act in the world through shared libraries, write results back. The paper enumerated the library categories at a high level and argued that runners stay small because the libraries do the heavy lifting. INFRA-4 §11.6 estimated the difference: a runner against the library suite is perhaps 200 lines; without it, perhaps 1500, with most of the additional lines being reinvented basics.
+OPSDB-5 specified the runner pattern. Runners read from the OpsDB, act in the world through shared libraries, write results back. The paper enumerated the library categories at a high level and argued that runners stay small because the libraries do the heavy lifting. OPSDB-5 §11.6 estimated the difference: a runner against the library suite is perhaps 200 lines; without it, perhaps 1500, with most of the additional lines being reinvented basics.
 
-What INFRA-4 did not specify: what the libraries actually are, what contracts they expose, how the library/runner boundary is drawn in practice, how the libraries themselves are governed and evolved, and what role they play in policy enforcement. These are the gaps INFRA-8 fills.
+What OPSDB-5 did not specify: what the libraries actually are, what contracts they expose, how the library/runner boundary is drawn in practice, how the libraries themselves are governed and evolved, and what role they play in policy enforcement. These are the gaps OPSDB-8 fills.
 
 The shared library suite is the framework that makes the runner pattern viable at scale. Without the suite, every runner reinvents basics inconsistently — the same fragmentation problem the OpsDB exists to solve, recurring at the runner layer. With the suite, runners differ only in their specific job; how they interact with the world is uniform. This paper specifies the suite.
 
@@ -33,7 +33,7 @@ The library suite is a contract specification, not an implementation. The contra
 
 A runner is written against a contract. The implementation it loads at deploy time is a packaging concern. The same runner code can run against different implementations of the same contract; the contract is the stable surface, the implementation is replaceable.
 
-This commitment is structural. INFRA-1's *minimize dependencies* principle applies: each library implementation is a dependency the runner takes, but the contract is the only dependency that's load-bearing. By specifying the contract precisely, the paper makes implementations interchangeable; by allowing multiple implementations, organizations can adopt the suite in their preferred language without forking the contract.
+This commitment is structural. OPSDB-9's *minimize dependencies* principle applies: each library implementation is a dependency the runner takes, but the contract is the only dependency that's load-bearing. By specifying the contract precisely, the paper makes implementations interchangeable; by allowing multiple implementations, organizations can adopt the suite in their preferred language without forking the contract.
 
 ![Fig. 6: The Cross-Implementation Contract — one language-neutral contract specification, one contract test suite as the gate, multiple language implementations (Python, Go, Rust), runners pin to versions and consume the canonical for their language.](./figures/infra8_06_cross_implementation_contract.png)
 
@@ -41,9 +41,9 @@ This commitment is structural. INFRA-1's *minimize dependencies* principle appli
 
 The library suite has two load-bearing structural roles. First, it keeps runners small by absorbing the world-side complexity that would otherwise live in every runner. Second, it enforces policy at world-side action time, making the runner's declared scope mechanical at the boundary where actions actually happen.
 
-The first role is what INFRA-4 promised. The second role is new structural ground in this paper. INFRA-5 §8 introduced runner report keys to gate the OpsDB write surface. INFRA-8 §13 introduces the equivalent at the library layer: the library suite consults the runner's declarations and refuses calls outside the declared scope. The two surfaces compose. A runner cannot, through any path, perform an action outside its declared scope. OpsDB writes are caught at the gate; world-side actions are caught at the library.
+The first role is what OPSDB-5 promised. The second role is new structural ground in this paper. OPSDB-6 §8 introduced runner report keys to gate the OpsDB write surface. OPSDB-8 §13 introduces the equivalent at the library layer: the library suite consults the runner's declarations and refuses calls outside the declared scope. The two surfaces compose. A runner cannot, through any path, perform an action outside its declared scope. OpsDB writes are caught at the gate; world-side actions are caught at the library.
 
-This two-sided enforcement is what makes "runner authority is data" (INFRA-4 §8.5) hold across every action a runner takes. Every authority is data, every check is mechanical, every failure is fail-closed.
+This two-sided enforcement is what makes "runner authority is data" (OPSDB-5 §8.5) hold across every action a runner takes. Every authority is data, every check is mechanical, every failure is fail-closed.
 
 ### 1.4 What this paper specifies
 
@@ -65,9 +65,9 @@ Section 2 covers conventions inherited from the prior series. Section 3 specifie
 
 This paper inherits the conventions established across the prior series. Brief recap.
 
-**DSNC.** All schema references use the Database Schema Naming Convention from INFRA-3. Singular table names. Lower case with underscores. Hierarchical prefixes from specific to general.
+**DSNC.** All schema references use the Database Schema Naming Convention from OPSDB-4. Singular table names. Lower case with underscores. Hierarchical prefixes from specific to general.
 
-**Mechanism vocabulary.** Mechanism, property, and principle terms come from INFRA-1's taxonomy.
+**Mechanism vocabulary.** Mechanism, property, and principle terms come from OPSDB-9's taxonomy.
 
 **Library naming.** Library categories follow a hierarchical naming pattern: `opsdb.api`, `opsdb.world.kubernetes`, `opsdb.world.cloud`, `opsdb.coordination.retry`, `opsdb.observation.logging`, etc. The `opsdb.` prefix marks the library as part of the suite. The second-level segment indicates the family (api, world, coordination, observation, notification, templating, git). The third-level segment indicates the specific library.
 
@@ -77,7 +77,7 @@ This paper inherits the conventions established across the prior series. Brief r
 
 **The 0/1/N rule applied to libraries.** Within an organization's runner population, there is one canonical library suite. Multiple language-specific implementations of the same contract are valid (the N case where structural reasons require it); two parallel suites for the same language are forbidden. The discipline of refusing fragmentation applies at the library layer as much as at the OpsDB layer.
 
-**Notation.** Library names appear in `code style`. Contract operations appear in `code style` on first reference. Mechanism terms from INFRA-1 appear in *bold-italic* on first reference within a section.
+**Notation.** Library names appear in `code style`. Contract operations appear in `code style` on first reference. Mechanism terms from OPSDB-9 appear in *bold-italic* on first reference within a section.
 
 ---
 
@@ -123,7 +123,7 @@ The categories that consistently meet the test:
 
 **World-side substrate access.** Calls to Kubernetes, to cloud control planes, to monitoring authorities, to identity providers, to secret backends, to hosts via SSH, to ticketing systems. Each has its own library wrapping the substrate's native client.
 
-**Resilience patterns.** Retry, backoff, jitter. Circuit breaker. Hedger. Bulkhead. Failover. These are mechanism patterns from INFRA-1's resilience family; each gets a library because each is needed by many runners.
+**Resilience patterns.** Retry, backoff, jitter. Circuit breaker. Hedger. Bulkhead. Failover. These are mechanism patterns from OPSDB-9's resilience family; each gets a library because each is needed by many runners.
 
 **Observation.** Structured logging, metrics emission, distributed tracing. Mandatory; every runner uses these. Inconsistent observation across the runner population is the failure mode the suite exists to prevent.
 
@@ -133,7 +133,7 @@ The categories that consistently meet the test:
 
 **Git operations.** Clone, commit, push, tag, PR creation. Used by GitOps integration runners and by schema-evolution tooling.
 
-![Fig. 4: Library Categories Mapped to Mechanism Families — each INFRA-8 library is the operational realization of one or more mechanism families from INFRA-1; the library taxonomy follows the mechanism taxonomy.](./figures/infra8_04_libraries_to_mechanisms.png)
+![Fig. 4: Library Categories Mapped to Mechanism Families — each OPSDB-8 library is the operational realization of one or more mechanism families from OPSDB-9; the library taxonomy follows the mechanism taxonomy.](./figures/infra8_04_libraries_to_mechanisms.png)
 
 ### 3.4 What stays in the runner
 
@@ -145,7 +145,7 @@ A PVC-repair runner has runner-specific logic for: querying the OpsDB for PVCs i
 
 The runner does not have logic for: how to authenticate to the OpsDB (library), how to authenticate to K8s (library), how to retry a failed K8s call (library), how to log structured output (library), how to construct change_sets if needed (library). All of those are mechanical and uniform across the runner population.
 
-The runner has, perhaps, 200 lines: 150 lines of PVC-repair-specific logic, 50 lines of glue invoking libraries. INFRA-4 §5.10's number is realistic.
+The runner has, perhaps, 200 lines: 150 lines of PVC-repair-specific logic, 50 lines of glue invoking libraries. OPSDB-5 §5.10's number is realistic.
 
 ### 3.5 The boundary changes over time
 
@@ -173,7 +173,7 @@ The most important library. Every runner uses it; no runner accesses the OpsDB a
 
 ### 4.1 The mandatory client
 
-The OpsDB API client (`opsdb.api`) is the only path through which runner code touches the OpsDB. Direct database access is forbidden for runners (per INFRA-2 §4.2). HTTP calls bypassing the client are forbidden by the discipline.
+The OpsDB API client (`opsdb.api`) is the only path through which runner code touches the OpsDB. Direct database access is forbidden for runners (per OPSDB-2 §4.2). HTTP calls bypassing the client are forbidden by the discipline.
 
 The client handles, on every call:
 
@@ -196,11 +196,11 @@ Read operations retrieve OpsDB data. Each returns a structured result with metad
 
 **`get_entity_history(entity_type, id, time_range)`.** Fetch the version chain for one entity. Returns the version sibling rows in order, each linked to the change_set_id that produced it.
 
-**`get_entity_at_time(entity_type, id, timestamp)`.** Reconstruct the field values active at the specified timestamp. Returns the row's state as it was at that time. Implemented via single lookup against the version sibling per INFRA-5 §5.1's full-state versioning.
+**`get_entity_at_time(entity_type, id, timestamp)`.** Reconstruct the field values active at the specified timestamp. Returns the row's state as it was at that time. Implemented via single lookup against the version sibling per OPSDB-6 §5.1's full-state versioning.
 
 **`search(query)`.** The discovery surface. Caller specifies entity types, filter predicates, named join paths, projection, ordering, pagination, freshness requirements, view mode. Returns structured results with pagination cursor, freshness summary, filtering disclosures.
 
-**`get_dependencies(starting_entity, relationship_pattern)`.** Walk the substrate. The library translates the named pattern (e.g., `megavisor_instance.parent_chain`, `service_connection`) to API search calls and returns the resolved chain. Used by runners making decommission-aware, failure-domain-aware, capacity-aware decisions per INFRA-4 §9.
+**`get_dependencies(starting_entity, relationship_pattern)`.** Walk the substrate. The library translates the named pattern (e.g., `megavisor_instance.parent_chain`, `service_connection`) to API search calls and returns the resolved chain. Used by runners making decommission-aware, failure-domain-aware, capacity-aware decisions per OPSDB-5 §9.
 
 **`resolve_authority_pointer(authority_pointer_id)`.** Given a pointer, returns the underlying authority's connection details, the locator within that authority, the last_verified_time, and any pointer metadata. The library does not fetch from the authority; it returns the coordinates the runner needs to do so via the appropriate world-side library.
 
@@ -208,9 +208,9 @@ Read operations retrieve OpsDB data. Each returns a structured result with metad
 
 ### 4.3 Write operations
 
-Write operations modify OpsDB data. Each goes through the API's gate (INFRA-5 §3.5's 10-step sequence); the library handles the request construction and response parsing.
+Write operations modify OpsDB data. Each goes through the API's gate (OPSDB-6 §3.5's 10-step sequence); the library handles the request construction and response parsing.
 
-**`write_observation(target_table, key, value, payload)`.** The direct-write path for observation. The library validates that the runner's report-key authorization (per INFRA-5 §8) covers the submitted key before sending the call; mismatches surface as `undeclared_report_key` errors locally without round-tripping to the API. This is library-side fail-fast.
+**`write_observation(target_table, key, value, payload)`.** The direct-write path for observation. The library validates that the runner's report-key authorization (per OPSDB-6 §8) covers the submitted key before sending the call; mismatches surface as `undeclared_report_key` errors locally without round-tripping to the API. This is library-side fail-fast.
 
 **`submit_change_set(field_changes, reason, metadata)`.** Submit a proposed transaction. The library handles the structured construction of `change_set_field_change` records, the inclusion of optimistic concurrency version stamps, the dry-run support, the routing of the response to either pending state or approved state. Returns the change_set_id for tracking.
 
@@ -230,13 +230,13 @@ Write operations modify OpsDB data. Each goes through the API's gate (INFRA-5 §
 
 For runners that need to react to changes rather than poll, the library exposes watch streams.
 
-**`watch(entity_type, filter, resume_token)`.** Subscribe to changes matching the filter. The library handles the stream connection, automatic reconnection with resume tokens, and delivery of events to the runner's callback. Reactor runners (INFRA-4 §4.5) use this; the library handles the stream mechanics.
+**`watch(entity_type, filter, resume_token)`.** Subscribe to changes matching the filter. The library handles the stream connection, automatic reconnection with resume tokens, and delivery of events to the runner's callback. Reactor runners (OPSDB-5 §4.5) use this; the library handles the stream mechanics.
 
-The library always delivers events level-triggered when the runner reconnects: on resumption, the library fetches the current state of all matching entities, then begins streaming changes from the resume_token. Pure edge-triggered subscriptions are not supported because they would let runners depend on event delivery without a level-triggered backstop, which violates INFRA-4 §7.2.
+The library always delivers events level-triggered when the runner reconnects: on resumption, the library fetches the current state of all matching entities, then begins streaming changes from the resume_token. Pure edge-triggered subscriptions are not supported because they would let runners depend on event delivery without a level-triggered backstop, which violates OPSDB-5 §7.2.
 
 ### 4.5 Stale-version retry handling
 
-The optimistic concurrency model from INFRA-5 §5.6 is exposed as library behavior. When a `submit_change_set` fails with `stale_version`, the library can either:
+The optimistic concurrency model from OPSDB-6 §5.6 is exposed as library behavior. When a `submit_change_set` fails with `stale_version`, the library can either:
 
 - Surface the error to the runner so the runner can fetch current state and reconcile
 - Automatically refetch the affected entities and retry, if the runner has explicitly opted in to auto-reconciliation for the change_set
@@ -254,18 +254,18 @@ The library handles correlation generation, propagation through retry, and inclu
 The library surfaces structured errors. Runners see:
 
 - `validation_failed(field, reason)` — schema or bound validation rejected the call
-- `authorization_denied(layer, policy_or_rule)` — one of INFRA-5 §6.2's five layers denied
+- `authorization_denied(layer, policy_or_rule)` — one of OPSDB-6 §6.2's five layers denied
 - `stale_version(entities)` — optimistic concurrency conflict
 - `not_found(entity_type, id)` — the targeted entity does not exist
 - `bound_exceeded(bound_name)` — query bounds, search bounds, or rate limits exceeded
 - `network_error(retry_class)` — transport-level failure with retry classification
 - `internal_error(detail)` — the API itself failed; rare and itself a finding
 
-Runners handle these errors using the runner-side patterns from INFRA-4 §3 — most errors result in the runner_job recording the failure and the next cycle picking up. The library does not hide errors; it surfaces them in a form the runner can act on.
+Runners handle these errors using the runner-side patterns from OPSDB-5 §3 — most errors result in the runner_job recording the failure and the next cycle picking up. The library does not hide errors; it surfaces them in a form the runner can act on.
 
 ### 4.8 Why this library is mandatory
 
-If runners could bypass the API client and reach the OpsDB another way, the disciplines INFRA-5 specifies would become advisory. Authentication might use different mechanisms in different runners; audit correlation might be inconsistent; stale-version handling might be reinvented each time, with subtle bugs. The mandatory library is what makes the API gate's claims hold across the runner population.
+If runners could bypass the API client and reach the OpsDB another way, the disciplines OPSDB-6 specifies would become advisory. Authentication might use different mechanisms in different runners; audit correlation might be inconsistent; stale-version handling might be reinvented each time, with subtle bugs. The mandatory library is what makes the API gate's claims hold across the runner population.
 
 The library is the runner-side enforcement of "the API is the only path." Runners cannot easily bypass it because there is no other path that's been built; the alternative paths are what would have to be built, and not building them is the discipline.
 
@@ -285,9 +285,9 @@ The `opsdb.world.kubernetes` library wraps the Kubernetes client. Operations:
 
 **`query_resources(cluster_id, namespace, selector)`.** List resources matching a label selector or name pattern.
 
-**`watch_resources(cluster_id, namespace, resource_type, callback)`.** Subscribe to resource events. Used by deploy watchers (INFRA-4 §10's Runner 4) and by event-triggered reactors. Like the OpsDB watch streams, the library delivers level-triggered events on reconnect and edge-triggered changes during connection.
+**`watch_resources(cluster_id, namespace, resource_type, callback)`.** Subscribe to resource events. Used by deploy watchers (OPSDB-5 §10's Runner 4) and by event-triggered reactors. Like the OpsDB watch streams, the library delivers level-triggered events on reconnect and edge-triggered changes during connection.
 
-**`helm_render(chart_reference, values)`.** Render a helm chart with given values; return the rendered manifest. Used by the helm git exporter (INFRA-4 §10's Runner 2).
+**`helm_render(chart_reference, values)`.** Render a helm chart with given values; return the rendered manifest. Used by the helm git exporter (OPSDB-5 §10's Runner 2).
 
 **`helm_install(cluster_id, namespace, chart_reference, values, release_name)`.** Install or upgrade a helm release. Subject to namespace target validation.
 
@@ -317,7 +317,7 @@ The `opsdb.world.cloud` library is provider-agnostic. It exposes operations that
 
 The library has provider-specific backends for AWS, GCP, Azure, and others as the organization integrates them. Each backend handles authentication via the provider's native mechanism (IAM roles, service accounts, managed identities) with credentials from the secret backend. The runner sees a uniform interface; the library translates to the provider's native API.
 
-Provider-specific resource payloads pass through as `cloud_data_json` per INFRA-3 §6.8. The library validates the payload shape against the registered JSON schema for the resource type before calling the provider.
+Provider-specific resource payloads pass through as `cloud_data_json` per OPSDB-4 §6.8. The library validates the payload shape against the registered JSON schema for the resource type before calling the provider.
 
 ### 5.3 Host operations
 
@@ -339,9 +339,9 @@ The `opsdb.world.registry` library handles operations against artifact registrie
 
 **`query_image_metadata(registry_id, image_reference)`.** Fetch image metadata: digest, layers, labels, signing information.
 
-**`list_tags(registry_id, repository)`.** List tags in a repository. Used by tag-tracking deployment runners (INFRA-4 §10's variation).
+**`list_tags(registry_id, repository)`.** List tags in a repository. Used by tag-tracking deployment runners (OPSDB-5 §10's variation).
 
-**`verify_signature(registry_id, image_reference, trust_policy)`.** Verify image signature against a trust policy. Used by image digest verifiers (INFRA-4 §10's Runner 5).
+**`verify_signature(registry_id, image_reference, trust_policy)`.** Verify image signature against a trust policy. Used by image digest verifiers (OPSDB-5 §10's Runner 5).
 
 The library authenticates to registries via credentials in the secret backend. Different registries (ECR, GCR, Docker Hub, internal Harbor, internal Artifactory) have different authentication patterns; the library hides them behind the uniform interface.
 
@@ -411,7 +411,7 @@ The substrate-per-library structure also matches the policy enforcement structur
 
 ## 6. Coordination and resilience libraries
 
-Patterns from INFRA-1's resilience family applied at the library layer. Each pattern gets a library because each is needed by many runners.
+Patterns from OPSDB-9's resilience family applied at the library layer. Each pattern gets a library because each is needed by many runners.
 
 ### 6.1 Retry, backoff, jitter
 
@@ -441,7 +441,7 @@ The `opsdb.coordination.hedger` library reduces tail latency by issuing redundan
 
 **`hedge_call(targets, operation, hedge_policy)`.** Issue the operation against multiple targets with staggered timing per the policy. Return the first successful response; cancel pending requests once a winner is determined.
 
-Used for read operations against authorities with high tail latency. A runner querying a Prometheus federation can hedge across replicas; the library returns the first response. Idempotency is required (per INFRA-1 §3.13's Hedger boundary); the library validates that the operation is marked idempotent before allowing hedge.
+Used for read operations against authorities with high tail latency. A runner querying a Prometheus federation can hedge across replicas; the library returns the first response. Idempotency is required (per OPSDB-9 §3.13's Hedger boundary); the library validates that the operation is marked idempotent before allowing hedge.
 
 ### 6.4 Bulkhead
 
@@ -469,7 +469,7 @@ By moving these patterns into libraries, the suite ensures consistent correctnes
 
 ## 7. Observation libraries
 
-Logging, metrics, tracing. Mandatory; every runner uses these. Inconsistent observation across the runner population is the failure mode INFRA-4 §5.10 warns about.
+Logging, metrics, tracing. Mandatory; every runner uses these. Inconsistent observation across the runner population is the failure mode OPSDB-5 §5.10 warns about.
 
 ### 7.1 Structured logging
 
@@ -527,13 +527,13 @@ The library handles trace shipping to the org's tracing backend (Jaeger, Tempo, 
 
 The library is mandatory because consistent observation is the precondition for operational visibility into the runner population. If different runners use different log formats, a query for "all log lines for runner X in the last hour" requires N parsing rules. If different runners emit metrics with different label conventions, dashboards cannot compose across the population. If different runners propagate trace context differently, traces break at runner boundaries.
 
-By making the library mandatory and uniform, the suite produces a runner population whose observation can be queried, aggregated, and correlated as a single dataset. This is "make state observable" (INFRA-1 §5.6) applied to the runners themselves.
+By making the library mandatory and uniform, the suite produces a runner population whose observation can be queried, aggregated, and correlated as a single dataset. This is "make state observable" (OPSDB-9 §5.6) applied to the runners themselves.
 
 ---
 
 ## 8. Notification libraries
 
-Used by runners that interact with humans. The library is what lets the API stay out of the notification business per INFRA-5 §10.
+Used by runners that interact with humans. The library is what lets the API stay out of the notification business per OPSDB-6 §10.
 
 ### 8.1 Channel abstraction
 
@@ -575,7 +575,7 @@ Some notification operations (paging) require additional authority because pages
 
 ### 8.5 Why notification is a runner concern, not API concern
 
-INFRA-5 §10 was explicit: the API does not communicate with stakeholders. The reasoning is that notification channels evolve over time (the org switches chat platforms, paging providers, email systems), and coupling the API to delivery infrastructure would force the API to evolve at the channel's cadence rather than at the schema's cadence.
+OPSDB-6 §10 was explicit: the API does not communicate with stakeholders. The reasoning is that notification channels evolve over time (the org switches chat platforms, paging providers, email systems), and coupling the API to delivery infrastructure would force the API to evolve at the channel's cadence rather than at the schema's cadence.
 
 By making notification a library concern, the suite contains the channel evolution. Channel changes are library updates; the API stays stable. The notification runner reads change_set state from the OpsDB and dispatches accordingly; if the org switches from Slack to Teams, the runner code is mostly unchanged, the library backend changes, the channel configuration in the OpsDB updates.
 
@@ -587,7 +587,7 @@ The templating libraries are deliberately dumb. Templates substitute concrete va
 
 ### 9.1 The discipline
 
-INFRA-4 §13's anti-pattern: "embedding logic in template variables." The discipline is enforced at the library layer: the templating libraries do not provide expression evaluation, conditional logic, loops, function calls, or any feature that would smuggle logic into templates.
+OPSDB-5 §13's anti-pattern: "embedding logic in template variables." The discipline is enforced at the library layer: the templating libraries do not provide expression evaluation, conditional logic, loops, function calls, or any feature that would smuggle logic into templates.
 
 What the libraries do provide: variable substitution, structural composition (one template including another), and deterministic rendering given inputs.
 
@@ -616,7 +616,7 @@ The template language does NOT support:
 - Function calls: no `{{ format_date(time) }}`
 - Embedded code: no `{% python ... %}` or equivalent
 
-If logic is needed beyond simple substitution, the logic happens upstream. A runner computes the formatted date, stores it as a configuration variable, and the template substitutes the variable. The discipline is consistent with INFRA-1 *configuration as data* — templates are data; logic is upstream.
+If logic is needed beyond simple substitution, the logic happens upstream. A runner computes the formatted date, stores it as a configuration variable, and the template substitutes the variable. The discipline is consistent with OPSDB-9 *configuration as data* — templates are data; logic is upstream.
 
 ### 9.4 Report rendering
 
@@ -638,7 +638,7 @@ By keeping templates dumb at the library layer, the suite refuses this drift. Lo
 
 ## 10. Git and version-control libraries
 
-Git is a substrate the OpsDB design uses in two places: as the schema repo (INFRA-6) and as the GitOps integration target (INFRA-4 §10). The library wraps git operations for runner consumption.
+Git is a substrate the OpsDB design uses in two places: as the schema repo (OPSDB-7) and as the GitOps integration target (OPSDB-5 §10). The library wraps git operations for runner consumption.
 
 ### 10.1 Operations
 
@@ -664,7 +664,7 @@ Authorization is dual: the runner's declared scope (which repos it can act on) i
 
 ### 10.3 The structured commit message
 
-When the helm git exporter (INFRA-4 §10's Runner 2) commits, the commit message is structured. The library provides a helper:
+When the helm git exporter (OPSDB-5 §10's Runner 2) commits, the commit message is structured. The library provides a helper:
 
 **`structured_commit_message(change_set_id, summary, references)`.** Produces a commit message including the change_set_id, the change_set's reason text, and references to the OpsDB entities affected. The structure makes the commit traceable back to the OpsDB-side intent.
 
@@ -690,7 +690,7 @@ Runners pin to a major version of each library they depend on. A runner pinned t
 
 ### 11.2 Deprecation cycles
 
-Breaking changes follow the duplication pattern from INFRA-6 §12.4 applied at the library layer:
+Breaking changes follow the duplication pattern from OPSDB-7 §12.4 applied at the library layer:
 
 1. The new version of the operation (or the replacement library) is introduced alongside the old.
 2. Both are supported for N release cycles (typically 3-5).
@@ -729,7 +729,7 @@ Some library changes touch OpsDB schema (adding a new operation that requires a 
 
 ### 11.6 The library_steward role
 
-A defined role parallel to the schema_steward (INFRA-2 §14.12). The library_steward reviews:
+A defined role parallel to the schema_steward (OPSDB-2 §14.12). The library_steward reviews:
 
 - New library proposals (does this need to be a library, or does it belong in a runner?)
 - Contract additions (are these operations the right shape?)
@@ -823,15 +823,15 @@ A runner that is much larger than 500 lines is either doing more than one thing 
 
 The structural payoff. The library suite enforces policy at world-side action time, mirroring the API gate's enforcement at OpsDB write time. Together they make the runner's declared scope mechanical at every action boundary.
 
-![Fig. 1: Two-Sided Policy Enforcement — runner declarations gate both OpsDB writes (API gate, INFRA-5) and world-side actions (library suite, INFRA-8); same input, two surfaces, comprehensive coverage.](./figures/infra8_01_two_sided_enforcement.png)
+![Fig. 1: Two-Sided Policy Enforcement — runner declarations gate both OpsDB writes (API gate, OPSDB-6) and world-side actions (library suite, OPSDB-8); same input, two surfaces, comprehensive coverage.](./figures/infra8_01_two_sided_enforcement.png)
 
 ### 13.1 The two surfaces
 
 Every action a runner takes is one of two kinds:
 
-**OpsDB writes.** Calls through the API client to write to the OpsDB. INFRA-5 §3.5's 10-step gate validates these. Runner report keys (INFRA-5 §8) gate the writable surface against `runner_report_key` declarations.
+**OpsDB writes.** Calls through the API client to write to the OpsDB. OPSDB-6 §3.5's 10-step gate validates these. Runner report keys (OPSDB-6 §8) gate the writable surface against `runner_report_key` declarations.
 
-**World-side actions.** Calls through world-side libraries to act on Kubernetes, cloud resources, hosts, secrets, registries, identity providers, monitoring authorities. Until INFRA-8, no specification described how these were gated.
+**World-side actions.** Calls through world-side libraries to act on Kubernetes, cloud resources, hosts, secrets, registries, identity providers, monitoring authorities. Until OPSDB-8, no specification described how these were gated.
 
 The library suite gates them. Each world-side library validates the runner's declared scope against the action's target before calling the substrate. Calls outside scope are rejected at the library layer, before the action reaches the world.
 
@@ -868,7 +868,7 @@ The runner sees the rejection as a structured error. It cannot bypass the check 
 
 ### 13.4 Why this is fail-closed
 
-The validation fails closed: if the library cannot determine whether the runner is authorized (e.g., the OpsDB is unreachable to refresh declarations), it refuses the call rather than allowing it. This is INFRA-1 §5.3 *fail closed* applied to the library layer.
+The validation fails closed: if the library cannot determine whether the runner is authorized (e.g., the OpsDB is unreachable to refresh declarations), it refuses the call rather than allowing it. This is OPSDB-9 §5.3 *fail closed* applied to the library layer.
 
 For runners that must operate during partition (reaching cached or templated data when the OpsDB is unreachable), the library uses its last-known-good cache of declarations. The cache is bounded in age — after some staleness threshold, the library begins refusing calls because the declarations can no longer be trusted. The staleness threshold is per-library and policy-driven; for security-sensitive operations (secret access, paging, cloud provisioning), the threshold is short; for benign operations, it can be longer.
 
@@ -876,7 +876,7 @@ For runners that must operate during partition (reaching cached or templated dat
 
 The two surfaces compose without overlap:
 
-- The API gate (INFRA-5 §3.5) enforces against OpsDB writes. Validation, authorization, change-management routing, audit.
+- The API gate (OPSDB-6 §3.5) enforces against OpsDB writes. Validation, authorization, change-management routing, audit.
 - The library suite enforces against world-side actions. Scope validation, channel authorization, command authorization.
 
 A runner cannot, through any path, perform an action outside its declared scope. OpsDB writes are caught at the gate; world-side actions are caught at the library. Both surfaces use the same input — the runner's declarations as OpsDB rows — and produce the same fail-closed result.
@@ -903,7 +903,7 @@ Library-layer rejections produce structured logs that can be queried alongside A
 
 When a denial is investigated, the answer is structured: which surface denied, which declaration was missing, which target was attempted. The investigator pivots from the denial to the runner_spec to the change_set that defined its declarations to the approver who authorized them.
 
-The full chain — from the world-side action attempted, through the library's check, through the OpsDB declaration, through the change_set that created the declaration, through the approver — is a queryable join. This is the audit trail INFRA-5 §11 promised, extended through the library layer to cover world-side actions.
+The full chain — from the world-side action attempted, through the library's check, through the OpsDB declaration, through the change_set that created the declaration, through the approver — is a queryable join. This is the audit trail OPSDB-6 §11 promised, extended through the library layer to cover world-side actions.
 
 ---
 
@@ -923,7 +923,7 @@ The runner's structure (its main loop, its event dispatching, its lifecycle) is 
 
 Coordination between runners happens through OpsDB rows, not through library-mediated calls. Runner A writes a row; runner B reads it on its next cycle. The library does not mediate runner-to-runner messaging.
 
-Adding workflow capabilities to the library would make the suite an orchestrator (which the OpsDB design refuses per INFRA-2 §4.1) by another path. Runners coordinate through shared data; the library serves the data; the data is the rendezvous.
+Adding workflow capabilities to the library would make the suite an orchestrator (which the OpsDB design refuses per OPSDB-2 §4.1) by another path. Runners coordinate through shared data; the library serves the data; the data is the rendezvous.
 
 ### 14.3 Not a code distribution system
 
@@ -933,7 +933,7 @@ Putting library distribution in the OpsDB would conflate code with data. The Ops
 
 ### 14.4 Not a secrets store
 
-The secret library accesses secret backends; it does not persist secret values. The boundary from INFRA-3 §13.8 applies recursively: the OpsDB doesn't hold secret values; the library doesn't either; the secret backend is the source of truth.
+The secret library accesses secret backends; it does not persist secret values. The boundary from OPSDB-4 §13.8 applies recursively: the OpsDB doesn't hold secret values; the library doesn't either; the secret backend is the source of truth.
 
 A runner that needs a secret fetches it through the library at use time. The library does not cache the value; it fetches fresh on each call (with library-internal connection caching to the backend, not value caching). The discipline keeps secret exposure bounded: secrets exist in memory only during the call; lost runner state cannot leak persisted secrets because the library doesn't persist them.
 
@@ -1031,7 +1031,7 @@ The library implementation discipline: semantic versioning, deprecation cycles p
 
 A runner population that is consistent in how it interacts with the world and with the OpsDB, while remaining diverse in the specific work each runner does. A library layer that absorbs world-side complexity so runners stay small. A policy enforcement surface that catches misconfigurations and compromises at world-side action time, fail-closed and observable. A trail that composes through both surfaces, queryable as one dataset.
 
-The trail is the structural realization. Every action a runner takes is gated against its declarations. Every gate has a record. Every record joins to the runner_spec, the change_set that defined the declaration, the approver who authorized it. The audit trail INFRA-5 promised at the OpsDB write surface extends through the library layer to cover world-side actions. The trail is complete.
+The trail is the structural realization. Every action a runner takes is gated against its declarations. Every gate has a record. Every record joins to the runner_spec, the change_set that defined the declaration, the approver who authorized it. The audit trail OPSDB-6 promised at the OpsDB write surface extends through the library layer to cover world-side actions. The trail is complete.
 
 ### 16.3 The structural claim
 
@@ -1039,7 +1039,7 @@ The library suite is the operational realization of "one way to do each thing" a
 
 The two-sided enforcement is what makes runner authority comprehensive. A runner cannot perform any action outside its declared scope: not by writing to the OpsDB (caught by the gate), not by acting on Kubernetes (caught by the K8s library), not by provisioning cloud resources (caught by the cloud library), not by sending notifications (caught by the notification library), not by accessing secrets (caught by the secret library). Every action is gated. Every check is data-driven. Every failure is fail-closed and observable.
 
-This is what completes the runner pattern. INFRA-4 specified what runners do; INFRA-5 specified how the OpsDB enforces governance on their writes; INFRA-6 specified how the schema is governed; INFRA-8 specifies how their world-side actions are framed and enforced. The runner population is now fully covered: small because of the libraries, consistent because of the contracts, governed because of the two-sided enforcement, observable because of the standard observation libraries.
+This is what completes the runner pattern. OPSDB-5 specified what runners do; OPSDB-6 specified how the OpsDB enforces governance on their writes; OPSDB-7 specified how the schema is governed; OPSDB-8 specifies how their world-side actions are framed and enforced. The runner population is now fully covered: small because of the libraries, consistent because of the contracts, governed because of the two-sided enforcement, observable because of the standard observation libraries.
 
 ### 16.4 What this paper asks of the organization
 
@@ -1049,14 +1049,14 @@ For organizations that bring this discipline, the suite delivers the operational
 
 ### 16.5 The series
 
-INFRA-1 established the taxonomy. INFRA-2 specified the OpsDB design. INFRA-3 demonstrated the schema. INFRA-4 specified the runners. INFRA-5 specified the API gate. INFRA-6 specified schema construction. OPSDB-1 introduced the design to new readers. INFRA-8 has now specified the shared library suite.
+OPSDB-9 established the taxonomy. OPSDB-2 specified the OpsDB design. OPSDB-4 demonstrated the schema. OPSDB-5 specified the runners. OPSDB-6 specified the API gate. OPSDB-7 specified schema construction. OPSDB-1 introduced the design to new readers. OPSDB-8 has now specified the shared library suite.
 
 The eight papers compose into a complete operational architecture. The schema is data; the API is data-driven; the runners are data-defined; the libraries are contract-specified and policy-enforcing; the policies are data; the audit log is data; the change_sets are data. Logic operates on the data and is itself replaceable; the data persists.
 
-Subsequent papers in the series can address particular operational domains in depth — specific runner archetypes for compliance regimes, specific bootstrap patterns for adopting OpsDB in existing operational realities, specific migration patterns from fragmented operations. The structural commitments specified across INFRA-1 through INFRA-8 are stable; extensions add detail without disturbing the structure.
+Subsequent papers in the series can address particular operational domains in depth — specific runner archetypes for compliance regimes, specific bootstrap patterns for adopting OpsDB in existing operational realities, specific migration patterns from fragmented operations. The structural commitments specified across OPSDB-9 through OPSDB-8 are stable; extensions add detail without disturbing the structure.
 
 The architecture is in place. The discipline produces it. The library suite is what makes the active layer's behavior consistent at every boundary.
 
 ---
 
-*End of HOWL-INFRA-8-2026.*
+*End of OPSDB-8.*

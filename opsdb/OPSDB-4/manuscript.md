@@ -7,25 +7,25 @@
 
 ## Abstract
 
-This paper specifies a relational schema demonstrating the OpsDB design from HOWL-INFRA-2-2026. The schema is comprehensive across the operational substrate: site and location, identity, hardware, virtualization (with nested megavisor instances spanning bare metal, virtual machines, containers, and pods), Kubernetes, cloud resources, services and packages, runners, schedules, policies, configuration, cached observation, authority pointers, documentation metadata, monitoring and alerting, evidence, change management, audit, and the schema's record of itself.
+This paper specifies a relational schema demonstrating the OpsDB design from OPSDB-2. The schema is comprehensive across the operational substrate: site and location, identity, hardware, virtualization (with nested megavisor instances spanning bare metal, virtual machines, containers, and pods), Kubernetes, cloud resources, services and packages, runners, schedules, policies, configuration, cached observation, authority pointers, documentation metadata, monitoring and alerting, evidence, change management, audit, and the schema's record of itself.
 
 The naming convention used throughout is the Database Schema Naming Convention, abbreviated DSNC. DSNC rules: all names are singular (`company_employee`, never `company_employees`); all names are lower_case_with_underscores; names are composed hierarchically with prefixes going from more specific to less specific (`web_site`, `web_site_widget`); foreign keys are named as `referenced_table_id` (`company_id` references `company.id`), with role prefixes when multiple FKs to the same table coexist (`vendor_company_id`, `service_company_id`); type suffixes are mandatory for time and date fields (`_time` for DATETIME, `_date` for DATE); booleans use tense prefixes (`is_active` for present, `was_activated` for past). Reserved fields appear on every table where applicable: `id`, `created_time`, `updated_time`, `parent_id` for self-hierarchy. Governance and admin metadata fields carry a leading underscore (`_requires_group`, `_audit_chain_hash`, `_retention_policy_id`) to keep them visually separated from the operational vocabulary the schema models. The benefits at scale: collisions are prevented by structural rules rather than memorized vocabulary; the schema is self-documenting; new domains slot into existing prefix trees without reorganization. DSNC has its own specification document; this paper applies the convention without re-specifying it.
 
-The schema is presented as relational tables with explicit foreign keys, type constraints, and reserved fields. Storage engine choice, API implementation, deployment patterns, and runner implementations are out of scope; INFRA-2 covered those design boundaries. This paper demonstrates that the OpsDB design produces a workable, comprehensive schema; it does not prescribe the canonical schema.
+The schema is presented as relational tables with explicit foreign keys, type constraints, and reserved fields. Storage engine choice, API implementation, deployment patterns, and runner implementations are out of scope; OPSDB-2 covered those design boundaries. This paper demonstrates that the OpsDB design produces a workable, comprehensive schema; it does not prescribe the canonical schema.
 
 ---
 
 ## 1. Introduction
 
-This paper specifies one example schema for an OpsDB. The OpsDB design specified in INFRA-2 commits to: a passive substrate accessed only through the API, comprehensive scope across all operational data the organization wants coordinated, a single source of truth for centrally-managed data and a directory of authority pointers for everything else, three consumer populations sharing the same data through scoped access, change management and versioning enforced at the API gate, and stable schema evolution that absorbs new domains additively over decades.
+This paper specifies one example schema for an OpsDB. The OpsDB design specified in OPSDB-2 commits to: a passive substrate accessed only through the API, comprehensive scope across all operational data the organization wants coordinated, a single source of truth for centrally-managed data and a directory of authority pointers for everything else, three consumer populations sharing the same data through scoped access, change management and versioning enforced at the API gate, and stable schema evolution that absorbs new domains additively over decades.
 
 The schema presented here demonstrates that those commitments produce a workable, coherent set of tables. The tables, fields, and relationships chosen are one valid set; an organization adopting the design will adapt the schema to its specific operational reality, adding domains the organization performs and removing domains it does not. The structural patterns — naming, versioning, change management, polymorphic targeting through bridge tables, typed payloads through `*_data_json` fields with `*_type` discriminators — transfer across schemas; the specific contents of any cell do not need to.
 
 The schema is relational. Foreign keys, type constraints, and reserved fields appear explicitly. The schema's structure is the design; how it is stored is an implementation choice. What this paper specifies is the structure.
 
-What this paper does not specify: storage engine, API technology, deployment topology, specific runner implementations, UI design, migration tooling, or specific compliance regime mappings (INFRA-2 covered the regime mapping at the design level; the schema serves all of them through the same data).
+What this paper does not specify: storage engine, API technology, deployment topology, specific runner implementations, UI design, migration tooling, or specific compliance regime mappings (OPSDB-2 covered the regime mapping at the design level; the schema serves all of them through the same data).
 
-The reader is assumed to have read INFRA-1 and INFRA-2. No other reading is assumed.
+The reader is assumed to have read OPSDB-9 and OPSDB-2. No other reading is assumed.
 
 ---
 
@@ -2523,11 +2523,11 @@ The discipline matters. Each boundary kept makes the OpsDB better at what it doe
 
 ## 22. Closing
 
-This paper has specified one example schema demonstrating the OpsDB design from INFRA-2. The schema covers the operational substrate comprehensively in DSNC form: hardware, virtualization with nested megavisor instances, K8s, cloud resources, services, runners, schedules, policies, configuration, cached observation, authority pointers, documentation metadata, monitoring, evidence, change management, audit, and schema metadata.
+This paper has specified one example schema demonstrating the OpsDB design from OPSDB-2. The schema covers the operational substrate comprehensively in DSNC form: hardware, virtualization with nested megavisor instances, K8s, cloud resources, services, runners, schedules, policies, configuration, cached observation, authority pointers, documentation metadata, monitoring, evidence, change management, audit, and schema metadata.
 
 The structural commitments hold. Data is the long-lived center; runners and the API are the logic that churns around it. Comprehensive scope spans all operational data the organization wants to coordinate, including domains like vendor contracts, manual operations, certificate inventory, and tape rotations that are normal operational requirements suited to OpsDB tracking. The schema absorbs new domains additively because DSNC prevents collision and the typed-payload pattern allows extensibility without table sprawl. The single-API gate and underscore-prefixed governance metadata keep the substrate's governance visible and uniform.
 
-The reader has now seen the design (INFRA-2) realized in one schema (INFRA-3). The schema is one example. Other schemas implementing the same design will differ in their specific tables and fields while preserving the structural patterns: DSNC naming, versioning siblings for change-managed entities, polymorphic relationships through bridge tables, typed payloads through `*_data_json` plus `*_type`, underscore-prefixed governance metadata, comprehensive top-level cuts, and the boundary discipline that keeps the OpsDB focused on operational data while pointing at authorities for everything else.
+The reader has now seen the design (OPSDB-2) realized in one schema (OPSDB-4). The schema is one example. Other schemas implementing the same design will differ in their specific tables and fields while preserving the structural patterns: DSNC naming, versioning siblings for change-managed entities, polymorphic relationships through bridge tables, typed payloads through `*_data_json` plus `*_type`, underscore-prefixed governance metadata, comprehensive top-level cuts, and the boundary discipline that keeps the OpsDB focused on operational data while pointing at authorities for everything else.
 
 ---
 
@@ -2744,4 +2744,4 @@ _schema_version, _schema_entity_type, _schema_field, _schema_relationship.
 
 ---
 
-*End of HOWL-INFRA-3-2026.*
+*End of OPSDB-4.*

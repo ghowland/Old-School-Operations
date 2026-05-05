@@ -469,28 +469,28 @@ NH7|orchestration|runners run on own schedules; OpsDB consulted not directing
 NH8|runtime dependency for live services|services keep running when OpsDB unreachable; OpsDB is coordination not data plane
 
 # boundaries(id|not_a|why|belongs_in|paper)
-BD1|Wiki|long-form prose not structured|wiki+notion; OpsDB holds pointers|INFRA-2
-BD2|Monitoring System|cant store full time-series; cant compete with prom/datadog primitives|prometheus+datadog; OpsDB holds cached subset|INFRA-2
-BD3|Code Repository|artifacts have own tooling|git+container-registries; OpsDB holds metadata|INFRA-2
-BD4|Binary Distribution|distribution has own systems|ci/cd+packaging; OpsDB knows runners deployed not how|INFRA-2
-BD5|Orchestrator|invoking runners violates passive commitment|runners' own scheduling; OpsDB consulted|INFRA-2
-BD6|Chat System|discussion+coordination not data|slack+teams; OpsDB holds pointers|INFRA-2
-BD7|Ticketing System|incidents+work-tracking have own systems|jira+linear; OpsDB references them|INFRA-2
-BD8|Secrets Manager|secrets need-to-know+audit-on-read+ephemeral; not OpsDB semantics|vault+equivalent; OpsDB holds path+version pointers|INFRA-2
-BD9|World SPOF|services fail if OpsDB runtime dependency; arch wrong if so|runners cache or templated; graceful degradation|INFRA-2
-BD10|API Orchestrator|API does not invoke runners; would compromise passive commitment|runners poll+react+coordinate through OpsDB rows|INFRA-5
-BD11|API Notification System|adding would couple to delivery infra evolving at different pace|notification runner reads state transitions+dispatches|INFRA-5
-BD12|API Change-Set Applier|adding would couple API to executor timing|change-set executor runner polls approved+applies via API write ops|INFRA-5
-BD13|API Workflow Engine|change_set lifecycle is the only workflow API enforces|other workflows coordinate through OpsDB rows|INFRA-5
-BD14|API Search Engine|structured filter+joins only; no full-text+semantic+vector|wiki+documentation systems with own query interfaces|INFRA-5
-BD15|API Dashboard System|serves reads dashboards consume; does not render UI|dashboard systems sit on top with own tooling|INFRA-5
-BD16|Library Runner Framework|library callable not controlling shell; framework owning runner main loop couples evolution|runner main loop+event dispatch+lifecycle stay runner's|INFRA-8
-BD17|Library Workflow Engine|library does not mediate runner-to-runner messaging; would be orchestrator|runners coordinate through OpsDB rows|INFRA-8
-BD18|Library Code Distribution|impls distributed via PyPI+container registries+language-native|standard package mechanisms|INFRA-8
-BD19|Library Secrets Store|secret library accesses backends; never persists values|secret backend is SoT|INFRA-8
-BD20|Library Service Mesh|library makes outbound calls; does not intercept other components' traffic|service-mesh products at network layer|INFRA-8
-BD21|Library UI|no UI in suite; runners observed via observation libs + dashboards|downstream concern consuming OpsDB|INFRA-8
-BD22|Library Database|OpsDB is the database; library state ephemeral or written to OpsDB|library uses OpsDB OR operates ephemerally|INFRA-8
+BD1|Wiki|long-form prose not structured|wiki+notion; OpsDB holds pointers|OPSDB-2
+BD2|Monitoring System|cant store full time-series; cant compete with prom/datadog primitives|prometheus+datadog; OpsDB holds cached subset|OPSDB-2
+BD3|Code Repository|artifacts have own tooling|git+container-registries; OpsDB holds metadata|OPSDB-2
+BD4|Binary Distribution|distribution has own systems|ci/cd+packaging; OpsDB knows runners deployed not how|OPSDB-2
+BD5|Orchestrator|invoking runners violates passive commitment|runners' own scheduling; OpsDB consulted|OPSDB-2
+BD6|Chat System|discussion+coordination not data|slack+teams; OpsDB holds pointers|OPSDB-2
+BD7|Ticketing System|incidents+work-tracking have own systems|jira+linear; OpsDB references them|OPSDB-2
+BD8|Secrets Manager|secrets need-to-know+audit-on-read+ephemeral; not OpsDB semantics|vault+equivalent; OpsDB holds path+version pointers|OPSDB-2
+BD9|World SPOF|services fail if OpsDB runtime dependency; arch wrong if so|runners cache or templated; graceful degradation|OPSDB-2
+BD10|API Orchestrator|API does not invoke runners; would compromise passive commitment|runners poll+react+coordinate through OpsDB rows|OPSDB-6
+BD11|API Notification System|adding would couple to delivery infra evolving at different pace|notification runner reads state transitions+dispatches|OPSDB-6
+BD12|API Change-Set Applier|adding would couple API to executor timing|change-set executor runner polls approved+applies via API write ops|OPSDB-6
+BD13|API Workflow Engine|change_set lifecycle is the only workflow API enforces|other workflows coordinate through OpsDB rows|OPSDB-6
+BD14|API Search Engine|structured filter+joins only; no full-text+semantic+vector|wiki+documentation systems with own query interfaces|OPSDB-6
+BD15|API Dashboard System|serves reads dashboards consume; does not render UI|dashboard systems sit on top with own tooling|OPSDB-6
+BD16|Library Runner Framework|library callable not controlling shell; framework owning runner main loop couples evolution|runner main loop+event dispatch+lifecycle stay runner's|OPSDB-8
+BD17|Library Workflow Engine|library does not mediate runner-to-runner messaging; would be orchestrator|runners coordinate through OpsDB rows|OPSDB-8
+BD18|Library Code Distribution|impls distributed via PyPI+container registries+language-native|standard package mechanisms|OPSDB-8
+BD19|Library Secrets Store|secret library accesses backends; never persists values|secret backend is SoT|OPSDB-8
+BD20|Library Service Mesh|library makes outbound calls; does not intercept other components' traffic|service-mesh products at network layer|OPSDB-8
+BD21|Library UI|no UI in suite; runners observed via observation libs + dashboards|downstream concern consuming OpsDB|OPSDB-8
+BD22|Library Database|OpsDB is the database; library state ephemeral or written to OpsDB|library uses OpsDB OR operates ephemerally|OPSDB-8
 
 # flows(id|name|trigger|path|terminal)
 OF1|Configuration|human/automation submits change set|API validates schema+policy → records pending → evaluates approval rules → notifies approvers → collects approvals → atomic commit when satisfied → runners read on next cycle|new config current; full trail queryable
@@ -1239,7 +1239,7 @@ IP9|Phase 6 has no end ceremony|"covers what matters and absorbs new things clea
 
 # phases(id|phase|decision|deliverable|validation)
 Ph1|Decide cardinality|1-OpsDB OR N-DOS-1-OpsDB OR N-DOS-N-OpsDB|documented decision+rationale citing structural reasons; for N: documented sync pipeline plan committed to N=2 bootstrap|schema steward+operational lead agree+can name structural reasons; rationale not "easier" or "might need eventually"
-Ph2|Determine baseline schema|how much of INFRA-3 to adopt+what to add+what to validate by hand-loading|adapted schema repo per INFRA-6; hand-loaded representative data covering 3+ domains; schema steward in role|representative subset of actual infrastructure expressible as data with no awkward fits
+Ph2|Determine baseline schema|how much of OPSDB-4 to adopt+what to add+what to validate by hand-loading|adapted schema repo per OPSDB-7; hand-loaded representative data covering 3+ domains; schema steward in role|representative subset of actual infrastructure expressible as data with no awkward fits
 Ph3|Build dev API and start ingesting data|start writing real data into substrate before substrate is operational|dev OpsDB with real data from 3+ sources; schema iterated to fit data; DSNC applied; list-of-N test applied|team can answer real ops questions by querying
 Ph4|Determine shared library core|minimum viable suite + what existing code becomes part of it|opsdb.api + opsdb.observation.logging; phase 3 scripts refactored; existing operational code inventoried+categorized|new ingestion script writable using only libraries; line counts small
 Ph5|Design and implement change management|what CM pipeline looks like+which entities go through it|working CM pipeline with org's actual approval rules+emergency path+auto-approval policies; runners registered with declared scopes; dev-to-operational transition completed|configuration change as change_set validates+routes for approval+approves+applies+records with full trail queryable
@@ -1269,7 +1269,7 @@ DSN5|cost|keystrokes
 DSN6|benefit|structural transparency; new tables fit pattern; readers learn pattern once apply across schema
 
 # dev_to_operational_transition(aspect|dev|operational)
-T1|API|minimal: authenticated reads+writes+structured errors only|full INFRA-5 with 10-step gate
+T1|API|minimal: authenticated reads+writes+structured errors only|full OPSDB-6 with 10-step gate
 T2|change management|none|for change_managed entities
 T3|authorization|rough role-based read/write|five-layer model
 T4|runner report keys|none|enforced
@@ -1768,77 +1768,77 @@ book|11|Evaluating Changes|W22-W23,W50-W52,WA5,WA11,WD6,WD7,WR1
 book|12|Algorithmic Properties|W36,WR3
 book|13|Know the Present|W37-W41,WR16
 book|14|Engineering Your Path|W19,W20,W44-W46,WR7
-INFRA-1|1|Introduction|VP1-VP4,VP7
-INFRA-1|2|Terminology|VP5,VP6,VP9,VP10,VP11
-INFRA-1|3|Mechanism Axis|F1-F13,M01-M64
-INFRA-1|4|Property Axis|B1-B4,P01-P21,OR1-OR4
-INFRA-1|5|Principle Axis|G1-G6,R01-R22,PC1-PC3
-INFRA-1|6|Triangle|TR1-TR5,family-property-coverage
-INFRA-1|7|Overlaps|DC1-DC3,SP1-SP3,MP1-MP2
-INFRA-1|E|Implementations|IMP01-IMP64
-INFRA-1|F|Gap Analysis|GAP01-GAP15
-INFRA-1|G|System Populations|POP01-POP18
-INFRA-1|H|Failure Modes|FM01-FM17
-INFRA-1|I|Confusions|CF01-CF16
-INFRA-1|J|Violations|VL01-VL22
-INFRA-1|K|Impossibility Triplets|IT1-IT9
-INFRA-1|L|Evolution|EV01-EV15
-INFRA-1|M|Fast-Locator|FL01-FL20
-INFRA-2|2|Terminology|AD1-AD7
-INFRA-2|3|Design Goals|AC3,AC8
-INFRA-2|4|Architectural Commitments|AC1-AC10
-INFRA-2|5|Cardinality Rule|CR1-CR12,N1-N6,NP1-NP9
-INFRA-2|6|Content Scope|CT1-CT12,NH1-NH8
-INFRA-2|7|Three Populations|Pop1-Pop3
-INFRA-2|13|What Does Not Belong|BD1-BD9
-INFRA-2|14|Construction Discipline|OC1-OC5,OD1-OD6
-INFRA-3|1-20|Schema|SC1-SC16,SR1-SR10,SG1-SG9,SP_1-SP_10,TC1-TC17,SE1-SE138,SD1-SD12,VC1-VC4
-INFRA-4|1|Introduction|RP1-RP14
-INFRA-4|3|Lifecycle|LP1-LP7
-INFRA-4|4|Runner Kinds|RK1-RK10
-INFRA-4|7|Three Disciplines|RD1-RD3
-INFRA-4|8|Gating|RG1-RG3,GT1-GT5
-INFRA-4|9|Stack-Walking|RW1-RW5
-INFRA-4|10|GitOps|RC1-RC6,GD1-GD4
-INFRA-4|13|Anti-Patterns|RA1-RA11
-INFRA-5|1|Introduction|AP1-AP13
-INFRA-5|3|API Surface|AO1-AO16,AG1-AG10
-INFRA-5|4|Search|filter+joins+projection+pagination+freshness
-INFRA-5|5|Versioning|change_set_field_change-stamps,CON1-CON4
-INFRA-5|6|Auth|AL1-AL5,AD1-AD4
-INFRA-5|7|Change Management|LC1-LC11,SRT1-SRT6,VP_1-VP_6,AA1-AA4,EM1-EM7,BU1-BU6
-INFRA-5|8|Runner Report Keys|RKS1-RKS3,RKF1-RKF5,RKV1-RKV5
-INFRA-5|9|Audit|AU1-AU8,AUF1-AUF8,TE1-TE5
-INFRA-5|10|Boundaries|BD10-BD15
-INFRA-6|1|Introduction|SCP1-SCP11
-INFRA-6|3|Repository Layout|directory.yaml+per-domain-dirs
-INFRA-6|6|Vocabulary|SV_T1-SV_T10,SV_M1-SV_M3,SV_C1-SV_C6
-INFRA-6|7|Forbidden|SF1-SF8
-INFRA-6|8|Cross-Field|CFS1-CFS4
-INFRA-6|9|JSON Payload|JV1-JV4
-INFRA-6|10|Bootstrap|MB1-MB7
-INFRA-6|12|Evolution|SX_A1-SX_A7,SX_F1-SX_F8,ST_1-ST_6
+OPSDB-9|1|Introduction|VP1-VP4,VP7
+OPSDB-9|2|Terminology|VP5,VP6,VP9,VP10,VP11
+OPSDB-9|3|Mechanism Axis|F1-F13,M01-M64
+OPSDB-9|4|Property Axis|B1-B4,P01-P21,OR1-OR4
+OPSDB-9|5|Principle Axis|G1-G6,R01-R22,PC1-PC3
+OPSDB-9|6|Triangle|TR1-TR5,family-property-coverage
+OPSDB-9|7|Overlaps|DC1-DC3,SP1-SP3,MP1-MP2
+OPSDB-9|E|Implementations|IMP01-IMP64
+OPSDB-9|F|Gap Analysis|GAP01-GAP15
+OPSDB-9|G|System Populations|POP01-POP18
+OPSDB-9|H|Failure Modes|FM01-FM17
+OPSDB-9|I|Confusions|CF01-CF16
+OPSDB-9|J|Violations|VL01-VL22
+OPSDB-9|K|Impossibility Triplets|IT1-IT9
+OPSDB-9|L|Evolution|EV01-EV15
+OPSDB-9|M|Fast-Locator|FL01-FL20
+OPSDB-2|2|Terminology|AD1-AD7
+OPSDB-2|3|Design Goals|AC3,AC8
+OPSDB-2|4|Architectural Commitments|AC1-AC10
+OPSDB-2|5|Cardinality Rule|CR1-CR12,N1-N6,NP1-NP9
+OPSDB-2|6|Content Scope|CT1-CT12,NH1-NH8
+OPSDB-2|7|Three Populations|Pop1-Pop3
+OPSDB-2|13|What Does Not Belong|BD1-BD9
+OPSDB-2|14|Construction Discipline|OC1-OC5,OD1-OD6
+OPSDB-4|1-20|Schema|SC1-SC16,SR1-SR10,SG1-SG9,SP_1-SP_10,TC1-TC17,SE1-SE138,SD1-SD12,VC1-VC4
+OPSDB-5|1|Introduction|RP1-RP14
+OPSDB-5|3|Lifecycle|LP1-LP7
+OPSDB-5|4|Runner Kinds|RK1-RK10
+OPSDB-5|7|Three Disciplines|RD1-RD3
+OPSDB-5|8|Gating|RG1-RG3,GT1-GT5
+OPSDB-5|9|Stack-Walking|RW1-RW5
+OPSDB-5|10|GitOps|RC1-RC6,GD1-GD4
+OPSDB-5|13|Anti-Patterns|RA1-RA11
+OPSDB-6|1|Introduction|AP1-AP13
+OPSDB-6|3|API Surface|AO1-AO16,AG1-AG10
+OPSDB-6|4|Search|filter+joins+projection+pagination+freshness
+OPSDB-6|5|Versioning|change_set_field_change-stamps,CON1-CON4
+OPSDB-6|6|Auth|AL1-AL5,AD1-AD4
+OPSDB-6|7|Change Management|LC1-LC11,SRT1-SRT6,VP_1-VP_6,AA1-AA4,EM1-EM7,BU1-BU6
+OPSDB-6|8|Runner Report Keys|RKS1-RKS3,RKF1-RKF5,RKV1-RKV5
+OPSDB-6|9|Audit|AU1-AU8,AUF1-AUF8,TE1-TE5
+OPSDB-6|10|Boundaries|BD10-BD15
+OPSDB-7|1|Introduction|SCP1-SCP11
+OPSDB-7|3|Repository Layout|directory.yaml+per-domain-dirs
+OPSDB-7|6|Vocabulary|SV_T1-SV_T10,SV_M1-SV_M3,SV_C1-SV_C6
+OPSDB-7|7|Forbidden|SF1-SF8
+OPSDB-7|8|Cross-Field|CFS1-CFS4
+OPSDB-7|9|JSON Payload|JV1-JV4
+OPSDB-7|10|Bootstrap|MB1-MB7
+OPSDB-7|12|Evolution|SX_A1-SX_A7,SX_F1-SX_F8,ST_1-ST_6
 OPSDB-1|2|Starting Point|fragmentation-pattern
 OPSDB-1|3|What OpsDB Is|AD1-AD7
 OPSDB-1|4|What You Get|IC1-IC10,CB1-CB8
 OPSDB-1|5|Workflows|WF1-WF8,UC1-UC4
 OPSDB-1|6|Commitments|AC1-AC10,OC1-OC5,OD1-OD6
-INFRA-8|1|Introduction|LL_P1-LL_P14
-INFRA-8|3|What Library Is|LF1-LF7
-INFRA-8|4|API Client|LL1,LA1-LA16
-INFRA-8|5|World-Side|LL2-LL9
-INFRA-8|6|Coordination|LL10-LL14,COP1-COP5
-INFRA-8|7|Observation|LL15-LL17,OL1-OL3
-INFRA-8|8|Notification|LL18
-INFRA-8|9|Templating|LL19-LL21,LT1-LT6
-INFRA-8|10|Git|LL22
-INFRA-8|11|Versioning|LV1-LV8
-INFRA-8|13|Two-Sided Enforcement|TS1-TS5,PV1-PV7,FC1-FC4
-INFRA-8|14|Refusals|BD16-BD22
-INFRA-9|1|Introduction|IP1-IP9
-INFRA-9|3-8|Phases|Ph1-Ph6,NB1-NB5,DSF1-DSF6,DSN1-DSN6
-INFRA-9|9|Roles|Ro1-Ro5
-INFRA-9|10|Transition|T1-T6,TS_1-TS_4,TD1-TD5
+OPSDB-8|1|Introduction|LL_P1-LL_P14
+OPSDB-8|3|What Library Is|LF1-LF7
+OPSDB-8|4|API Client|LL1,LA1-LA16
+OPSDB-8|5|World-Side|LL2-LL9
+OPSDB-8|6|Coordination|LL10-LL14,COP1-COP5
+OPSDB-8|7|Observation|LL15-LL17,OL1-OL3
+OPSDB-8|8|Notification|LL18
+OPSDB-8|9|Templating|LL19-LL21,LT1-LT6
+OPSDB-8|10|Git|LL22
+OPSDB-8|11|Versioning|LV1-LV8
+OPSDB-8|13|Two-Sided Enforcement|TS1-TS5,PV1-PV7,FC1-FC4
+OPSDB-8|14|Refusals|BD16-BD22
+OPSDB-3|1|Introduction|IP1-IP9
+OPSDB-3|3-8|Phases|Ph1-Ph6,NB1-NB5,DSF1-DSF6,DSN1-DSN6
+OPSDB-3|9|Roles|Ro1-Ro5
+OPSDB-3|10|Transition|T1-T6,TS_1-TS_4,TD1-TD5
 
 # === DECODE LEGEND ===
 

@@ -24,17 +24,17 @@ PS5|sequential|phases 1-6 not parallel; numbering is order
 
 # phases(id|phase|decision|deliverable|validation)
 P1|Decide cardinality|1-OpsDB OR N-DOS-1-OpsDB OR N-DOS-N-OpsDB|documented decision+rationale citing structural reasons; for N: documented sync pipeline plan committed to N=2 bootstrap|schema steward+operational lead agree on cardinality+can name structural reasons; rationale not "easier" or "might need eventually"
-P2|Determine baseline schema|how much of INFRA-3 to adopt+what to add+what to validate by hand-loading|adapted schema repo per INFRA-6; hand-loaded representative data covering 3+ domains; schema steward identified+in role; for N: deploys cleanly to 2 test substrates|representative subset of actual infrastructure expressible as data with no awkward fits; relationships connect+typed payloads accommodate real types+substrate walks resolve+operational scenarios modelable
+P2|Determine baseline schema|how much of OPSDB-4 to adopt+what to add+what to validate by hand-loading|adapted schema repo per OPSDB-7; hand-loaded representative data covering 3+ domains; schema steward identified+in role; for N: deploys cleanly to 2 test substrates|representative subset of actual infrastructure expressible as data with no awkward fits; relationships connect+typed payloads accommodate real types+substrate walks resolve+operational scenarios modelable
 P3|Build dev API and start ingesting data|start writing real data into substrate before substrate is operational|dev OpsDB with real data from 3+ sources; schema iterated to fit data; DSNC applied throughout; list-of-N test applied; team can answer real operational questions|team can answer real ops questions by querying ("show me every running EC2 in production" works); schema covers what matters; data well-shaped; flatten/break-out decisions correct
-P4|Determine shared library core|minimum viable suite + what existing code becomes part of it|opsdb.api implementing INFRA-8 §4 + opsdb.observation.logging implementing INFRA-8 §7.1; phase 3 scripts refactored to use both; existing operational code inventoried+categorized|new ingestion script writable using only libraries (no ad-hoc HTTP+no unstructured logging); runner-pattern shape from INFRA-4 §2 emerging; line counts small because libraries do heavy lifting
+P4|Determine shared library core|minimum viable suite + what existing code becomes part of it|opsdb.api implementing OPSDB-8 §4 + opsdb.observation.logging implementing OPSDB-8 §7.1; phase 3 scripts refactored to use both; existing operational code inventoried+categorized|new ingestion script writable using only libraries (no ad-hoc HTTP+no unstructured logging); runner-pattern shape from OPSDB-5 §2 emerging; line counts small because libraries do heavy lifting
 P5|Design and implement change management|what CM pipeline looks like+which entities go through it|working CM pipeline with org's actual approval rules+emergency path+auto-approval policies; runners registered with declared scopes; dev-to-operational transition completed|configuration change as change_set validates+routes for approval+approves+applies+records with full trail queryable end-to-end; runners' declared scopes enforced
 P6|Add operational logic beyond OpsDB management|which operational domain to address first then which after|first operational runner in production addressing real domain; producing queryable trail; library suite grown to include world-side libraries runner needed; pattern for adding subsequent runners|OpsDB delivers operational benefit beyond own maintenance; real ops task previously requiring scattered tooling now runs through OpsDB-coordinated pattern; queryable trail composes for humans+automation+auditors
 # rule: phase 6 doesn't end; steady state; new runners added as new domains coordinated; schema grows additively; library suite accretes patterns
 
 # cardinality(id|configuration|when|notes)
-C1|1 DOS 1 OpsDB|simplest case; one operational domain one substrate|most orgs under structural-unity threshold from INFRA-2 §5.3
+C1|1 DOS 1 OpsDB|simplest case; one operational domain one substrate|most orgs under structural-unity threshold from OPSDB-2 §5.3
 C2|N DOS 1 OpsDB|several operational domains share one substrate|production+corporate-infra+employee-fleet may each be DOS but share OpsDB scoped by site rows; data partitioned; substrate+API+runners+schema+libs unified
-C3|N DOS N OpsDB|substrate-level separation per INFRA-2 §5.4|security perimeters where API access control structurally insufficient+legal/regulatory residency+independently-operating units+air-gap
+C3|N DOS N OpsDB|substrate-level separation per OPSDB-2 §5.4|security perimeters where API access control structurally insufficient+legal/regulatory residency+independently-operating units+air-gap
 
 # cardinality_invalid(id|reason|why_invalid)
 CI1|technical fragility|"protect prod from corp tooling experiments"; signs of bad ops not structural
@@ -55,23 +55,23 @@ NP1|schema repo|shared|one repo deployed to N OpsDBs
 NP2|library suite contracts and impls|shared|one set consumed by N runner populations
 NP3|API code|shared|one codebase deployed N times
 NP4|change-mgmt discipline|shared|same rules applied at each substrate evaluated against that substrate's data
-NP5|data each substrate holds|diverged|each substrate is own write authority per INFRA-2 §5.8
+NP5|data each substrate holds|diverged|each substrate is own write authority per OPSDB-2 §5.8
 NP6|users authorized at each|diverged|per substrate
 NP7|audit log of each|diverged|per substrate independent
 NP8|runners deployed against each|diverged|per substrate
 NP9|cross-OpsDB writes|not supported|coordination through external means: human filing change_sets at each OR runner with creds at multiple substrates
 
 # schema_baseline(id|sub_decision|guidance)
-S1|how much of INFRA-3 to adopt|trim only what you are certain you don't need; trim K8s if not running K8s; trim hardware if cloud-only; declarations carry no operational cost when no rows
-S2|what to add for domains INFRA-3 doesn't cover|regulated medical+financial+manufacturing+other domains; comprehensive-thinking-aggregate-building from INFRA-2 §14.1; DSNC+closed vocabulary+typed payloads+polymorphic bridges+versioning siblings transfer; specific entity types are org's decision
+S1|how much of OPSDB-4 to adopt|trim only what you are certain you don't need; trim K8s if not running K8s; trim hardware if cloud-only; declarations carry no operational cost when no rows
+S2|what to add for domains OPSDB-4 doesn't cover|regulated medical+financial+manufacturing+other domains; comprehensive-thinking-aggregate-building from OPSDB-2 §14.1; DSNC+closed vocabulary+typed payloads+polymorphic bridges+versioning siblings transfer; specific entity types are org's decision
 S3|what to validate by hand-loading|cheapest validation move; phase 2 must not skip
 S4|honest scope enumeration|which domains coordinated? server+cloud+K8s+SaaS+tape+vendors+certs+on-call+compliance+manual ops+office access; each is candidate
 S5|err-direction bias|include rather than exclude when uncertain; schema cheap to set up early before data; adding rows to unanticipated domain later more expensive
 
 # hand_loading(id|question|surfaces)
 HL1|Does schema describe actual infrastructure?|sample EC2+pod+service+on-call+cert as rows; fields right? missing? present-but-unused?
-HL2|Are FK relationships right?|EC2→megavisor_instance→hardware/cloud account; service→service_connection→dependencies; substrate-walking queries from INFRA-4 §9 produce expected results
-HL3|Are typed payloads accommodating real types?|INFRA-3 §6.8 lists common cloud_resource_type values; org's actual usage may need new discriminator+JSON schemas for cloud_data_json
+HL2|Are FK relationships right?|EC2→megavisor_instance→hardware/cloud account; service→service_connection→dependencies; substrate-walking queries from OPSDB-5 §9 produce expected results
+HL3|Are typed payloads accommodating real types?|OPSDB-4 §6.8 lists common cloud_resource_type values; org's actual usage may need new discriminator+JSON schemas for cloud_data_json
 HL4|Do relationships compose under realistic queries?|service+packages+hosts+on-call+dependencies+monitors+runbooks; run incident-investigator queries; joins resolve? data model answers ops questions?
 # rule: awkward fits = schema needs revision before code written against it; revising at phase 2 cheap; revising after phases 3-5 expensive
 
@@ -91,13 +91,13 @@ DA_D|audit log infrastructure beyond simple request logging|deferred to phase 5
 # ingestion(aspect|content)
 IN1|by phase 3|team has schema+minimal API
 IN2|work|take org's current operational data sources (cloud control planes+K8s+monitoring+vault+IdP+anything producing operational data) and write to dev OpsDB
-IN3|puller pattern from INFRA-4 §4.1 in earliest form|without runner discipline
+IN3|puller pattern from OPSDB-5 §4.1 in earliest form|without runner discipline
 IN4|scripts not runners|no runner_spec rows yet+no runner_machine deployment+no runner_schedule+just scripts on dev machines reading from authorities writing to dev OpsDB
 IN5|scrappy by design|demonstrate schema can hold data; do not yet demonstrate runner pattern end-to-end (phase 5)
 
 # dsnc_flattening(id|rule|example)
 D1|flatten when nested data is per-row metadata of parent|EC2 instance_type+ami_id+vpc_id+subnet_id go in cloud_data_json as flat fields under ec2_instance discriminator; instance is one row; metadata part of that row
-D2|break out when nested data has independent lifecycle OR identity OR appears in lists of N|security group memberships are many-to-many; each membership has identity+lifecycle (added/removed)+typically multiple per instance; bridge table per INFRA-3 §2.5
+D2|break out when nested data has independent lifecycle OR identity OR appears in lists of N|security group memberships are many-to-many; each membership has identity+lifecycle (added/removed)+typically multiple per instance; bridge table per OPSDB-4 §2.5
 D3|list-of-N test|when source has list of N items flattening to prefix_data_list_0_value+prefix_data_list_1_value+... is wrong; loses listness; N variable; indices positional not meaningful
 D4|naive flattening failure mode|EC2 with N attached EBS volumes flattened to ec2_data_volumes_0_id+ec2_data_volumes_1_id+team adds new fields each time encountering more attached volumes than schema supports
 D5|correct shape|cloud_resource_attached_volume bridge table OR recognize EBS volumes are themselves cloud resources and relationship is cloud_resource_to_cloud_resource typed
@@ -123,14 +123,14 @@ SQ6|why phase 3 iterative+validation-gated not time-gated|team stays in phase 3 
 SQ7|iteration cheap at phase 3|no governance pipeline; team edits files+runs loader+continues; after phase 5 schema changes go through schema executor (heavier process)
 
 # library_core(id|library|role)
-LC1|opsdb.api|foundational; every subsequent runner uses it; no runner accesses OpsDB any other way; INFRA-8 §4 specifies contract
-LC2|opsdb.observation.logging|second foundation; INFRA-8 §7.1 specifies contract; uniform observation surface
+LC1|opsdb.api|foundational; every subsequent runner uses it; no runner accesses OpsDB any other way; OPSDB-8 §4 specifies contract
+LC2|opsdb.observation.logging|second foundation; OPSDB-8 §7.1 specifies contract; uniform observation surface
 # rule: two libraries are floor; other libraries (K8s+cloud+retry+notification+templating+git) added in phase 6 as runner population needs
 # validation move: refactor phase 3 scripts to use libraries; if contracts make scripts harder to write than ad-hoc HTTP they replaced contracts are wrong; iterate until ingestion code smaller and clearer
-# rule: major contract revisions during phase 4 appropriate; after phase 6 begins library contracts evolve through INFRA-8 §11.2 deprecation discipline
+# rule: major contract revisions during phase 4 appropriate; after phase 6 begins library contracts evolve through OPSDB-8 §11.2 deprecation discipline
 
 # existing_code(category|becomes|rationale)
-EC_C1|world-side I/O code|shared library implementations|existing code doing K8s API calls+cloud API calls+SSH+vault reads mostly reusable as impl backing INFRA-8 contracts; refactor to wrap in contract surface
+EC_C1|world-side I/O code|shared library implementations|existing code doing K8s API calls+cloud API calls+SSH+vault reads mostly reusable as impl backing OPSDB-8 contracts; refactor to wrap in contract surface
 EC_C2|decision-making code|runner code (in phase 6)|existing code deciding which PVCs to repair+which alerts to escalate+which configs to apply is runner-specific logic; stays runner-specific; phase 6 refactors to use libraries while retaining decisions
 EC_C3|code duplicating OpsDB design|thrown out|custom inventories+ad-hoc state stores+scripts maintaining own caches of operational reality compete with OpsDB; retire as OpsDB takes over function
 # rule: phase 4 inventories existing operational code and labels each piece by category; library candidates refactored phases 4+6; runner candidates wait phase 6; retirement candidates documented for later
@@ -138,8 +138,8 @@ EC_C3|code duplicating OpsDB design|thrown out|custom inventories+ad-hoc state s
 # cm_split(entity_class|gating|rationale)
 CM1|expresses intent|change-managed|configuration changes+schedule changes+runner registration+policy changes+metadata changes+schema changes+access control changes
 CM2|records observation|not change-managed|cached observation writes by pullers+runner result writes+audit log entries (created automatically by API)
-# rule: phase 5 walks every entity type and labels as change_managed|observation_only|append_only|computed per INFRA-3 Appendix D
-# rule: most labels match INFRA-3 defaults; some adjust based on org's specifics (compliance demanding approval trails for entity team thought was observation-only OR nothing changes entity except pullers so entity team thought needed governance is actually observation-only)
+# rule: phase 5 walks every entity type and labels as change_managed|observation_only|append_only|computed per OPSDB-4 Appendix D
+# rule: most labels match OPSDB-4 defaults; some adjust based on org's specifics (compliance demanding approval trails for entity team thought was observation-only OR nothing changes entity except pullers so entity team thought needed governance is actually observation-only)
 
 # approval_rules(id|pattern|content)
 AR1|service owners approve changes to their services|change_set touching service routes to role owning that service
@@ -151,7 +151,7 @@ AR5|production operations approves production runtime changes|entities in produc
 
 # emergency_path(aspect|content)
 EM1|who has break-glass right|on-call engineers with elevated rights OR designated emergency response roles
-EM2|post-hoc review cadence|INFRA-5 §7.9 suggests 72 hours; configurable per org
+EM2|post-hoc review cadence|OPSDB-6 §7.9 suggests 72 hours; configurable per org
 EM3|who reviews after fact|schema steward OR security team OR designated incident review role
 EM4|rare use is correct|emergencies real; discipline ensures path not abused
 
@@ -165,21 +165,21 @@ AA4|cached observation writes|no change_set; use write_observation directly
 # runner_enumeration(aspect|content)
 RE1|by phase 5|team has at least few pieces of code that look like runners (phase 3 ingestion scripts refactored phase 4 to use libraries)
 RE2|registration|register as runner_spec rows with schedules+target scopes+report key declarations
-RE3|declarations explicit|cloud puller declares cloud_account_target rows; K8s pod state puller declares runner_k8s_namespace_target; metrics puller declares runner_report_key per INFRA-5 §8
+RE3|declarations explicit|cloud puller declares cloud_account_target rows; K8s pod state puller declares runner_k8s_namespace_target; metrics puller declares runner_report_key per OPSDB-6 §8
 RE4|labor-intensive|each runner has declared scope; scope must be specified explicitly
-RE5|declarations change-managed|per INFRA-8 §13; modifying goes through same approval pipeline as other governance configuration
+RE5|declarations change-managed|per OPSDB-8 §13; modifying goes through same approval pipeline as other governance configuration
 
 # runner_polling_choice(mode|when_used)
 RP1|polling|reads config from OpsDB at runtime; for runners always having OpsDB connectivity
 RP2|templated|config baked into deployment; for runners that must operate during partitions (host-bootstrap+intermittent connectivity)
 RP3|hybrid|templated defaults with runtime poll for updates; combines partition tolerance with config freshness
-# rule: both polling and templating fine; choice depends on each runner's partition tolerance requirements per INFRA-4 §11.2
+# rule: both polling and templating fine; choice depends on each runner's partition tolerance requirements per OPSDB-5 §11.2
 
 # operational(aspect|content)
 OP1|structural shift|phases 1-5 produced infrastructure FOR OpsDB; phase 6 produces infrastructure that BENEFITS FROM OpsDB
 OP2|runners written in phase 6|operational logic that consumes substrate prior phases built
-OP3|runner kinds available|drift detectors+verifiers+reconcilers+notification runners+compliance scanners+GitOps integration+reapers+failover handlers per INFRA-4 §4
-OP4|each new runner follows INFRA-4 §12.1 pattern|identify inputs+identify outputs+choose gating+choose trigger+specify bounds+define idempotency+write spec+build using shared libraries+deploy through change management
+OP3|runner kinds available|drift detectors+verifiers+reconcilers+notification runners+compliance scanners+GitOps integration+reapers+failover handlers per OPSDB-5 §4
+OP4|each new runner follows OPSDB-5 §12.1 pattern|identify inputs+identify outputs+choose gating+choose trigger+specify bounds+define idempotency+write spec+build using shared libraries+deploy through change management
 
 # first_runner(aspect|content)
 FR1|criterion|org's most painful or most valuable operational domain
@@ -192,13 +192,13 @@ FR6|argument|investment substantial; phase 6 is when it compounds; high-pain fir
 # roles(id|role|responsibility|first_phase|continuous)
 RO1|schema steward|comprehensive coherence of schema; reviews schema-evolution change_sets; notices when slicing-the-pie needed; resists fragmentation+feature creep; holds whole in mind across domains|P1 identifies by name; P2 active reviewer; P5 primary approver for _schema_change_set rows|yes
 RO2|library steward|coherence of library suite; reviews library proposals+contract additions+removals+cross-library coherence+impl quality; resists fragmentation at library layer|P4 identifies by name (can be same as schema steward); P6 active in library extractions|yes
-RO3|substrate operator|DBA-equivalent for storage engine; backups+replication+capacity+performance tuning; direct DB access under SoD per INFRA-2 §4.2|P1 identifies; P3 deploys dev OpsDB; P5 coordinates dev-to-operational transition|yes
+RO3|substrate operator|DBA-equivalent for storage engine; backups+replication+capacity+performance tuning; direct DB access under SoD per OPSDB-2 §4.2|P1 identifies; P3 deploys dev OpsDB; P5 coordinates dev-to-operational transition|yes
 RO4|platform team|owns API code+runner deployment infrastructure+day-to-day ops health; distinct from substrate operator and stewards; owns gate and framework|P1 identifies; P3 builds dev API; P4 builds foundational libraries; P5 implements production API+CM pipeline; P6 operates runner deployment|yes
 RO5|operational stakeholders|owners of entities OpsDB tracks; service owners+cloud account owners+K8s cluster owners; each entity has someone responsible operationally|P5 identifies as part of writing approval rules|yes
 # rule: most orgs schema/library steward is portion of senior engineer's responsibility; largest orgs or major schema evolution may be full-time
 
 # transition(aspect|dev_substrate|operational_substrate)
-T1|API|minimal: authenticated reads+writes+structured errors only|full INFRA-5 with 10-step gate
+T1|API|minimal: authenticated reads+writes+structured errors only|full OPSDB-6 with 10-step gate
 T2|change management|none|for change_managed entities
 T3|authorization|rough role-based read/write|five-layer model
 T4|runner report keys|none|enforced
@@ -246,7 +246,7 @@ P6|delivers|architecture-promised-by-prior-papers
 P6|steady_state|true
 C1|simplest|true
 C2|partition_via|site-rows
-C3|justified_by|INFRA-2-§5.4-structural-reasons
+C3|justified_by|OPSDB-2-§5.4-structural-reasons
 CI1|invalid|true
 CI2|invalid|true
 CI3|invalid|true
@@ -264,7 +264,7 @@ HL_ALL|surfaces|schema-gaps-before-code
 HL_ALL|cheaper_at|phase-2
 DA_P|sufficient_for|validating-schema-and-discovering-data-shape
 DA_D|deferred_to|phase-5
-IN3|early_form_of|INFRA-4-§4.1-puller-pattern
+IN3|early_form_of|OPSDB-5-§4.1-puller-pattern
 IN4|distinguishes|scripts-from-runners
 D1|when|per-row-metadata
 D2|when|independent-lifecycle-OR-identity-OR-N
@@ -294,7 +294,7 @@ RP1|when|always-have-OpsDB-connectivity
 RP2|when|must-operate-during-partitions
 RP3|when|combines-partition-tolerance-and-freshness
 OP1|shift|infrastructure-FOR-OpsDB-to-infrastructure-BENEFITING-FROM-OpsDB
-OP4|follows|INFRA-4-§12.1
+OP4|follows|OPSDB-5-§12.1
 FR1|criterion|most-painful-or-valuable
 FR6|validates|architecture-for-team-and-org
 RO1|continuous|true

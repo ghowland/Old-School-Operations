@@ -9,13 +9,13 @@
 
 This paper introduces the OpsDB to readers who have not encountered the prior six papers in the series. The OpsDB is a centralized data substrate that holds the full operational reality of an organization — configuration, observed state, schedules, policies, runner enumeration, documentation references, evidence, change history, audit — accessed through a single API gate that enforces authentication, authorization, validation, change management, versioning, and audit uniformly across every entity. Three populations consume the substrate through scoped access: humans investigating and proposing changes, automation runners performing operational work, auditors verifying controls. A small fleet of decentralized runners reads from the OpsDB, acts in the world through shared libraries, and writes results back; the OpsDB itself is passive and never invokes work. The schema is itself data, declared in YAML files in a git repo, evolved through the same change-management discipline that governs every other operational change.
 
-This paper covers what the OpsDB is, what an organization receives by building one, and how operational workflows change when an OpsDB is in place. It reads as an introduction; the prior six papers (INFRA-1 through INFRA-6) provide the structural specifications. A reader who finishes this paper should understand whether their organization would benefit from an OpsDB and what it would feel like to operate inside one.
+This paper covers what the OpsDB is, what an organization receives by building one, and how operational workflows change when an OpsDB is in place. It reads as an introduction; the prior six papers (OPSDB-9 through OPSDB-7) provide the structural specifications. A reader who finishes this paper should understand whether their organization would benefit from an OpsDB and what it would feel like to operate inside one.
 
 ---
 
 ## 1. What this paper is for
 
-The HOWL infrastructure series specifies a particular architectural pattern for organizational operations. Six prior papers establish the structure: a taxonomy of operational mechanisms (INFRA-1), the OpsDB design (INFRA-2), a concrete schema (INFRA-3), the runner pattern (INFRA-4), the API gate (INFRA-5), and schema construction (INFRA-6). Together they specify what to build and why each commitment matters.
+The HOWL infrastructure series specifies a particular architectural pattern for organizational operations. Six prior papers establish the structure: a taxonomy of operational mechanisms (OPSDB-9), the OpsDB design (OPSDB-2), a concrete schema (OPSDB-4), the runner pattern (OPSDB-5), the API gate (OPSDB-6), and schema construction (OPSDB-7). Together they specify what to build and why each commitment matters.
 
 This paper is different. It is for a reader who has not seen the prior six. It introduces the OpsDB from first principles, explains what an organization gets by building one, and describes how operational workflows change. The prior papers tell you how to build the system; this paper tells you what the system is for.
 
@@ -455,19 +455,19 @@ Whether the trade is right for a given organization depends on whether the costs
 
 This paper has introduced the OpsDB at a level appropriate for a reader who had not encountered the concept before. It has not specified the structure in detail. For that, the prior six papers in the series provide the structural specifications.
 
-**INFRA-1** establishes the taxonomy of operational mechanisms, properties, and principles that the OpsDB design draws on. Reading it gives a vocabulary for talking about operations in general; it is foundational for understanding why the OpsDB makes the structural choices it does.
+**OPSDB-9** establishes the taxonomy of operational mechanisms, properties, and principles that the OpsDB design draws on. Reading it gives a vocabulary for talking about operations in general; it is foundational for understanding why the OpsDB makes the structural choices it does.
 
-**INFRA-2** specifies the OpsDB design itself: the architectural commitments, the cardinality rule (1 or N OpsDBs, never 2), the content scope, the three consumer populations, the API as governance perimeter, the construction discipline. It is the design document.
+**OPSDB-2** specifies the OpsDB design itself: the architectural commitments, the cardinality rule (1 or N OpsDBs, never 2), the content scope, the three consumer populations, the API as governance perimeter, the construction discipline. It is the design document.
 
-**INFRA-3** demonstrates a concrete schema. Roughly 150 entity types across all the operational domains the OpsDB covers. It is one example schema; an organization adopting the OpsDB design will adapt the schema to its specific operational reality, but the structural patterns transfer.
+**OPSDB-4** demonstrates a concrete schema. Roughly 150 entity types across all the operational domains the OpsDB covers. It is one example schema; an organization adopting the OpsDB design will adapt the schema to its specific operational reality, but the structural patterns transfer.
 
-**INFRA-4** specifies the runner pattern in detail. Runner kinds, the shared library suite, coordination through shared substrate, the three load-bearing disciplines (idempotency, level-triggering, bounding), per-runner change-management gating.
+**OPSDB-5** specifies the runner pattern in detail. Runner kinds, the shared library suite, coordination through shared substrate, the three load-bearing disciplines (idempotency, level-triggering, bounding), per-runner change-management gating.
 
-**INFRA-5** specifies the API gate. The 10-step gate sequence, the five-layer authorization model, field-level versioning, optimistic concurrency, the change_set lifecycle, runner report keys, audit logging. It is the active layer where governance happens.
+**OPSDB-6** specifies the API gate. The 10-step gate sequence, the five-layer authorization model, field-level versioning, optimistic concurrency, the change_set lifecycle, runner report keys, audit logging. It is the active layer where governance happens.
 
-**INFRA-6** specifies how the schema itself is constructed. The closed constraint vocabulary. The schema repo as YAML files in git. The forbidden list — no deletions, no renames, no type changes. The duplication-and-double-write pattern. Schema evolution through change management.
+**OPSDB-7** specifies how the schema itself is constructed. The closed constraint vocabulary. The schema repo as YAML files in git. The forbidden list — no deletions, no renames, no type changes. The duplication-and-double-write pattern. Schema evolution through change management.
 
-The six papers are ordered as they are because each builds on the prior. A reader serious about implementing an OpsDB should read them in order. A reader who only wants the architectural intuition can read INFRA-2 alone and have most of the picture; the others provide depth.
+The six papers are ordered as they are because each builds on the prior. A reader serious about implementing an OpsDB should read them in order. A reader who only wants the architectural intuition can read OPSDB-2 alone and have most of the picture; the others provide depth.
 
 ---
 

@@ -39,7 +39,7 @@ AO16|mark_change_set_applied|change-mgmt-action|finalize change set status|chang
 AG1|1|Authentication|verify caller identity against IdP (humans) or secret backend (runners); resolve to ops_user or runner_machine|IdP assertion+secret backend tokens+ops_user mapping|invalid creds → reject + audit
 AG2|2|Authorization|evaluate five-layer model against operation+target+caller; first denial fails|5 layers (§auth_layers)|first denial → reject with layer info + audit
 AG3|3|Schema Validation|verify operation shape matches registered schema for affected entity types and fields|_schema_entity_type+_schema_field|malformed → reject with structured error
-AG4|4|Bound Validation|verify field values within declared bounds (numeric ranges+enum membership+FK existence+anchored patterns)|INFRA-6 declarative constraints in schema|out-of-bounds → reject; no regex evaluated
+AG4|4|Bound Validation|verify field values within declared bounds (numeric ranges+enum membership+FK existence+anchored patterns)|OPSDB-7 declarative constraints in schema|out-of-bounds → reject; no regex evaluated
 AG5|5|Policy Evaluation|consult policy rows for additional governance (data classification+retention+SoD+time-of-day)|policy rows of relevant types|violation → reject
 AG6|6|Versioning Preparation|prepare version row to be written for change-managed entities|*_version sibling schema|none (preparation step)
 AG7|7|Change Management Routing|evaluate approval_rule policies+compute required approver groups+write change_set_approval_required|approval_rule policies+ownership/stakeholder bridges|determines auto-approve vs human approval vs blocking
@@ -138,7 +138,7 @@ SE5|entity in production namespace + change to runtime field|production operatio
 
 # validation(id|type|checks|failure_behavior|data_source)
 AV1|Schema Validation|every field change matches entity's schema; field exists+type matches+required fields present on creates|blocks|registered schemas via _schema_entity_type+_schema_field
-AV2|Bound Validation|numeric ranges within declared bounds+enum membership+FK existence+simple anchored patterns|blocks|INFRA-6 declarative constraints in schema
+AV2|Bound Validation|numeric ranges within declared bounds+enum membership+FK existence+simple anchored patterns|blocks|OPSDB-7 declarative constraints in schema
 AV3|Semantic Validation|cross-field invariants (min<=max+status implies dependent field set)|blocks|entity-type metadata declarations
 AV4|Policy Validation|change does not violate active policies (regulated_pci entity needs compliance approver+production from authorized actor)|blocks fail-closed OR warns with explicit ack|policy rows
 AV5|Lint Validation|org style+naming+required metadata populated+descriptions present|warnings allow proceed; errors block|org style guide as data
@@ -253,7 +253,7 @@ A12|enables|integrity-of-history
 AO1|read_class|five-layer-auth
 AO4|implements|named-join-paths-traversal
 AO5|implements|substrate-walking-for-runners
-AO5|enables|RW1+RW2+RW3+RW4+RW5 from INFRA-4
+AO5|enables|RW1+RW2+RW3+RW4+RW5 from OPSDB-5
 AO8|gated_by|RKS1
 AO9|writes|change_set+change_set_field_change+change_set_approval_required
 AO9|triggers|stakeholder-routing
@@ -298,7 +298,7 @@ SR4|computes|change_set_approval_required rows
 SR6|transitions|change_set to approved when all is_fulfilled
 AV1|blocks_on_failure|true
 AV2|blocks_on_failure|true
-AV2|consumes|INFRA-6 declarative constraints
+AV2|consumes|OPSDB-7 declarative constraints
 AV3|blocks_on_failure|true
 AV4|may_warn_or_block|true
 AV5|warnings_allow_proceed|errors_block

@@ -9,7 +9,7 @@
 
 The OpsDB schema is itself data. This paper specifies a schema construction system in which the entire schema lives as hierarchical YAML or JSON files in a git repository, processed by a deterministic loader that produces both the relational database and the API's validation metadata from the same source. The schema files are self-contained, declarative, and bounded in expressive power. A small closed vocabulary of types, modifiers, and constraints describes every field of every entity. There is no embedded logic, no regex, no templating, no computed defaults, no conditional constraints, no inheritance. The constraint vocabulary is what the system permits; everything else is refused, by design, to keep the schema inspectable and to keep validation deterministic at the API gate.
 
-The schema repository contains a `directory.yaml` listing the import order of all entity files. Each file describes one entity: its fields, types, foreign keys, range and length bounds, enum sets, and the FK references that act as set-membership constraints. Schema evolution is governed: no field deletions, no renames, no type changes. Type changes happen by duplicating the field, double-writing during a transition window of N successful releases, and removing the original after the transition. Renames do not happen at all. The schema repo creates the OpsDB initially and modifies it through the same change-management discipline INFRA-5 specifies, keeping schema, database, and API validation synchronized.
+The schema repository contains a `directory.yaml` listing the import order of all entity files. Each file describes one entity: its fields, types, foreign keys, range and length bounds, enum sets, and the FK references that act as set-membership constraints. Schema evolution is governed: no field deletions, no renames, no type changes. Type changes happen by duplicating the field, double-writing during a transition window of N successful releases, and removing the original after the transition. Renames do not happen at all. The schema repo creates the OpsDB initially and modifies it through the same change-management discipline OPSDB-6 specifies, keeping schema, database, and API validation synchronized.
 
 What this paper does not specify: the storage engine, the loader's implementation language, the file format choice between YAML and JSON, or the specific authoring tooling. The schema is relational; the relations are declared as data; the rest is implementation choice.
 
@@ -19,7 +19,7 @@ What this paper does not specify: the storage engine, the loader's implementatio
 
 ### 1.1 The problem
 
-The OpsDB schema [@HOWL-INFRA-3-2026] is comprehensive across operational reality. Roughly 150 entity types span hardware, virtualization, Kubernetes, cloud resources, services, runners, schedules, policies, configuration, cached observation, authority pointers, documentation metadata, monitoring, evidence, change management, audit, and the schema's own metadata. The API [@HOWL-INFRA-5-2026] validates every write against the schema's declared structure and bounds. Both the schema and the validation it enables must be defined somewhere.
+The OpsDB schema [@OPSDB-4] is comprehensive across operational reality. Roughly 150 entity types span hardware, virtualization, Kubernetes, cloud resources, services, runners, schedules, policies, configuration, cached observation, authority pointers, documentation metadata, monitoring, evidence, change management, audit, and the schema's own metadata. The API [@OPSDB-6] validates every write against the schema's declared structure and bounds. Both the schema and the validation it enables must be defined somewhere.
 
 The conventional answer is to define the schema as DDL (CREATE TABLE statements) and define the validation as code (functions in the API server that check ranges, enum membership, FK existence). This produces two disconnected sources of truth: the DDL is what the database has, the validation code is what the API enforces, and the two evolve at different cadences with no mechanical guarantee that they agree. Drift between them is a recurring class of operational defect.
 
@@ -31,11 +31,11 @@ The schema lives as data — hierarchical YAML or JSON files in a git repository
 
 A loader reads the schema files, validates them against the meta-schema, resolves all foreign-key references, and produces two things in lockstep: the relational database structure (CREATE TABLE statements, indexes, FK constraints, CHECK constraints where the storage engine supports them) and the API's bound-validation metadata (rows in the `_schema_*` tables that the API consults during the gate's bound-validation step). One source of data; two synchronized outputs.
 
-Schema evolution flows through change management. Adding entity types, adding fields, widening enum sets, widening numeric ranges — these are additive changes, expressed as edits to the schema repo, reviewed through the org's git workflow, applied through `_schema_change_set` rows per [@HOWL-INFRA-3-2026 §20] and [@HOWL-INFRA-5-2026 §7]. Some changes are forbidden outright: no field deletions, no renames, no type changes (§12). The forbidden list is what makes long-lived schemas possible; everything that's allowed is mechanically safe.
+Schema evolution flows through change management. Adding entity types, adding fields, widening enum sets, widening numeric ranges — these are additive changes, expressed as edits to the schema repo, reviewed through the org's git workflow, applied through `_schema_change_set` rows per [@OPSDB-4 §20] and [@OPSDB-6 §7]. Some changes are forbidden outright: no field deletions, no renames, no type changes (§12). The forbidden list is what makes long-lived schemas possible; everything that's allowed is mechanically safe.
 
 ### 1.3 Why a closed constraint vocabulary
 
-The schema's expressive power is the load-bearing decision. If the schema language permits arbitrary expressions, regex, computed defaults, conditional constraints, or any other form of embedded logic, the schema becomes unknowable in the sense [@HOWL-INFRA-1-2026] §2 establishes. Validation that depends on logic in the schema becomes validation that depends on whatever logic happens to be evaluable in the loader's environment, which depends on the loader's version, which depends on the storage engine's interpretation, which propagates uncertainty into every downstream consumer.
+The schema's expressive power is the load-bearing decision. If the schema language permits arbitrary expressions, regex, computed defaults, conditional constraints, or any other form of embedded logic, the schema becomes unknowable in the sense [@OPSDB-9] §2 establishes. Validation that depends on logic in the schema becomes validation that depends on whatever logic happens to be evaluable in the loader's environment, which depends on the loader's version, which depends on the storage engine's interpretation, which propagates uncertainty into every downstream consumer.
 
 The closed vocabulary refuses this. A small, fixed list of types, modifiers, and constraints. Each primitive has one meaning. Each meaning is mechanically validatable. Adding a new primitive is a revision of this paper, which is the right level of governance for that decision; users do not extend the vocabulary in their schema files.
 
@@ -47,7 +47,7 @@ The repository layout that holds the schema. The shape of `directory.yaml`. The 
 
 ### 1.5 What this paper does not specify
 
-The storage engine. Postgres, FoundationDB, CockroachDB, MySQL, and others are all valid targets; the schema repo is engine-agnostic, and the loader generates DDL appropriate to whichever engine is chosen. The loader's implementation language. The file format choice (YAML vs JSON; the structure is what matters). Specific authoring tooling for schema authors. UI design for schema review. The specific JSON schemas registered for typed payload validation (those are organization-specific data per [@HOWL-INFRA-3-2026 §2.4]).
+The storage engine. Postgres, FoundationDB, CockroachDB, MySQL, and others are all valid targets; the schema repo is engine-agnostic, and the loader generates DDL appropriate to whichever engine is chosen. The loader's implementation language. The file format choice (YAML vs JSON; the structure is what matters). Specific authoring tooling for schema authors. UI design for schema review. The specific JSON schemas registered for typed payload validation (those are organization-specific data per [@OPSDB-4 §2.4]).
 
 ### 1.6 Document structure
 
@@ -59,15 +59,15 @@ Section 2 covers conventions inherited from the series. Section 3 specifies the 
 
 This paper inherits the conventions established across the prior series.
 
-**DSNC.** All schema names follow the Database Schema Naming Convention specified in INFRA-3. Singular table names. Lower case with underscores. Hierarchical prefixes from specific to general. Foreign keys named `referenced_table_id`. Type suffixes (`_time`, `_date`, `_id`, `_data_json`). Boolean tense prefixes (`is_`, `was_`). Reserved fields (`id`, `created_time`, `updated_time`, `parent_id`).
+**DSNC.** All schema names follow the Database Schema Naming Convention specified in OPSDB-4. Singular table names. Lower case with underscores. Hierarchical prefixes from specific to general. Foreign keys named `referenced_table_id`. Type suffixes (`_time`, `_date`, `_id`, `_data_json`). Boolean tense prefixes (`is_`, `was_`). Reserved fields (`id`, `created_time`, `updated_time`, `parent_id`).
 
-**Underscore-prefix governance fields.** Per INFRA-3 §2.2, fields whose purpose is governance, security, audit, or schema metadata carry a leading underscore. The schema files declare these fields explicitly per entity; this paper specifies the universal reserved set in §3.4 and the per-entity declaration discipline in §5.
+**Underscore-prefix governance fields.** Per OPSDB-4 §2.2, fields whose purpose is governance, security, audit, or schema metadata carry a leading underscore. The schema files declare these fields explicitly per entity; this paper specifies the universal reserved set in §3.4 and the per-entity declaration discipline in §5.
 
 **Soft delete.** Soft delete in the schema uses three reserved fields: `_delete=true` to mark deletion, `_delete_time` for when, `_delete_user_id` for who (FK to `ops_user`). These are governance metadata and carry the underscore prefix per the convention. The schema declares per entity whether soft delete applies; entities that do not soft-delete simply omit these fields and use hard delete via the reaper.
 
-**Bridge tables.** Polymorphic relationships use bridge tables per INFRA-3 §2.5; this paper inherits the discipline. Bridge tables are themselves entities and have their own schema files (or are nested within a parent entity's file when the bridge has no fields beyond reserved structure).
+**Bridge tables.** Polymorphic relationships use bridge tables per OPSDB-4 §2.5; this paper inherits the discipline. Bridge tables are themselves entities and have their own schema files (or are nested within a parent entity's file when the bridge has no fields beyond reserved structure).
 
-**The 0/1/N rule applied to schemas.** The schema is one — there is one schema repo per OpsDB. The OpsDB's schema metadata tables (`_schema_*`) reflect what the schema repo declared, and the runtime cache and the source must agree. There is never "two schemas" for the same OpsDB; either the system has a single schema or it has multiple OpsDBs (the N-OpsDB pattern from INFRA-2 §5).
+**The 0/1/N rule applied to schemas.** The schema is one — there is one schema repo per OpsDB. The OpsDB's schema metadata tables (`_schema_*`) reflect what the schema repo declared, and the runtime cache and the source must agree. There is never "two schemas" for the same OpsDB; either the system has a single schema or it has multiple OpsDBs (the N-OpsDB pattern from OPSDB-2 §5).
 
 **Notation.** File paths and YAML keys appear in `code style`. Entity types and field names appear in *bold-italic* on first reference. The closed vocabulary primitives appear in `code style` when discussed as terms.
 
@@ -79,7 +79,7 @@ The schema repository is conventionally named `opsdb-schema`. It is a normal git
 
 ### 3.1 The repository tree
 
-The directory structure mirrors the comprehensive cuts from INFRA-3 §3. Each top-level directory groups entities by the operational domain they describe.
+The directory structure mirrors the comprehensive cuts from OPSDB-4 §3. Each top-level directory groups entities by the operational domain they describe.
 
 ```
 opsdb-schema/
@@ -116,11 +116,11 @@ Each entity type lives in its own file. *Service* is in `service/service.yaml`. 
 
 Bridge tables with substantive fields live in their own files. A bridge with only reserved fields and the two FKs may be nested inside the file of either entity it bridges, with a clear inline declaration. The discipline favors splitting once the bridge has more than its minimal structure; nested declarations are an optimization for the simplest cases.
 
-Versioning sibling tables (the `*_version` siblings per INFRA-3 §4.2) are not separate files. They are declared as a property of the parent entity (`versioned: true`); the loader generates the sibling table structure from the parent's fields automatically. This avoids duplicating field declarations across two files that must always agree.
+Versioning sibling tables (the `*_version` siblings per OPSDB-4 §4.2) are not separate files. They are declared as a property of the parent entity (`versioned: true`); the loader generates the sibling table structure from the parent's fields automatically. This avoids duplicating field declarations across two files that must always agree.
 
 ### 3.3 The conventions directory
 
-`conventions/reserved.yaml` declares the universal reserved field set: `id`, `created_time`, `updated_time`, `parent_id` (where applicable), `is_active`, and the underscore-prefix governance fields available across the schema (`_delete`, `_delete_time`, `_delete_user_id`, `_requires_group`, `_access_classification`, `_retention_policy_id`, others as specified in INFRA-3 Appendix B).
+`conventions/reserved.yaml` declares the universal reserved field set: `id`, `created_time`, `updated_time`, `parent_id` (where applicable), `is_active`, and the underscore-prefix governance fields available across the schema (`_delete`, `_delete_time`, `_delete_user_id`, `_requires_group`, `_access_classification`, `_retention_policy_id`, others as specified in OPSDB-4 Appendix B).
 
 Each entity file declares which reserved fields apply to it by name, rather than redeclaring the field's structure. This is the one exception to "no inheritance, no templating" — reserved fields are referenced by name, and the loader expands the reference to the full declared structure from `conventions/reserved.yaml`. The expansion is mechanical; the reference is opaque to the entity file (the entity does not customize the reserved field, only opts in or out).
 
@@ -374,7 +374,7 @@ imports:
 
 The order is deterministic and authored, not inferred. The loader processes files in the listed order. An entity file cannot reference (via FK, via approval rule, via authority pointer) any entity defined in a file that comes later in the list. If it does, the loader rejects the schema with a structured error pointing at the unresolved reference.
 
-This is a *configuration as data* commitment from INFRA-1 §5.1. Inferring dependencies introduces logic — a topological sort over the FK graph, with cycle detection, with edge cases around self-references and bridge tables. Listing the order in `directory.yaml` is data, deterministic, inspectable. The author who knows the dependency structure encodes it once; the loader follows the order without judgment.
+This is a *configuration as data* commitment from OPSDB-9 §5.1. Inferring dependencies introduces logic — a topological sort over the FK graph, with cycle detection, with edge cases around self-references and bridge tables. Listing the order in `directory.yaml` is data, deterministic, inspectable. The author who knows the dependency structure encodes it once; the loader follows the order without judgment.
 
 The cost is that authors maintain `directory.yaml` when adding entities. The benefit is that the import graph is explicit; reading `directory.yaml` shows the schema's structure at a glance, in dependency order, without needing to process any other file.
 
@@ -402,7 +402,7 @@ Every entity file has:
 
 - **`entity_type`** — the table name. Must match the file name (modulo extension). DSNC-compliant.
 - **`description`** — prose describing what this entity represents and how it fits in the operational model.
-- **`table_category`** — one of: `change_managed`, `observation_only`, `append_only`, `computed`. Per INFRA-3 Appendix D.
+- **`table_category`** — one of: `change_managed`, `observation_only`, `append_only`, `computed`. Per OPSDB-4 Appendix D.
 - **`versioned`** — boolean. If true, the loader generates a `*_version` sibling table.
 - **`soft_delete`** — boolean. If true, the entity uses `_delete`/`_delete_time`/`_delete_user_id` reserved governance fields; if false, deletes are hard or handled by a reaper per retention policy.
 - **`reserved_fields_apply`** — list of reserved field names this entity opts into, referencing `conventions/reserved.yaml`.
@@ -458,7 +458,7 @@ Optional prose at the end of the file. Useful for design rationale, references t
 
 ### 5.8 A complete example
 
-Here is a complete entity file. *Service* from INFRA-3 §7.3, with the fields declared in the closed vocabulary.
+Here is a complete entity file. *Service* from OPSDB-4 §7.3, with the fields declared in the closed vocabulary.
 
 ```yaml
 entity_type: service
@@ -548,7 +548,7 @@ introduced_in_schema_version: "2026.01.01.01"
 deprecated_in_schema_version: null
 
 notes: |
-  Service is the central abstraction in INFRA-3 §7. The entity is
+  Service is the central abstraction in OPSDB-4 §7. The entity is
   composed in service_version with associated rows in service_package,
   service_interface_mount, service_connection. The service_connection
   graph drives configuration template generation, alert dependency
@@ -619,7 +619,7 @@ This is the entire expressive surface of the schema language. Every constraint t
 
 The list is small on purpose. Smaller is better. Every primitive is a place where the schema's behavior must be defined precisely; fewer primitives means less surface to reason about and fewer corners where edge cases can hide.
 
-![Fig. 1: The Closed Constraint Vocabulary — 9 types + 3 modifiers + 6 constraints. Adding one is a revision of INFRA-6.](./figures/infra6_01_closed_vocabulary.png)
+![Fig. 1: The Closed Constraint Vocabulary — 9 types + 3 modifiers + 6 constraints. Adding one is a revision of OPSDB-7.](./figures/infra6_01_closed_vocabulary.png)
 
 ---
 
@@ -643,7 +643,7 @@ This refusal extends to defaults. Permitted defaults are literals (`default: 0`,
 
 ### 7.3 No conditional constraints
 
-Constraints that depend on the value of another field — "if status is `active` then `running_since` must be non-null" — are not expressible in the schema. They belong at the API's semantic-validation step (INFRA-5 §7.6) where named rules in policy data express cross-field invariants.
+Constraints that depend on the value of another field — "if status is `active` then `running_since` must be non-null" — are not expressible in the schema. They belong at the API's semantic-validation step (OPSDB-6 §7.6) where named rules in policy data express cross-field invariants.
 
 This is a hard line because conditional constraints in the schema would smuggle logic in. Even simple conditional constraints quickly compose into something approximating a programming language; the schema would no longer be inspectable as data. By keeping conditionals out of the schema and in policy, the schema describes structure (what fields exist with what bounds) and policy describes behavior (what cross-field invariants hold).
 
@@ -685,7 +685,7 @@ Cross-field invariants are a real operational need. They are expressed in policy
 
 The schema describes structure: fields, types, FKs, bounds. The schema's validation is per-field, mechanical, expressible in the closed vocabulary.
 
-Cross-field invariants — "if status is X then Y must be set," "min_replicas must be ≤ max_replicas," "deployment_strategy must match cluster_capability_set" — describe behavior across multiple fields. These belong in policy data, evaluated at the API's semantic-validation step (INFRA-5 §7.6).
+Cross-field invariants — "if status is X then Y must be set," "min_replicas must be ≤ max_replicas," "deployment_strategy must match cluster_capability_set" — describe behavior across multiple fields. These belong in policy data, evaluated at the API's semantic-validation step (OPSDB-6 §7.6).
 
 ### 8.2 How invariants are declared
 
@@ -711,7 +711,7 @@ The two layers compose. Schema validates structure; policy validates behavior. B
 
 ## 9. JSON payload validation
 
-`*_data_json` fields use the typed payload pattern from INFRA-3 §2.4. The schema repo specifies how each discriminator value maps to a payload schema, using the same closed vocabulary.
+`*_data_json` fields use the typed payload pattern from OPSDB-4 §2.4. The schema repo specifies how each discriminator value maps to a payload schema, using the same closed vocabulary.
 
 ### 9.1 The discriminator pattern
 
@@ -896,15 +896,15 @@ Beyond the initial bootstrap, schema changes flow through change management. The
 
 ### 11.1 The propose-review-apply cycle
 
-A schema change starts as a git PR against the `opsdb-schema` repo. The author edits files: adds a new entity file, adds fields to an existing file, widens an enum's values list, adds an index. The PR is reviewed by the schema steward (per INFRA-2 §14.12) and by any other reviewers the org's git workflow requires.
+A schema change starts as a git PR against the `opsdb-schema` repo. The author edits files: adds a new entity file, adds fields to an existing file, widens an enum's values list, adds an index. The PR is reviewed by the schema steward (per OPSDB-2 §14.12) and by any other reviewers the org's git workflow requires.
 
-Review checks structural integrity (the loader can validate the PR's branch independently before merge, though that's a CI concern not a schema-construction-design concern), checks adherence to DSNC, checks that additions are comprehensive (slicing the pie correctly per the construction discipline of INFRA-2 §14.1).
+Review checks structural integrity (the loader can validate the PR's branch independently before merge, though that's a CI concern not a schema-construction-design concern), checks adherence to DSNC, checks that additions are comprehensive (slicing the pie correctly per the construction discipline of OPSDB-2 §14.1).
 
 On PR merge, a CI process generates a `_schema_change_set` proposal. The proposal is the diff between the current schema (as reflected in the OpsDB's `_schema_*` tables) and the new schema (as reflected in the merged repo). The diff is expressed as schema-evolution operations: ADD ENTITY, ADD FIELD, WIDEN ENUM, ADD INDEX, MARK DEPRECATED.
 
 ### 11.2 The schema change_set
 
-The `_schema_change_set` is itself a change_set, governed by INFRA-5's change-management discipline with stricter approval rules (per INFRA-3 §20.2). Approvers include the schema steward role. The change_set carries the schema-evolution operations as its field changes.
+The `_schema_change_set` is itself a change_set, governed by OPSDB-6's change-management discipline with stricter approval rules (per OPSDB-4 §20.2). Approvers include the schema steward role. The change_set carries the schema-evolution operations as its field changes.
 
 Validation runs through the standard pipeline. The schema-evolution operations are themselves bounded: the validator confirms that no operations forbidden by §12 (deletions, renames, type changes) are present. Operations that violate the forbidden list are rejected at the validation step before approval routing.
 
@@ -912,7 +912,7 @@ On approval, the change_set executor — for `_schema_change_set` rows, a specia
 
 ### 11.3 The schema executor
 
-The schema executor is a specialized change-set executor (INFRA-4 §4.7) that handles `_schema_change_set` rows. Its actions:
+The schema executor is a specialized change-set executor (OPSDB-5 §4.7) that handles `_schema_change_set` rows. Its actions:
 
 1. Read the approved `_schema_change_set` and its associated field changes.
 2. Generate the DDL operations corresponding to each schema-evolution operation.
@@ -1008,7 +1008,7 @@ The rules are absolute because partial enforcement is worse than full enforcemen
 
 Absolute rules let consumers be simple. A runner can read a field by name and trust the name will always exist. A query can compare a field's value and trust the type will not change. A version history reconstruction can trust that fields present in old versions are still meaningful. The discipline costs the org occasional schema gymnastics around the duplication pattern; it buys decade-scale stability for everything that depends on the schema.
 
-This is the operational realization of the *data primacy* principle from INFRA-1 §5.1. Data persists; logic churns. The schema is data; its evolution is governed strictly precisely because everything else in the operational reality depends on it persisting.
+This is the operational realization of the *data primacy* principle from OPSDB-9 §5.1. Data persists; logic churns. The schema is data; its evolution is governed strictly precisely because everything else in the operational reality depends on it persisting.
 
 ![Fig. 4: Schema Evolution — Widening Allowed, Narrowing Forbidden. The duplication-and-double-write pattern is the only path through forbidden ops.](./figures/infra6_04_widening_vs_narrowing.png)
 
@@ -1037,7 +1037,7 @@ The OpsDB and the repo claim the same schema_version but the actual structures d
 3. **Reconcile.** Either the database is corrected to match the schema (via a `_schema_change_set` that re-applies the canonical structure), or the schema is updated to reflect the new state (via a `_schema_change_set` that documents the divergence as the new canonical). The choice depends on which is correct; the resolution is governed.
 4. **Record the resolution.** The finding is closed with the change_set that resolved it referenced.
 
-This process should be rare. Hand-editing the database is forbidden by the substrate-operator discipline (INFRA-2 §4.2); when it happens, it's an exceptional circumstance and is itself audited.
+This process should be rare. Hand-editing the database is forbidden by the substrate-operator discipline (OPSDB-2 §4.2); when it happens, it's an exceptional circumstance and is itself audited.
 
 ### 13.4 The repo is restored to an older state
 
@@ -1055,7 +1055,7 @@ This works because the schema_change_set rows are themselves data and survive th
 
 The fundamental rule: the schema repo is the source of truth for the schema. The OpsDB's schema metadata is a runtime cache. Where they disagree, the question is which is correct, and the answer is whichever the governed change-management process most recently approved. The reconciliation discipline always converges to the change_set-approved state; divergence is detected and resolved.
 
-This is *single source of truth* (INFRA-1 §5.1) applied to the schema. Whatever tooling exists to detect and reconcile divergence, it converges on the change_set history as authoritative. Divergence outside the history is by definition an anomaly to investigate and correct.
+This is *single source of truth* (OPSDB-9 §5.1) applied to the schema. Whatever tooling exists to detect and reconcile divergence, it converges on the change_set history as authoritative. Divergence outside the history is by definition an anomaly to investigate and correct.
 
 ---
 
@@ -1131,7 +1131,7 @@ These are engineering constraints. An org choosing an unusual storage engine for
 
 The schema is described as data in a closed vocabulary. The vocabulary's primitives map to standard SQL features. Any engine that supports a substantial subset of standard SQL can serve the schema. The portability is not just claimed; it follows from the schema being expressible in primitives that translate cleanly across engines.
 
-This is *minimize dependencies* (INFRA-1 §5.4) applied at the schema layer. The schema does not depend on a specific engine. Organizations are free to choose engines based on their own operational priorities; the schema, the API, the runners, and the operational reality the OpsDB describes all transfer.
+This is *minimize dependencies* (OPSDB-9 §5.4) applied at the schema layer. The schema does not depend on a specific engine. Organizations are free to choose engines based on their own operational priorities; the schema, the API, the runners, and the operational reality the OpsDB describes all transfer.
 
 ---
 
@@ -1165,7 +1165,7 @@ Combining schema migrations and data migrations in one mechanism would couple tw
 
 ### 15.5 Not a permissions or access-control system
 
-The schema describes structure. It does not declare who can read or write what. Access control is policy data per INFRA-5 §6 — `policy` rows of type `access_control`, evaluated at the API gate's authorization step.
+The schema describes structure. It does not declare who can read or write what. Access control is policy data per OPSDB-6 §6 — `policy` rows of type `access_control`, evaluated at the API gate's authorization step.
 
 A schema that included permissions would conflate two concerns that should evolve independently. The schema describes the data; access control describes who interacts with the data. Both are change-managed but at different cadences and with different review constituencies.
 
@@ -1177,7 +1177,7 @@ Keeping the loader out of the request path means the API's performance does not 
 
 ### 15.7 Not a query language
 
-The schema describes structure for the API to enforce; it does not describe queries. The search API (INFRA-5 §4) defines how callers query the schema — filter predicates, named join paths, projection — but the search language is separate from the schema language. The schema's vocabulary is for declaring what data exists; the search API's language is for retrieving it.
+The schema describes structure for the API to enforce; it does not describe queries. The search API (OPSDB-6 §4) defines how callers query the schema — filter predicates, named join paths, projection — but the search language is separate from the schema language. The schema's vocabulary is for declaring what data exists; the search API's language is for retrieving it.
 
 ---
 
@@ -1195,11 +1195,11 @@ The meta-schema describes schema files in their own vocabulary, with one bootstr
 
 A schema that is data, not code. Validation that is mechanical and bounded. A loader that does one thing: read the files, apply them. An API gate that consults the schema metadata for every write and enforces the same constraints the schema declares. A change-management discipline that governs schema evolution with the same rigor it governs every other operational change. A history of the schema's evolution preserved in git and in `_schema_change_set` rows.
 
-The schema is the long-lived artifact (INFRA-2 §3.6) made operational. It outlives the storage engine because the schema files don't depend on the engine. It outlives the API because the schema files describe structure the API merely enforces. It outlives the runners because runners consume the schema as data. The closed vocabulary keeps the schema bounded; the forbidden list keeps it stable; the change-management discipline keeps its evolution governed.
+The schema is the long-lived artifact (OPSDB-2 §3.6) made operational. It outlives the storage engine because the schema files don't depend on the engine. It outlives the API because the schema files describe structure the API merely enforces. It outlives the runners because runners consume the schema as data. The closed vocabulary keeps the schema bounded; the forbidden list keeps it stable; the change-management discipline keeps its evolution governed.
 
 ### 16.3 The structural claim
 
-Schema-as-data is the operational realization of *configuration as data* (INFRA-1 §5.1) at the schema layer. The schema describes the OpsDB's structure; the OpsDB enforces what the schema describes; the API validates against what the OpsDB knows. Three layers, all data-driven, all synchronized through the change-management pipeline. There is no place in the system where the schema is hardcoded, evaluated dynamically, or extracted from logic.
+Schema-as-data is the operational realization of *configuration as data* (OPSDB-9 §5.1) at the schema layer. The schema describes the OpsDB's structure; the OpsDB enforces what the schema describes; the API validates against what the OpsDB knows. Three layers, all data-driven, all synchronized through the change-management pipeline. There is no place in the system where the schema is hardcoded, evaluated dynamically, or extracted from logic.
 
 The closed vocabulary is the load-bearing decision. By refusing expressive power that would otherwise be useful, the schema language stays inspectable. By refusing patterns that would otherwise be convenient (regex, conditionals, inheritance), the schema language stays bounded. By refusing schema evolutions that would otherwise be tempting (rename, delete, type change), the schema stays stable.
 
@@ -1211,18 +1211,18 @@ The discipline to keep the schema simple. To resist the urge to add expressive p
 
 The discipline of refusing the wrong things. Refusing regex even when it would feel convenient. Refusing inheritance even when two entities have similar fields. Refusing templating even when staging and production "almost" share a structure. Refusing rename even when the original name turns out to be regrettable.
 
-For organizations that bring the discipline, the schema becomes the stable foundation INFRA-2 promised — the long-lived artifact across logic churn, the place where operational reality is described, the source of truth that runners read and the API enforces and auditors verify. The schema construction system specified here is what makes that promise mechanically possible.
+For organizations that bring the discipline, the schema becomes the stable foundation OPSDB-2 promised — the long-lived artifact across logic churn, the place where operational reality is described, the source of truth that runners read and the API enforces and auditors verify. The schema construction system specified here is what makes that promise mechanically possible.
 
 ### 16.5 The series
 
-This paper closes the initial six-paper sequence of the HOWL infrastructure series. INFRA-1 established the taxonomy of mechanisms, properties, and principles. INFRA-2 specified the OpsDB design. INFRA-3 demonstrated the schema. INFRA-4 specified the runners. INFRA-5 specified the API. INFRA-6 has now specified how the schema itself is constructed and evolved.
+This paper closes the initial six-paper sequence of the HOWL infrastructure series. OPSDB-9 established the taxonomy of mechanisms, properties, and principles. OPSDB-2 specified the OpsDB design. OPSDB-4 demonstrated the schema. OPSDB-5 specified the runners. OPSDB-6 specified the API. OPSDB-7 has now specified how the schema itself is constructed and evolved.
 
 The six papers compose. Each builds on the prior; each commits to specific structural choices that the next inherits. The whole produces an operational architecture in which data is king and logic is shell — at every layer. The schema is data; the API is data-driven; the runners are data-defined; the policies are data; the audit log is data; the change_sets are data. Logic operates on the data and is itself replaceable; the data persists.
 
-Subsequent papers in the series will explore particular operational domains in depth — specific runner archetypes, specific compliance regime mappings, specific bootstrap patterns for adopting the OpsDB design in existing operational realities. The structural commitments specified across INFRA-1 through INFRA-6 are stable; the extensions add detail without disturbing the structure.
+Subsequent papers in the series will explore particular operational domains in depth — specific runner archetypes, specific compliance regime mappings, specific bootstrap patterns for adopting the OpsDB design in existing operational realities. The structural commitments specified across OPSDB-9 through OPSDB-7 are stable; the extensions add detail without disturbing the structure.
 
 The work continues. The structure is in place.
 
 ---
 
-*End of HOWL-INFRA-6-2026.*
+*End of OPSDB-7.*

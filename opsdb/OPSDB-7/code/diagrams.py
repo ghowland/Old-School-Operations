@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-HOWL INFRA-6 Diagrams — OpsDB Schema Construction
+HOWL OPSDB-7 Diagrams — OpsDB Schema Construction
 8 figures covering bounded vocabulary, evolution rules, loader pipeline,
 JSON depth, monotonic growth, and dependency ordering.
 Output: PNG files to ../figures/
@@ -125,7 +125,7 @@ def fig01_closed_vocabulary():
     ax.axis('off')
 
     title_text(ax, "Fig. 1: The Closed Constraint Vocabulary")
-    subtitle_text(ax, "18 primitives, total. Adding one is a revision of INFRA-6, not a user feature.")
+    subtitle_text(ax, "18 primitives, total. Adding one is a revision of OPSDB-7, not a user feature.")
 
     # Outer boundary indicating closure
     outer = FancyBboxPatch(
@@ -1143,7 +1143,7 @@ def fig08_directory_dag():
 # ================================================================
 
 def main():
-    print("Generating INFRA-6 figures...")
+    print("Generating OPSDB-7 figures...")
     fig01_closed_vocabulary()
     fig02_permitted_vs_forbidden()
     fig03_loader_pipeline()

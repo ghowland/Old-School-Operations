@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-HOWL INFRA-1 Diagrams — A Taxonomy of Infrastructure Mechanisms, Properties, and Principles
+HOWL OPSDB-9 Diagrams — A Taxonomy of Infrastructure Mechanisms, Properties, and Principles
 8 figures covering the three-axis taxonomy, family relationships, and principle-driven structure.
 Output: PNG files to ../figures/
 """

@@ -1,30 +1,30 @@
-# Considering INFRA-4 — Runner Design Across the Stack
+# Considering OPSDB-5 — Runner Design Across the Stack
 
-Sitting with what we have. The papers and artifacts in the conversation give a layered foundation that INFRA-4 inherits:
+Sitting with what we have. The papers and artifacts in the conversation give a layered foundation that OPSDB-5 inherits:
 
 - **The book** establishes "data is king, logic is shell," operational vs application logic, the 0/1/∞ rule, comprehensive vs aggregate, idempotency as primary algorithmic property, and the DOS framing.
 - **REM** demonstrated the comprehensive substrate with its package/service/connection model, megavisor wrapping, storage handler stacks, and runner-like script management — pre-K8s but architecturally mature.
 - **sysync** showed what a tightly-scoped operational tool looks like when the principles are applied at one job: data-defined, idempotent, deterministic, planned, run locally, refusing to do anything beyond config.
 - **DSNC** is the namespace discipline that prevents collision at scale.
-- **INFRA-1** named mechanisms, properties, and principles. Reconciler, Reactor, Puller, Verifier are mechanism families. Idempotency, Convergence, Liveness are property claims. Level-triggered-over-edge-triggered, idempotent retry, bound everything are principles.
-- **INFRA-2** specified the OpsDB design — the passive substrate the runners coordinate through.
-- **INFRA-3** specified the schema — the entity types runners read and write.
+- **OPSDB-9** named mechanisms, properties, and principles. Reconciler, Reactor, Puller, Verifier are mechanism families. Idempotency, Convergence, Liveness are property claims. Level-triggered-over-edge-triggered, idempotent retry, bound everything are principles.
+- **OPSDB-2** specified the OpsDB design — the passive substrate the runners coordinate through.
+- **OPSDB-4** specified the schema — the entity types runners read and write.
 
-INFRA-4 sits on all of this. It describes how runners are designed, what kinds of runners exist, how they coordinate, how they handle real operational scenarios, and how they relate to current standard practice in K8s shops.
+OPSDB-5 sits on all of this. It describes how runners are designed, what kinds of runners exist, how they coordinate, how they handle real operational scenarios, and how they relate to current standard practice in K8s shops.
 
-Walking through what INFRA-4 needs to cover.
+Walking through what OPSDB-5 needs to cover.
 
-## What INFRA-4 is fundamentally about
+## What OPSDB-5 is fundamentally about
 
-INFRA-4 is the runner design paper — the operational logic layer that sits above the OpsDB and acts in the world. The OpsDB has all the data; runners have all the logic. INFRA-4 specifies how those runners are built, how they coordinate through the OpsDB, and how they handle the operational scenarios real organizations face.
+OPSDB-5 is the runner design paper — the operational logic layer that sits above the OpsDB and acts in the world. The OpsDB has all the data; runners have all the logic. OPSDB-5 specifies how those runners are built, how they coordinate through the OpsDB, and how they handle the operational scenarios real organizations face.
 
 It is not a catalog of every possible runner. It is a design specification: the runner pattern, its decomposition into kinds, its interaction model with the OpsDB and with authorities, and the disciplines that keep runners small, knowable, and reliable.
 
-The structural claim mirrors INFRA-2's: **runners are the operational logic shell around the OpsDB data; each runner is small enough to be fully knowable; runners coordinate through shared data, never directly with each other; the framework (shared libraries) is consistent across runners while each runner remains specific.**
+The structural claim mirrors OPSDB-2's: **runners are the operational logic shell around the OpsDB data; each runner is small enough to be fully knowable; runners coordinate through shared data, never directly with each other; the framework (shared libraries) is consistent across runners while each runner remains specific.**
 
 ## The runner kinds that need treatment
 
-From INFRA-1's mechanism families, certain mechanisms appear directly as runner kinds:
+From OPSDB-9's mechanism families, certain mechanisms appear directly as runner kinds:
 
 **Pullers** — Watch/Probe/Counter/Gauge/Histogram authorities and write cached observation. Read from authorities (Prometheus, Kubernetes API, cloud control planes, vault for non-secret metadata, identity providers, ticketing systems). Write to `observation_cache_*` tables in the OpsDB. Pure read on one side, scoped write on the other. The simplest runner shape, and the most common — there will be dozens of pullers in a mature OpsDB.
 
@@ -46,11 +46,11 @@ From INFRA-1's mechanism families, certain mechanisms appear directly as runner 
 
 **Failover / failover-verifier runners** — Detect that a primary is failing, perform the failover, verify the failover succeeded, update the OpsDB to reflect the new primary.
 
-These are not fixed; the runner kinds are an open set. INFRA-4 enumerates the common ones, shows the pattern they share, and provides guidance for new kinds.
+These are not fixed; the runner kinds are an open set. OPSDB-5 enumerates the common ones, shows the pattern they share, and provides guidance for new kinds.
 
 ## The shared-library suite
 
-Runners are small because the shared libs are good. INFRA-4 needs to specify the shared library layer at the structural level (what categories of capability, what the contract looks like) without specifying the implementation:
+Runners are small because the shared libs are good. OPSDB-5 needs to specify the shared library layer at the structural level (what categories of capability, what the contract looks like) without specifying the implementation:
 
 - **OpsDB API client** — auth, retry, validation handling, change-set submission, structured output writes
 - **Kubernetes operations** — apply manifests, query state, watch streams, helm operations
@@ -66,7 +66,7 @@ Each library is versioned, tested, released. Runners pin to library versions and
 
 ## GitOps as a first-class integration pattern
 
-The user's framing pulls this directly: "helm config into git repos to make changes via gitops to k8s updates with normal pod deploys getting logged into opsdb by a gitops trigger." This is a concrete operational pattern that INFRA-4 should model carefully because it represents how most modern K8s shops actually work.
+The user's framing pulls this directly: "helm config into git repos to make changes via gitops to k8s updates with normal pod deploys getting logged into opsdb by a gitops trigger." This is a concrete operational pattern that OPSDB-5 should model carefully because it represents how most modern K8s shops actually work.
 
 The GitOps loop in OpsDB-aware form:
 
@@ -88,7 +88,7 @@ The user said: "fixed version artifact deployment, or tagged, etc." — these be
 
 The user said: "runners could be gated on change management approvals behind a queue of requests that has CM around it, or free to automate on their own." This is a per-runner-kind, per-target policy decision, expressible as data.
 
-INFRA-4 needs to make this explicit. For each runner, the schema records:
+OPSDB-5 needs to make this explicit. For each runner, the schema records:
 
 - Whether the runner submits change sets that require approval (gated)
 - Whether the runner submits change sets that auto-approve under specific policies (queued behind CM but auto-pass for routine cases)
@@ -96,23 +96,23 @@ INFRA-4 needs to make this explicit. For each runner, the schema records:
 
 The gating is policy data. A drift-correction runner for low-stakes config might auto-approve its proposals. The same runner targeting a production database submits proposals that route to humans. Same runner code, different policies, different behavior.
 
-This pattern matches INFRA-2's stance that change-management rules are themselves data and that runners use the same change-set infrastructure as humans.
+This pattern matches OPSDB-2's stance that change-management rules are themselves data and that runners use the same change-set infrastructure as humans.
 
 ## Idempotency, level-triggering, and bound everything
 
-From INFRA-1 and the book, three principles dominate runner design:
+From OPSDB-9 and the book, three principles dominate runner design:
 
-**Idempotency** — every runner action must be safely retryable. The runner that ensures a configmap exists with specific values produces the same end state on every run. The runner that rotates a credential uses uniqueness keys so that a partial failure followed by a retry doesn't produce two rotations. INFRA-4 specifies idempotency as a contract of every runner; runners that cannot be made idempotent are flagged in their `runner_spec` so operators know they require special care.
+**Idempotency** — every runner action must be safely retryable. The runner that ensures a configmap exists with specific values produces the same end state on every run. The runner that rotates a credential uses uniqueness keys so that a partial failure followed by a retry doesn't produce two rotations. OPSDB-5 specifies idempotency as a contract of every runner; runners that cannot be made idempotent are flagged in their `runner_spec` so operators know they require special care.
 
 **Level-triggered over edge-triggered** — runners read current state and act on it, rather than reacting to event streams. A drift detector that compares OpsDB desired state against K8s observed state on every cycle catches drift regardless of what events were missed. A reactor that fires on K8s events misses anything that happened during a network partition. Both have their place; the default is level-triggered.
 
 **Bound everything** — every runner has bounded resources. Bounded retry budget. Bounded execution time. Bounded queue depth for runners that queue work. Bounded memory. The runner_spec records the bounds; the runner enforces them at runtime; the runner_job records what bound was hit if execution stopped early.
 
-INFRA-4 needs a section on each, with the OpsDB schema fields that express the bounds and the runtime expectations that runners commit to.
+OPSDB-5 needs a section on each, with the OpsDB schema fields that express the bounds and the runtime expectations that runners commit to.
 
 ## Stack walking and dependency awareness
 
-The user mentioned "the stack walking concept" — this connects to the substrate hierarchy from §6 of INFRA-3. A pod's full ancestry walks from `k8s_pod` → `megavisor_instance` (kubelet) → parent (the underlying VM, bare metal, or cloud resource) → up to the rack location or cloud region.
+The user mentioned "the stack walking concept" — this connects to the substrate hierarchy from §6 of OPSDB-4. A pod's full ancestry walks from `k8s_pod` → `megavisor_instance` (kubelet) → parent (the underlying VM, bare metal, or cloud resource) → up to the rack location or cloud region.
 
 Runners benefit from this walking when they need to make decisions based on dependency. Examples:
 
@@ -120,11 +120,11 @@ Runners benefit from this walking when they need to make decisions based on depe
 - A failover runner that needs to know what infrastructure is shared between primary and replica before deciding whether the failover is safe (if both replicas live in the same rack, the failover is dangerous).
 - A capacity reconciler that walks K8s nodes to underlying machines to underlying hardware sets to compute available headroom.
 
-The schema makes these queries possible because of the unified hierarchy. INFRA-4 should include a section on **dependency-aware runners** showing how walking the substrate informs runner decisions that simpler tools cannot make.
+The schema makes these queries possible because of the unified hierarchy. OPSDB-5 should include a section on **dependency-aware runners** showing how walking the substrate informs runner decisions that simpler tools cannot make.
 
 ## Standard K8s runbooks vs OpsDB-coordinated runbooks
 
-The user said: "consider this... against standard k8s runbooks today." This contrast is worth doing explicitly in INFRA-4. Walking through what changes:
+The user said: "consider this... against standard k8s runbooks today." This contrast is worth doing explicitly in OPSDB-5. Walking through what changes:
 
 **Standard K8s runbook today, "service is alerting":**
 
@@ -152,11 +152,11 @@ The data is scattered: PagerDuty has the schedule, Grafana has the dashboard, ku
 
 The contrast isn't that the second is shorter — it's that the second produces a complete, queryable, auditable trail without extra effort, because the trail IS the data the system runs on.
 
-INFRA-4 should walk through this contrast for several common scenarios: alert response, deployment, certificate renewal, compliance evidence collection, drift correction. Each scenario shows the standard practice and the OpsDB-coordinated practice side by side. The benefit is not eliminating the work — it's making the work tracked, automated, and auditable.
+OPSDB-5 should walk through this contrast for several common scenarios: alert response, deployment, certificate renewal, compliance evidence collection, drift correction. Each scenario shows the standard practice and the OpsDB-coordinated practice side by side. The benefit is not eliminating the work — it's making the work tracked, automated, and auditable.
 
 ## The runner as small unit of knowable logic
 
-The user's framing — "runners designed like sysync" — pulls from sysync's discipline directly. Sysync is small (~3000 lines of Python), data-defined, idempotent, deterministic, run locally, refuses to do anything beyond config. Each runner in INFRA-4's design follows the same discipline:
+The user's framing — "runners designed like sysync" — pulls from sysync's discipline directly. Sysync is small (~3000 lines of Python), data-defined, idempotent, deterministic, run locally, refuses to do anything beyond config. Each runner in OPSDB-5's design follows the same discipline:
 
 - **Small** — typically 200-500 lines of runner-specific logic, with shared libraries doing the heavy lifting
 - **Data-defined** — reads its config from the OpsDB (its `runner_spec_version.runner_data_json`), produces structured outputs
@@ -167,11 +167,11 @@ The user's framing — "runners designed like sysync" — pulls from sysync's di
 
 This shape is replicable across runner kinds. A puller is 200 lines: query the authority, transform the response, write to the OpsDB. A verifier is 300 lines: check the condition, write the evidence. A simple reconciler is 500 lines: read desired and observed, compute diff, apply through shared libs.
 
-INFRA-4 should include skeletal pseudocode (not full implementations) showing the shape of each runner kind. Real implementations are organization-specific; the shape is the contract.
+OPSDB-5 should include skeletal pseudocode (not full implementations) showing the shape of each runner kind. Real implementations are organization-specific; the shape is the contract.
 
 ## Helm-into-git-into-cluster as the worked example
 
-The user pointed at this specific flow as a worked example. INFRA-4 should treat it as the central illustrated pattern — the running example threaded through the paper to show how runners coordinate.
+The user pointed at this specific flow as a worked example. OPSDB-5 should treat it as the central illustrated pattern — the running example threaded through the paper to show how runners coordinate.
 
 The cast of runners involved in one helm-via-gitops deployment:
 
@@ -187,11 +187,11 @@ Each runner is small, knowable, single-purpose. They coordinate through OpsDB ro
 
 This running example demonstrates the design at every level: the OpsDB has the data, runners are the logic, the framework is the shared libraries, the discipline is in the small single-purpose units, and standard K8s practice is enriched (not replaced) by being OpsDB-aware.
 
-## Document structure for INFRA-4
+## Document structure for OPSDB-5
 
 A working outline:
 
-**§1 Introduction** — Purpose, relationship to INFRA-1/2/3, reader assumptions.
+**§1 Introduction** — Purpose, relationship to OPSDB-9/2/3, reader assumptions.
 
 **§2 The runner pattern** — What every runner is and does. Reads from OpsDB, acts in the world, writes to OpsDB. Small, single-purpose, data-defined, idempotent, level-triggered, bounded.
 
@@ -205,7 +205,7 @@ A working outline:
 
 **§7 Change management gating** — Per-runner policy. Direct write (observation only). Auto-approved change sets. Approval-required change sets. The discipline of choosing which gating each runner gets.
 
-**§8 Stack-walking and dependency-aware runners** — Using the substrate hierarchy from INFRA-3 to make decisions that simpler tools cannot. Dependency analysis. Failure-domain-aware operations.
+**§8 Stack-walking and dependency-aware runners** — Using the substrate hierarchy from OPSDB-4 to make decisions that simpler tools cannot. Dependency analysis. Failure-domain-aware operations.
 
 **§9 GitOps integration** — The helm-into-git-into-cluster pattern as a worked example. What runners participate. What data flows through the OpsDB at each step. How the trail composes.
 
@@ -225,23 +225,23 @@ A working outline:
 
 3. **Should §10's contrast be its own appendix?** The side-by-side scenarios are powerful but lengthy. Possibly an appendix with the structured comparison.
 
-4. **How much of the shared library suite gets specified?** Categories yes; specific APIs no. INFRA-4 specifies the contract surface (what each library category does); the implementation is per-org.
+4. **How much of the shared library suite gets specified?** Categories yes; specific APIs no. OPSDB-5 specifies the contract surface (what each library category does); the implementation is per-org.
 
 5. **Whether to include "runner of runners" patterns.** Some runners spawn child runners (a fleet-wide deploy runner that issues per-host runner_jobs). This is fine architecturally but worth being explicit about — the parent doesn't direct the children, it submits work; the children pick up work; coordination through the OpsDB.
 
-6. **The relationship to existing tools.** Argo CD, Flux, Crossplane, Pulumi, Terraform, Salt, Ansible, Puppet — all do some of what INFRA-4 describes. Should the paper map them onto the runner-kind taxonomy explicitly? Probably yes, briefly, in a single section: "these tools fill these runner-kind slots; the OpsDB-aware version of each adds the writes-back-to-OpsDB discipline."
+6. **The relationship to existing tools.** Argo CD, Flux, Crossplane, Pulumi, Terraform, Salt, Ansible, Puppet — all do some of what OPSDB-5 describes. Should the paper map them onto the runner-kind taxonomy explicitly? Probably yes, briefly, in a single section: "these tools fill these runner-kind slots; the OpsDB-aware version of each adds the writes-back-to-OpsDB discipline."
 
-7. **Bootstrapping — where it sits.** Bootstrap runners are a special case because they need to operate in a state where the OpsDB is reachable but the host being bootstrapped isn't yet in it. Templated configs, locally cached OpsDB slices (per INFRA-2 §4.8 and §12.8), and explicit registration steps. Probably gets its own subsection or appendix.
+7. **Bootstrapping — where it sits.** Bootstrap runners are a special case because they need to operate in a state where the OpsDB is reachable but the host being bootstrapped isn't yet in it. Templated configs, locally cached OpsDB slices (per OPSDB-2 §4.8 and §12.8), and explicit registration steps. Probably gets its own subsection or appendix.
 
 ## What this paper avoids
 
 - Specifying the implementation language (any language can build runners)
 - Specifying the deployment platform for runners (K8s pods, systemd services, lambdas, serverless — all valid)
-- Reproducing the OpsDB schema (refer to INFRA-3)
-- Reproducing the design rationale (refer to INFRA-2)
+- Reproducing the OpsDB schema (refer to OPSDB-4)
+- Reproducing the design rationale (refer to OPSDB-2)
 - Building a runner library or framework as artifact (separate concern)
 - Becoming a K8s tutorial or GitOps tutorial (the patterns are illustrated; the tutorials live elsewhere)
 
 ---
 
-Ready to refine the plan or proceed to a full INFRA-4 plan in the tightened style we used for INFRA-3.
+Ready to refine the plan or proceed to a full OPSDB-5 plan in the tightened style we used for OPSDB-4.

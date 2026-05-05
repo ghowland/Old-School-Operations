@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-HOWL INFRA-9 Diagrams - OpsDB Implementation Path
+HOWL OPSDB-3 Diagrams - OpsDB Implementation Path
 8 figures covering cardinality, phase progression, schema discipline,
 library structure, governance transition, and operational growth.
 Output: PNG files to ../figures/
@@ -544,7 +544,7 @@ ax.text(13.5, 9.2, '(Phase 5 onward)',
         color=SILVER, fontsize=10, ha='center', style='italic')
 
 after_items = [
-    ('Full INFRA-5 API', '10-step gate on every operation', GREEN),
+    ('Full OPSDB-6 API', '10-step gate on every operation', GREEN),
     ('Change management active', 'change_managed entities gated', GREEN),
     ('Five-layer authorization', 'role/entity/field/runner/policy', GREEN),
     ('Runner report keys enforced', 'declared writable surface only', GREEN),
@@ -843,7 +843,7 @@ save(fig, 'infra09_08_approval_spectrum.png')
 # SUMMARY
 # ================================================================
 
-print("\nINFRA-9 diagram script complete. 8 figures generated:")
+print("\nOPSDB-3 diagram script complete. 8 figures generated:")
 print("  1. infra09_01_runner_growth.png       - Runner population growth across phases")
 print("  2. infra09_02_n_opsdb_sync.png        - N-OpsDB sync architecture")
 print("  3. infra09_03_dsnc_list_of_n.png      - DSNC list-of-N right vs wrong")

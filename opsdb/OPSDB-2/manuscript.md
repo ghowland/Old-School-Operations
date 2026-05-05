@@ -89,7 +89,7 @@ A bundle of N proposed changes to OpsDB data, submitted with a reason, routed fo
 
 ### 2.7 Conventions
 
-OpsDB-specific terms in **bold-italic** on first use within a section. Reference to mechanisms, properties, and principles from HOWL-INFRA-1-2026 are noted where relevant; the present paper assumes familiarity with that taxonomy.
+OpsDB-specific terms in **bold-italic** on first use within a section. Reference to mechanisms, properties, and principles from OPSDB-9 are noted where relevant; the present paper assumes familiarity with that taxonomy.
 
 ---
 
@@ -1269,4 +1269,4 @@ For organizations that bring the discipline, the OpsDB delivers what fragmented 
 
 ---
 
-*End of HOWL-INFRA-2-2026.*
+*End of OPSDB-2.*

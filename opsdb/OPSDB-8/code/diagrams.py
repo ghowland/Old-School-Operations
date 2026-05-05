@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-HOWL INFRA-8 Diagrams - The Shared Library Suite
+HOWL OPSDB-8 Diagrams - The Shared Library Suite
 8 figures covering two-sided policy enforcement, the library/runner boundary,
 denial paths, library/mechanism mapping, evolution, cross-implementation,
 runner anatomy, and the API client lifecycle.
@@ -156,7 +156,7 @@ gate_box = FancyBboxPatch((1.5, 4.0), 8.0, 2.4,
                           boxstyle='round,pad=0.1',
                           facecolor=PAN, edgecolor=GOLD, linewidth=2.5)
 ax.add_patch(gate_box)
-ax.text(5.5, 5.95, 'OpsDB API Gate (INFRA-5)',
+ax.text(5.5, 5.95, 'OpsDB API Gate (OPSDB-6)',
         ha='center', va='center', fontsize=11, color=GOLD, fontweight='bold')
 ax.text(5.5, 5.55, '10-step gate sequence',
         ha='center', va='center', fontsize=9, color=SILVER, style='italic')
@@ -181,7 +181,7 @@ lib_box = FancyBboxPatch((10.5, 4.0), 8.0, 2.4,
                         boxstyle='round,pad=0.1',
                         facecolor=PAN, edgecolor=GOLD, linewidth=2.5)
 ax.add_patch(lib_box)
-ax.text(14.5, 5.95, 'Library Suite (INFRA-8)',
+ax.text(14.5, 5.95, 'Library Suite (OPSDB-8)',
         ha='center', va='center', fontsize=11, color=GOLD, fontweight='bold')
 ax.text(14.5, 5.55, 'each library validates declared scope',
         ha='center', va='center', fontsize=9, color=SILVER, style='italic')
@@ -453,7 +453,7 @@ gate_box_L = FancyBboxPatch((1.0, 7.3), 8.0, 2.6,
                             boxstyle='round,pad=0.1',
                             facecolor=PAN, edgecolor=GOLD, linewidth=2.5)
 axL.add_patch(gate_box_L)
-axL.text(5.0, 9.55, 'API Gate (INFRA-5)',
+axL.text(5.0, 9.55, 'API Gate (OPSDB-6)',
          ha='center', va='center', fontsize=11, color=GOLD, fontweight='bold')
 
 # Within the gate, mark which step denies
@@ -509,7 +509,7 @@ axL.text(5.0, 3.80,
          ha='center', va='center', fontsize=7.5, color=SILVER,
          fontfamily='monospace')
 
-axL.text(5.0, 2.7, 'Surface: API gate (INFRA-5 §8)',
+axL.text(5.0, 2.7, 'Surface: API gate (OPSDB-6 §8)',
          ha='center', va='center', fontsize=9.5, color=GOLD,
          fontweight='bold')
 axL.text(5.0, 2.35, 'Caught at OpsDB write time',
@@ -635,7 +635,7 @@ axR.text(5.0, 3.80,
          ha='center', va='center', fontsize=7.5, color=SILVER,
          fontfamily='monospace')
 
-axR.text(5.0, 2.7, 'Surface: library suite (INFRA-8 §13)',
+axR.text(5.0, 2.7, 'Surface: library suite (OPSDB-8 §13)',
          ha='center', va='center', fontsize=9.5, color=GOLD,
          fontweight='bold')
 axR.text(5.0, 2.35, 'Caught at world-side action time',
@@ -676,7 +676,7 @@ save(fig, 'infra8_03_two_denial_paths.png')
 # ================================================================
 # FIG 4: LIBRARY CATEGORIES -> MECHANISM FAMILIES
 # Type: 5 (Connection Map)
-# Shows: each library category mapped to one or more INFRA-1 mechanism
+# Shows: each library category mapped to one or more OPSDB-9 mechanism
 #        families. Library taxonomy follows mechanism taxonomy.
 # ================================================================
 
@@ -684,7 +684,7 @@ fig, ax = plt.subplots(figsize=(20, 13), facecolor=BG)
 ax.set_facecolor(BG)
 
 # Left column: library categories
-# Right column: INFRA-1 mechanism families
+# Right column: OPSDB-9 mechanism families
 
 libraries_col = [
     ('opsdb.api',            'OpsDB API client',          0,  CYAN),
@@ -739,11 +739,11 @@ lib_ys = np.linspace(y_top, y_bottom, n_libs)
 mech_ys = np.linspace(y_top, y_bottom, n_mechs)
 
 # Column headers
-ax.text(left_x, y_top + 0.85, 'Library categories (INFRA-8)',
+ax.text(left_x, y_top + 0.85, 'Library categories (OPSDB-8)',
         ha='center', va='center', fontsize=11, color=GOLD, fontweight='bold',
         bbox=dict(boxstyle='round,pad=0.3', facecolor=BG, edgecolor=GOLD,
                   linewidth=1.5))
-ax.text(right_x, y_top + 0.85, 'Mechanism families (INFRA-1)',
+ax.text(right_x, y_top + 0.85, 'Mechanism families (OPSDB-9)',
         ha='center', va='center', fontsize=11, color=GOLD, fontweight='bold',
         bbox=dict(boxstyle='round,pad=0.3', facecolor=BG, edgecolor=GOLD,
                   linewidth=1.5))
@@ -818,7 +818,7 @@ for lib_idx, mech_idx in mappings:
 
 # Bottom caption
 ax.text(10.0, -0.4,
-        'The library taxonomy is not arbitrary - it follows the mechanism taxonomy from INFRA-1.',
+        'The library taxonomy is not arbitrary - it follows the mechanism taxonomy from OPSDB-9.',
         ha='center', va='center', fontsize=11, color=GOLD, fontweight='bold')
 ax.text(10.0, -0.85,
         'Each library is the operational realization of one or more mechanism families.',
@@ -829,7 +829,7 @@ ax.set_ylim(-1.3, 14.0)
 ax.set_aspect('auto')
 ax.axis('off')
 ax.set_title('Library Categories Mapped to Mechanism Families\n'
-             'INFRA-8 libraries are the operational realization of INFRA-1 mechanisms',
+             'OPSDB-8 libraries are the operational realization of OPSDB-9 mechanisms',
              color=GOLD, fontsize=15, fontweight='bold', pad=12)
 
 save(fig, 'infra8_04_libraries_to_mechanisms.png')
@@ -1389,7 +1389,7 @@ phases = [
     ('phase 3: optimistic version stamp',
      'attach drafted-against version stamps for each affected entity',
      PURPLE,
-     'INFRA-5 §5.6 stale-version protection',
+     'OPSDB-6 §5.6 stale-version protection',
      6.5),
 
     ('phase 4: serialize and send',
@@ -1401,7 +1401,7 @@ phases = [
     ('phase 5: API gate processing',
      '10-step gate sequence runs (auth/authz/validate/route/audit/execute)',
      GOLD,
-     'this is INFRA-5 territory',
+     'this is OPSDB-6 territory',
      3.5),
 
     ('phase 6: response parsing',
@@ -1491,7 +1491,7 @@ save(fig, 'infra8_08_api_client_lifecycle.png')
 # ================================================================
 
 print("\n" + "=" * 60)
-print("INFRA-8 diagram script complete")
+print("OPSDB-8 diagram script complete")
 print("=" * 60)
 print("Files written to: %s" % outdir)
 print()

@@ -187,7 +187,7 @@ SA1|1 Schema change starts as git PR|author|edits files: adds entity file+adds f
 SA2|2 PR review|schema steward+other reviewers|checks structural integrity+DSNC adherence+comprehensiveness (slicing-pie); CI may run loader on PR branch independently before merge
 SA3|3 PR merge triggers CI|automated|generates _schema_change_set proposal as diff between current schema (OpsDB _schema_* tables) and new schema (merged repo)
 SA4|4 Diff expressed as schema-evolution operations|automated|ADD ENTITY+ADD FIELD+WIDEN ENUM+ADD INDEX+MARK DEPRECATED
-SA5|5 _schema_change_set governed by INFRA-5 change-mgmt|API|stricter approval rules; approvers include schema steward role
+SA5|5 _schema_change_set governed by OPSDB-6 change-mgmt|API|stricter approval rules; approvers include schema steward role
 SA6|6 Validation runs through standard pipeline|API|validator confirms no operations forbidden by §evolution_forbidden are present; rejected at validation step before approval routing
 SA7|7 On approval specialized schema executor applies|schema executor runner|reads approved _schema_change_set+associated field changes+generates DDL+applies to storage engine atomically where possible+updates _schema_* tables+updates _schema_version with new current+marks change_set applied
 SA8|8 Failures during DDL halt executor|automated|rolls back what can be rolled back; change_set status=failed; finding filed; operator investigates; schema repo and OpsDB remain pre-change until corrective change_set
@@ -237,9 +237,9 @@ SG1|Not a programming language|vocab not Turing-complete; no expressions+variabl
 SG2|Not a constraint solver|validates per-field bounds at write time; does not solve cross-field+optimize over multiple fields|constraint solver in schema would expand expressive power but cost bounded validation time; bounded time critical at API gate
 SG3|Not a templating system|files not parameterized; no per-environment substitution+per-tenant variation+inheritance from base|templating creates gap between checked-in and loaded; expansion logic hides complexity; what's in file is what gets loaded
 SG4|Not a migration engine|loader generates DDL for current schema state; does not migrate data between versions automatically|schema migrations are mechanical (run DDL); data migrations involve domain logic+large volumes+multi-step coordination; keep separate
-SG5|Not a permissions system|describes structure not who can read/write|access control is policy data per INFRA-5 §6 (policy rows of type access_control evaluated at API authorization step); two concerns evolve independently
+SG5|Not a permissions system|describes structure not who can read/write|access control is policy data per OPSDB-6 §6 (policy rows of type access_control evaluated at API authorization step); two concerns evolve independently
 SG6|Not a runtime API|loader runs to apply schema; not in request path|API queries schema metadata not files at request time; if git repo unreachable API continues serving (metadata fully cached in OpsDB); schema repo consulted only when changes applied
-SG7|Not a query language|describes structure for API to enforce; does not describe queries|search API (INFRA-5 §4) defines querying separately; schema vocab for declaring data exists; search lang for retrieving
+SG7|Not a query language|describes structure for API to enforce; does not describe queries|search API (OPSDB-6 §4) defines querying separately; schema vocab for declaring data exists; search lang for retrieving
 
 # worked_example_service(field|declaration)
 WE_S1|entity_type|service

@@ -11,7 +11,7 @@ L5|Mandatory libraries enforce single path|API client mandatory+observation libr
 L6|Library evolution by accretion|pattern in 1 runner stays in runner; pattern in 3 candidate; pattern in 10 confirmed extraction
 L7|Pulling logic out of library back into runners is rare|once library others depend; removal forces reimplementation everywhere
 L8|Library is operational realization of one-way-to-do-each-thing|applied to runner-world interaction
-L9|Two-sided policy enforcement|API gate (INFRA-5) at OpsDB write time + library suite at world-side action time; runner declarations input to both
+L9|Two-sided policy enforcement|API gate (OPSDB-6) at OpsDB write time + library suite at world-side action time; runner declarations input to both
 L10|Library refuses fragmentation|team wanting "their own version" solving real problem; absorb into standard library; library_steward holds discipline
 L11|Templates deliberately dumb|substitution+inclusion only; logic-needing-templates upstream into runners producing concrete values
 L12|Secrets never persisted by library|in memory only during call; logging records path+caller+timestamp+result never value
@@ -21,7 +21,7 @@ L14|Library propagates correlation IDs|runner_job_id root → API call chain →
 # families(id|family|naming_prefix|role)
 LF1|API access|opsdb.api|the only path runners use to touch OpsDB; mandatory
 LF2|World-side substrate|opsdb.world.*|wrappers per external substrate (kubernetes|cloud|host|registry|secret|identity|monitoring|pointer)
-LF3|Coordination and resilience|opsdb.coordination.*|retry|circuit_breaker|hedger|bulkhead|failover; mechanism patterns from INFRA-1
+LF3|Coordination and resilience|opsdb.coordination.*|retry|circuit_breaker|hedger|bulkhead|failover; mechanism patterns from OPSDB-9
 LF4|Observation|opsdb.observation.*|logging|metrics|tracing; mandatory and uniform
 LF5|Notification|opsdb.notification|channel-agnostic notification operations
 LF6|Templating and rendering|opsdb.templating.*|deliberately dumb; substitution+inclusion only
@@ -95,7 +95,7 @@ LA16|watch|stream|entity_type+filter+resume_token|event stream to callback|libra
 LA_F1|stale-version retry|library auto-refetches+retries N times (default 3) when runner opted in to auto-reconciliation; only if retry merge does not introduce conflicts; complex bundles handled by runner
 LA_F2|audit correlation|runner_job_id root → headers → audit_log_entry; chains for runner-triggered runners; query joins via correlation
 LA_F3|failure surfacing|validation_failed+authorization_denied+stale_version+not_found+bound_exceeded+network_error+internal_error
-LA_F4|why mandatory|alternate paths would make INFRA-5 disciplines advisory; not building alternative paths IS the discipline
+LA_F4|why mandatory|alternate paths would make OPSDB-6 disciplines advisory; not building alternative paths IS the discipline
 
 # world_libs(id|library|substrate|target_validation_against|key_ops)
 LW1|LL2|kubernetes|runner_k8s_namespace_target (cluster+namespace)|apply_manifest|query_resource|query_resources|watch_resources|helm_render|helm_install|exec_in_pod|get_pod_logs
@@ -127,7 +127,7 @@ LN1|operations|send_notification (channel_id+content+recipients+urgency)|send_to
 LN2|channel config|in OpsDB as authority rows of types chat_platform|ticketing_system|paging_provider; library reads at startup+runtime
 LN3|recipient resolution|role→on_call_assignment→ops_user→contact info→dispatch via channel; runner says "page database SRE on-call about this"; library handles chain
 LN4|authorization|library validates runner notification target scope+paging requires explicit paging authority
-LN5|why library not API|INFRA-5 §10: API does not communicate with stakeholders because channels evolve at different cadence; library contains channel evolution; channel switch = library backend change + OpsDB authority row update
+LN5|why library not API|OPSDB-6 §10: API does not communicate with stakeholders because channels evolve at different cadence; library contains channel evolution; channel switch = library backend change + OpsDB authority row update
 
 # templating(aspect|content)
 LT1|allowed|variable substitution {{ var }}+inclusion {{ include "other" }}+bounded iteration {% for item in list_var %}
@@ -164,11 +164,11 @@ LS4|investment|10-25% role typical orgs; full-time + small team for largest orgs
 LS5|investment compounds|well-stewarded suite makes next runner cheap; team finds library calls already exist+documented+tested+integrated; their runner small because suite good
 
 # two_sided(id|surface|enforces_against|input|failure_mode)
-LP1|API gate (INFRA-5 §3.5)|OpsDB writes|10-step gate sequence|caught before persisting; structured error to runner
+LP1|API gate (OPSDB-6 §3.5)|OpsDB writes|10-step gate sequence|caught before persisting; structured error to runner
 LP2|library suite|world-side actions|runner declarations as OpsDB rows|caught before reaching substrate; structured error to runner
 LP3|composition|both surfaces use same input (runner declarations) → produce same fail-closed result
 LP4|comprehensive coverage|runner cannot through any path act outside declared scope: writes caught at gate+world-side caught at library
-LP5|"runner authority is data" (INFRA-4 §8.5)|holds across every action; every authority is data+every check mechanical+every failure fail-closed and audit-logged
+LP5|"runner authority is data" (OPSDB-5 §8.5)|holds across every action; every authority is data+every check mechanical+every failure fail-closed and audit-logged
 
 # policy_validation(library|extracted_target|declaration|failure)
 PV1|LL2 K8s|cluster+namespace|runner_k8s_namespace_target|library_authorization_denied with target+missing decl
@@ -181,7 +181,7 @@ PV7|LL22 git|repo|runner repo access decl|same shape
 # pattern: extract target from operation params → look up runner declarations from cached OpsDB data → check coverage → proceed if covered OR reject with structured error → log to observation library + emit metric
 
 # fail_closed(aspect|content)
-FC1|principle|if library cannot determine authorization → refuse rather than allow (INFRA-1 §5.3 fail closed at library layer)
+FC1|principle|if library cannot determine authorization → refuse rather than allow (OPSDB-9 §5.3 fail closed at library layer)
 FC2|partition tolerance|library uses last-known-good cache of declarations
 FC3|bounded staleness|after threshold library refuses calls because declarations no longer trusted
 FC4|threshold per-library policy-driven|short for security-sensitive (secrets+paging+cloud provisioning); longer for benign
@@ -192,11 +192,11 @@ AC2|joined query|"every authorization denial for runner X in last hour" returns 
 AC3|denial structure|surface that denied + missing declaration + attempted target
 AC4|investigation pivot|denial → runner_spec → change_set defining declarations → approver who authorized
 AC5|trail composition|world-side action attempted → library's check → OpsDB declaration → change_set creating declaration → approver = queryable join
-AC6|completion claim|audit trail INFRA-5 promised at OpsDB write surface extends through library layer to cover world-side actions
+AC6|completion claim|audit trail OPSDB-6 promised at OpsDB write surface extends through library layer to cover world-side actions
 
 # failure_modes(id|error|meaning|runner_response)
 FM1|validation_failed|schema or bound validation rejected call|runner records failure; next cycle picks up
-FM2|authorization_denied|one of 5 layers denied (INFRA-5 §6.2)|runner records; investigation may surface declaration gap
+FM2|authorization_denied|one of 5 layers denied (OPSDB-6 §6.2)|runner records; investigation may surface declaration gap
 FM3|stale_version|optimistic concurrency conflict|runner fetches current+reconciles+resubmits OR library auto-retries if opted in
 FM4|not_found|targeted entity does not exist|runner records; possibly skip target
 FM5|bound_exceeded|query+search+rate limit exceeded|runner records; possibly back off
@@ -207,9 +207,9 @@ FM9|undeclared_report_key|library fail-fast before round-trip|runner records; in
 
 # refusals(id|not_a|why|belongs_in)
 LD1|Runner framework|library is callable not controlling shell; framework owning runner's main loop couples every runner to framework's evolution|runner's main loop+event dispatch+lifecycle stay runner's responsibility
-LD2|Workflow engine|library does not mediate runner-to-runner messaging; would be orchestrator by another path (INFRA-2 §4.1)|runners coordinate through OpsDB rows
+LD2|Workflow engine|library does not mediate runner-to-runner messaging; would be orchestrator by another path (OPSDB-2 §4.1)|runners coordinate through OpsDB rows
 LD3|Code distribution system|library impls distributed via PyPI+container registries+language-native+internal artifact stores; OpsDB holds operational data not code|standard package mechanisms
-LD4|Secrets store|secret library accesses backends; never persists values; recursive boundary from INFRA-3 §13.8|secret backend is SoT
+LD4|Secrets store|secret library accesses backends; never persists values; recursive boundary from OPSDB-4 §13.8|secret backend is SoT
 LD5|Service mesh|library makes outbound calls; does not intercept other components' traffic|service-mesh products at network layer
 LD6|UI|no UI in suite; runners observed via observation libs + dashboards on OpsDB|downstream concern consuming OpsDB
 LD7|Database|OpsDB is the database; library state ephemeral or written to OpsDB|library uses OpsDB OR operates ephemerally
@@ -268,10 +268,10 @@ LA13|creates|change_set_emergency_review
 LA16|level_triggered_on_reconnect|true
 LF6|forbids|expressions+conditionals+functions+embedded-code
 LF6|allows|substitution+inclusion+bounded-iteration
-LV5|parallels|INFRA-6-§12.4-duplication-pattern
+LV5|parallels|OPSDB-7-§12.4-duplication-pattern
 LV7|gates|new-implementation-acceptance
 LV10|orders|schema-first-then-library-then-runner
-LS1|parallels|schema_steward (INFRA-2 §14.12)
+LS1|parallels|schema_steward (OPSDB-2 §14.12)
 LS3|prevents|library-fragmentation
 LP1|enforces|OpsDB-write-surface
 LP2|enforces|world-side-action-surface
@@ -281,11 +281,11 @@ LP4|prevents|action-outside-declared-scope
 LP5|completes|runner-authority-as-data
 PV_ALL|fail_closed|true
 PV_ALL|data_driven|true
-FC1|implements|INFRA-1-§5.3
+FC1|implements|OPSDB-9-§5.3
 FC3|bounded_staleness|true
-AC6|completes|INFRA-5-§11-promise
+AC6|completes|OPSDB-6-§11-promise
 FM3|may_auto_retry|via LA_F1
-FM8|new_in|INFRA-8
+FM8|new_in|OPSDB-8
 FM9|fail_fast_at|library-layer
 LD1|prevents|framework-coupling
 LD2|prevents|orchestrator-by-another-path
@@ -332,7 +332,7 @@ operation_classes: read|write-direct|write-cs|cm-action|stream
 contract_components: operations|inputs|outputs|guarantees|failure-modes
 boundary_test: would two runners reimplement this? yes→library no→runner
 extraction_threshold: 3-runners-pattern=candidate; 10=confirmed
-versioning: MAJOR.MINOR.PATCH semver with deprecation cycles parallel to INFRA-6 §12.4
+versioning: MAJOR.MINOR.PATCH semver with deprecation cycles parallel to OPSDB-7 §12.4
 two_sided_surfaces: API-gate (writes)+library-suite (world-side actions)
 policy_validation_pattern: extract-target → look-up-declarations-cache → check-coverage → proceed-or-reject-fail-closed → log+metric
 fail_closed_principle: if cannot determine authorization → refuse not allow

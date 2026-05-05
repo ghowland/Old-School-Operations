@@ -19,7 +19,7 @@ What this paper does not specify: implementation language for runners, deploymen
 
 The runner pattern in one sentence: **get from the OpsDB, act in the world, set to the OpsDB**.
 
-The OpsDB design [@HOWL-INFRA-2-2026] commits to a passive substrate. The runners specified here are the active layer. Where the OpsDB holds all operational data — configuration, cached observation, schedules, policies, evidence, audit, and the schema's own metadata — runners are the small, single-purpose units of code that read that data, perform operational work, and record what they did. Each runner is small enough to be fully knowable by one team. Each runner is data-defined: its configuration lives in the OpsDB. Each runner is idempotent, level-triggered where possible, and bounded in every dimension.
+The OpsDB design [@OPSDB-2] commits to a passive substrate. The runners specified here are the active layer. Where the OpsDB holds all operational data — configuration, cached observation, schedules, policies, evidence, audit, and the schema's own metadata — runners are the small, single-purpose units of code that read that data, perform operational work, and record what they did. Each runner is small enough to be fully knowable by one team. Each runner is data-defined: its configuration lives in the OpsDB. Each runner is idempotent, level-triggered where possible, and bounded in every dimension.
 
 Runners do not coordinate with each other directly. There is no orchestrator. Coordination happens through shared data — runner B reads what runner A wrote. A runner that crashes does not block any other runner. The next cycle of the crashed runner picks up where it left off. The OpsDB is the rendezvous; the runners are independent processes meeting through data.
 
@@ -155,7 +155,7 @@ The set phase completes. The runner exits (for cycle-based runners) or continues
 
 ## 4. Runner kinds
 
-Each kind corresponds to one or more mechanism families from [@HOWL-INFRA-1-2026]. Each subsection covers purpose, inputs, outputs, idempotency model, gating model, and examples.
+Each kind corresponds to one or more mechanism families from [@OPSDB-9]. Each subsection covers purpose, inputs, outputs, idempotency model, gating model, and examples.
 
 ### 4.1 Puller
 
@@ -301,7 +301,7 @@ Detects primary failure. Performs failover through shared libraries. Verifies th
 
 **Idempotency.** A failover handler that has already failed over does not fail over again on the next cycle. The runner reads current primary state and acts only if a fresh failure is detected.
 
-**Gating.** Failover often happens under time pressure. The runner may have authority to act unilaterally on detected failures, with post-hoc review (the emergency-change pattern from [@HOWL-INFRA-2-2026]). Or the runner may propose failover via change set with a fast-track approval policy.
+**Gating.** Failover often happens under time pressure. The runner may have authority to act unilaterally on detected failures, with post-hoc review (the emergency-change pattern from [@OPSDB-2]). Or the runner may propose failover via change set with a fast-track approval policy.
 
 **Examples.** Database primary-replica failover handler. Load-balancer backend failover. Cluster control-plane failover.
 
@@ -311,7 +311,7 @@ The kinds enumerated above are the common ones across operational domains. Organ
 
 A new kind is added by registering a `runner_spec_type` value, defining the schema for its `runner_data_json`, and building runners against the kind. The OpsDB absorbs the addition without restructuring.
 
-![Fig. 2: Runner Kinds Mapped to Mechanism Families - each kind instantiates one or more INFRA-1 families.](./figures/infra4_02_runner_kinds_to_families.png)
+![Fig. 2: Runner Kinds Mapped to Mechanism Families - each kind instantiates one or more OPSDB-9 families.](./figures/infra4_02_runner_kinds_to_families.png)
 
 ---
 
@@ -419,7 +419,7 @@ This indirection costs a cycle of latency. For most operations the cost is accep
 
 A runner that crashes does not block any other runner. The next cycle of the crashed runner picks up where it left off, reading current state from the OpsDB. Other runners that were waiting for its output continue to wait, then proceed when the data appears.
 
-This is the level-triggered-over-edge-triggered principle from [@HOWL-INFRA-1-2026] applied to runner coordination. Runners react to current state of the OpsDB, not to event streams from each other.
+This is the level-triggered-over-edge-triggered principle from [@OPSDB-9] applied to runner coordination. Runners react to current state of the OpsDB, not to event streams from each other.
 
 ![Fig. 3: Coordination Through Shared Substrate - no direct edges between runners; coordination is reading what other runners wrote.](./figures/infra4_03_coordination_through_substrate.png)
 
@@ -517,7 +517,7 @@ This pattern keeps automation governed by the same discipline as human action. A
 
 ## 9. Stack-walking and dependency-aware runners
 
-Using the substrate hierarchy from [@HOWL-INFRA-3-2026] §6 to make decisions simpler tools cannot.
+Using the substrate hierarchy from [@OPSDB-4] §6 to make decisions simpler tools cannot.
 
 ### 9.1 The substrate walk
 
@@ -541,7 +541,7 @@ Runners that walk the substrate can make decisions a flat-view tool cannot.
 
 The decisions enabled by walking are the decisions that produce robust operations. A runner that does not walk is operating on the local view; a runner that walks operates on the structural view. The same runner code, with walking added, makes better decisions.
 
-The schema enables the walks because [@HOWL-INFRA-3-2026]'s substrate hierarchy is unified — bare metal, cloud, virtualization, containers, pods all participate in one self-join tree. The runner does not need to know which substrate type it is dealing with; the walk is uniform.
+The schema enables the walks because [@OPSDB-4]'s substrate hierarchy is unified — bare metal, cloud, virtualization, containers, pods all participate in one self-join tree. The runner does not need to know which substrate type it is dealing with; the walk is uniform.
 
 ---
 
@@ -735,7 +735,7 @@ What runners should not do.
 
 **Treating the OpsDB as a queue.** The OpsDB is a database. A runner can read pending change_set rows, but the pattern is "read state, decide action, act." A runner that polls the OpsDB as if it were a message queue and treats every row as a job is misusing the substrate. The change-set executor is a special case where queue-like consumption is appropriate; most runners reconcile state, not consume work units.
 
-**Runners that bypass change management to make changes faster.** Emergency changes have a defined break-glass path with post-hoc review ([@HOWL-INFRA-2-2026] §9.12). Runners that route around change management for any other reason are violating the discipline. Faster is not better than auditable.
+**Runners that bypass change management to make changes faster.** Emergency changes have a defined break-glass path with post-hoc review ([@OPSDB-2] §9.12). Runners that route around change management for any other reason are violating the discipline. Faster is not better than auditable.
 
 ---
 
@@ -1109,7 +1109,7 @@ The query returns one row per layer of the substrate, from pod (depth 0) up to b
 
 ---
 
-*End of HOWL-INFRA-4-2026.*
+*End of OPSDB-5.*
 
 ---
 

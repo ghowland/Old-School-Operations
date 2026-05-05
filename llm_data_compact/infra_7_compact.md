@@ -172,13 +172,13 @@ EC3|Trade-off depends|whether costs of fragmentation org currently absorbing (of
 EC4|For orgs that have lived with fragmentation long enough|to see its costs clearly+the trade is usually obvious
 
 # series_guide(paper|role|when_to_read)
-SG1|INFRA-1|taxonomy of operational mechanisms+properties+principles the OpsDB design draws on|foundational; gives vocabulary for talking about operations in general; explains why OpsDB makes structural choices it does
-SG2|INFRA-2|OpsDB design itself: architectural commitments+cardinality rule (1 or N never 2)+content scope+three consumer populations+API as governance perimeter+construction discipline|the design document; reader who only wants architectural intuition can read this alone
-SG3|INFRA-3|concrete schema demonstration; ~150 entity types across all operational domains|one example schema; org adopting design adapts to specific operational reality but structural patterns transfer
-SG4|INFRA-4|runner pattern in detail: kinds+shared library suite+coordination through shared substrate+three load-bearing disciplines+per-runner change-mgmt gating|how the active layer works
-SG5|INFRA-5|API gate: 10-step gate sequence+five-layer authorization+field-level versioning+optimistic concurrency+change_set lifecycle+runner report keys+audit logging|the active layer where governance happens
-SG6|INFRA-6|how schema itself is constructed: closed constraint vocabulary+schema repo as YAML+forbidden list (no deletions/renames/type changes)+duplication-and-double-write pattern+evolution through change mgmt|how the long-lived artifact is governed
-# six papers ordered as they are because each builds on prior; reader serious about implementing should read in order; reader wanting architectural intuition can read INFRA-2 alone
+SG1|OPSDB-9|taxonomy of operational mechanisms+properties+principles the OpsDB design draws on|foundational; gives vocabulary for talking about operations in general; explains why OpsDB makes structural choices it does
+SG2|OPSDB-2|OpsDB design itself: architectural commitments+cardinality rule (1 or N never 2)+content scope+three consumer populations+API as governance perimeter+construction discipline|the design document; reader who only wants architectural intuition can read this alone
+SG3|OPSDB-4|concrete schema demonstration; ~150 entity types across all operational domains|one example schema; org adopting design adapts to specific operational reality but structural patterns transfer
+SG4|OPSDB-5|runner pattern in detail: kinds+shared library suite+coordination through shared substrate+three load-bearing disciplines+per-runner change-mgmt gating|how the active layer works
+SG5|OPSDB-6|API gate: 10-step gate sequence+five-layer authorization+field-level versioning+optimistic concurrency+change_set lifecycle+runner report keys+audit logging|the active layer where governance happens
+SG6|OPSDB-7|how schema itself is constructed: closed constraint vocabulary+schema repo as YAML+forbidden list (no deletions/renames/type changes)+duplication-and-double-write pattern+evolution through change mgmt|how the long-lived artifact is governed
+# six papers ordered as they are because each builds on prior; reader serious about implementing should read in order; reader wanting architectural intuition can read OPSDB-2 alone
 
 # relationships(from|rel|to)
 DEF1|enables|IC1

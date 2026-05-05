@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-HOWL INFRA-3 Diagrams — An Example OpsDB Schema
+HOWL OPSDB-4 Diagrams — An Example OpsDB Schema
 8 figures covering top-level taxonomy, substrate nesting, change-set lifecycle,
 DSNC namespace scaling, service connection graph, versioning siblings,
 polymorphic bridges, and the audit/evidence/version stream distinction.

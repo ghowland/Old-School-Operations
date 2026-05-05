@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-HOWL INFRA-4 Diagrams - Runner Design
+HOWL OPSDB-5 Diagrams - Runner Design
 8 figures covering the runner pattern, runner kinds, coordination, gating,
 GitOps cast, shared-library framework, idempotency convergence, and the
 standard-practice vs OpsDB-coordinated contrast.
@@ -262,7 +262,7 @@ save(fig, 'infra4_01_runner_pattern.png')
 # ================================================================
 # FIG 2: RUNNER KINDS MAPPED TO MECHANISM FAMILIES
 # Type: 5 (Connection Map)
-# Shows: Each runner kind instantiates one or more INFRA-1 mechanism families
+# Shows: Each runner kind instantiates one or more OPSDB-9 mechanism families
 # ================================================================
 
 print("Fig 2: Runner kinds to mechanism families")
@@ -276,11 +276,11 @@ ax.text(10, 12.3, 'Runner Kinds Mapped to Mechanism Families',
         ha='center', va='center',
         color=GOLD, fontsize=16, fontweight='bold')
 ax.text(10, 11.65,
-        'Each runner kind instantiates one or more mechanism families from INFRA-1',
+        'Each runner kind instantiates one or more mechanism families from OPSDB-9',
         ha='center', va='center',
         color=SILVER, fontsize=11)
 
-# Left column: mechanism families (from INFRA-1)
+# Left column: mechanism families (from OPSDB-9)
 families = [
     ('Sensing',          BLUE,   2.0),
     ('Control loop',     CYAN,   3.7),
@@ -308,7 +308,7 @@ for name, color, y in families:
 ax.text(fam_x, 11.2, 'MECHANISM FAMILIES',
         ha='center', va='center',
         color=SILVER, fontsize=10, fontweight='bold')
-ax.text(fam_x, 10.85, '(from INFRA-1)',
+ax.text(fam_x, 10.85, '(from OPSDB-9)',
         ha='center', va='center',
         color=DIM, fontsize=8.5, style='italic')
 
@@ -343,7 +343,7 @@ for name, color, y in runners:
 ax.text(run_x, 11.85, 'RUNNER KINDS',
         ha='center', va='center',
         color=SILVER, fontsize=10, fontweight='bold')
-ax.text(run_x, 11.50, '(from INFRA-4)',
+ax.text(run_x, 11.50, '(from OPSDB-5)',
         ha='center', va='center',
         color=DIM, fontsize=8.5, style='italic')
 

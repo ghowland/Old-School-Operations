@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-HOWL INFRA-5 Diagrams — The OpsDB API Layer
+HOWL OPSDB-6 Diagrams — The OpsDB API Layer
 8 figures covering the API gate, authorization, change_set lifecycle, versioning,
 optimistic concurrency, runner report keys, and audit chain.
 Output: PNG files to ../figures/
@@ -1287,7 +1287,7 @@ save(fig, 'infra5_08_audit_chain_tamper_detection.png')
 # ================================================================
 
 print("\n" + "=" * 60)
-print("INFRA-5 diagram script complete")
+print("OPSDB-6 diagram script complete")
 print("=" * 60)
 print("Files written to: %s" % outdir)
 print()

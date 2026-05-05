@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-HOWL INFRA-2 Diagrams — OpsDB Design
+HOWL OPSDB-2 Diagrams — OpsDB Design
 8 figures covering the three-population model, cardinality, API-as-perimeter,
 change-set lifecycle, architectural layering, freshness, investigation flow,
 and the local-replica pattern.

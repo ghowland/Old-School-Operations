@@ -57,7 +57,7 @@ If the plan needs a judgment call, **state your recommendation with rationale**,
 
 These came out of pushback in real sessions. Future Claude has not earned the right to litigate them.
 
-1. **Each paper stands alone.** No cross-references between compact docs of different papers. Each one is self-contained. Don't write "see INFRA-2 §6" — that breaks the standalone property.
+1. **Each paper stands alone.** No cross-references between compact docs of different papers. Each one is self-contained. Don't write "see OPSDB-2 §6" — that breaks the standalone property.
 
 2. **When writing about paper N, write only about paper N.** Don't compare to other papers. Don't note what's the same as the prior paper. Don't reflect on the series. The compact doc covers this paper's content; that's it.
 
