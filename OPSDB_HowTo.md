@@ -2,7 +2,7 @@
 
 A reading guide for the OpsDB architecture papers. The full specification is spread across nine papers; this document specifies the order to read them in and what each paper gives you.
 
-The series is fully specified — every architectural commitment, every disciplinary rule, every implementation phase is in the papers. What it isn't is linear. Reading from paper 1 to paper 9 in numbered order is not the right path for a new reader; the numbered order is the dependency order for reference, not the comprehension order for learning. This guide specifies the comprehension order.
+The series is fully specified — every architectural commitment, every disciplinary rule, every implementation phase is in the papers. 
 
 ---
 
@@ -20,15 +20,13 @@ The papers in the order a new reader should approach them:
 8. [OPSDB-8 — The OpsDB Shared Library Suite](https://github.com/ghowland/Old-School-Operations/blob/main/opsdb//OPSDB-8/manuscript.md) — the framework around the runners
 9. [OPSDB-9 — Infrastructure Taxonomy](https://github.com/ghowland/Old-School-Operations/blob/main/opsdb//OPSDB-9/manuscript.md) — the vocabulary that grounds all of it
 
-This order is intentional. The next sections explain why.
-
 ---
 
 ## Why this order
 
 The OpsDB architecture is a complete operational pattern. It commits to specific structural choices — passive substrate, single API gate, decentralized runners coordinating through shared data, schema as the long-lived artifact, governance as data — and each commitment supports the others. Understanding the architecture means understanding what it produces, what it commits to, and how those commitments compose. The reading order is designed to deliver each layer of understanding before the next layer depends on it.
 
-A reader who tries to start with OPSDB-9 (the taxonomy) gets a vocabulary lesson without a context for using it. A reader who tries to start with OPSDB-4 (the schema) gets ~150 entity types without a frame for why those entities exist. A reader who tries to start with OPSDB-6 (the API) gets a 10-step gate without knowing what's being gated or why. The numbered order is the dependency order, not the learning order.
+A reader who tries to start with OPSDB-9 (the taxonomy) gets a vocabulary lesson without a context for using it. A reader who tries to start with OPSDB-4 (the schema) gets ~150 entity types without a frame for why those entities exist. A reader who tries to start with OPSDB-6 (the API) gets a 10-step gate without knowing what's being gated or why.
 
 The order in this guide gives you the context first, then the architecture, then the path to building it, then the details, then the vocabulary that lets you talk about all of it abstractly.
 
