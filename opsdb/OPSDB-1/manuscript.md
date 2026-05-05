@@ -15,7 +15,7 @@ This paper covers what the OpsDB is, what an organization receives by building o
 
 ## 1. What this paper is for
 
-The HOWL infrastructure series specifies a particular architectural pattern for organizational operations. Six prior papers establish the structure: a taxonomy of operational mechanisms (OPSDB-9), the OpsDB design (OPSDB-2), a concrete schema (OPSDB-4), the runner pattern (OPSDB-5), the API gate (OPSDB-6), and schema construction (OPSDB-7). Together they specify what to build and why each commitment matters.
+The OPSDB infrastructure series specifies a particular architectural pattern for organizational operations. Six prior papers establish the structure: a taxonomy of operational mechanisms (OPSDB-9), the OpsDB design (OPSDB-2), a concrete schema (OPSDB-4), the runner pattern (OPSDB-5), the API gate (OPSDB-6), and schema construction (OPSDB-7). Together they specify what to build and why each commitment matters.
 
 This paper is different. It is for a reader who has not seen the prior six. It introduces the OpsDB from first principles, explains what an organization gets by building one, and describes how operational workflows change. The prior papers tell you how to build the system; this paper tells you what the system is for.
 
@@ -481,7 +481,7 @@ How operational workflows change: investigation moves from tour-of-tools to one 
 
 What it asks of the organization: the discipline to put operational data in one place, to enforce one gate, to refuse fragmentation and feature creep, to think comprehensively while building aggregately, to maintain the schema steward role and the investment in the API and the shared libraries. For organizations that bring the discipline, the OpsDB delivers operations that compose; for organizations that do not, the OpsDB is just another database, with all the costs and none of the benefits.
 
-The HOWL infrastructure series specifies one coherent architectural alternative to operational fragmentation. The architecture is opinionated, the disciplines are non-negotiable, and the benefits compound. This paper has been the introduction. The structural specifications follow in the prior six papers, each closing a specific layer of the design.
+The OPSDB infrastructure series specifies one coherent architectural alternative to operational fragmentation. The architecture is opinionated, the disciplines are non-negotiable, and the benefits compound. This paper has been the introduction. The structural specifications follow in the prior six papers, each closing a specific layer of the design.
 
 The work is real; the result is an organization that can operate its full domain as one coordinated system rather than as a collection of fragments. That capability is the consequence of the choices the OpsDB design makes, sustained by the discipline the organization brings to maintaining them.
 

@@ -1215,7 +1215,7 @@ For organizations that bring the discipline, the schema becomes the stable found
 
 ### 16.5 The series
 
-This paper closes the initial six-paper sequence of the HOWL infrastructure series. OPSDB-9 established the taxonomy of mechanisms, properties, and principles. OPSDB-2 specified the OpsDB design. OPSDB-4 demonstrated the schema. OPSDB-5 specified the runners. OPSDB-6 specified the API. OPSDB-7 has now specified how the schema itself is constructed and evolved.
+This paper closes the initial six-paper sequence of the OPSDB infrastructure series. OPSDB-9 established the taxonomy of mechanisms, properties, and principles. OPSDB-2 specified the OpsDB design. OPSDB-4 demonstrated the schema. OPSDB-5 specified the runners. OPSDB-6 specified the API. OPSDB-7 has now specified how the schema itself is constructed and evolved.
 
 The six papers compose. Each builds on the prior; each commits to specific structural choices that the next inherits. The whole produces an operational architecture in which data is king and logic is shell — at every layer. The schema is data; the API is data-driven; the runners are data-defined; the policies are data; the audit log is data; the change_sets are data. Logic operates on the data and is itself replaceable; the data persists.
 

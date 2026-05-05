@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-HOWL OPSDB-5 Diagrams - Runner Design
+OPSDB OPSDB-5 Diagrams - Runner Design
 8 figures covering the runner pattern, runner kinds, coordination, gating,
 GitOps cast, shared-library framework, idempotency convergence, and the
 standard-practice vs OpsDB-coordinated contrast.

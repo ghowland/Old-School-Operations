@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-HOWL OPSDB-3 Diagrams - OpsDB Implementation Path
+OPSDB OPSDB-3 Diagrams - OpsDB Implementation Path
 8 figures covering cardinality, phase progression, schema discipline,
 library structure, governance transition, and operational growth.
 Output: PNG files to ../figures/

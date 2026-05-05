@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-HOWL OPSDB-7 Diagrams — OpsDB Schema Construction
+OPSDB OPSDB-7 Diagrams — OpsDB Schema Construction
 8 figures covering bounded vocabulary, evolution rules, loader pipeline,
 JSON depth, monotonic growth, and dependency ordering.
 Output: PNG files to ../figures/

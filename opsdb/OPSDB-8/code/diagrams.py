@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-HOWL OPSDB-8 Diagrams - The Shared Library Suite
+OPSDB OPSDB-8 Diagrams - The Shared Library Suite
 8 figures covering two-sided policy enforcement, the library/runner boundary,
 denial paths, library/mechanism mapping, evolution, cross-implementation,
 runner anatomy, and the API client lifecycle.

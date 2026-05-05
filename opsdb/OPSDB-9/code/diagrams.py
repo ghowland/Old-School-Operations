@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-HOWL OPSDB-9 Diagrams — A Taxonomy of Infrastructure Mechanisms, Properties, and Principles
+OPSDB OPSDB-9 Diagrams — A Taxonomy of Infrastructure Mechanisms, Properties, and Principles
 8 figures covering the three-axis taxonomy, family relationships, and principle-driven structure.
 Output: PNG files to ../figures/
 """

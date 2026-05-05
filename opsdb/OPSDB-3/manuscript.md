@@ -7,7 +7,7 @@
 
 ## Abstract
 
-The prior eight papers in the HOWL infrastructure series specify what to build. OPSDB-9 establishes the taxonomy. OPSDB-2 specifies the OpsDB design. OPSDB-4 demonstrates a schema. OPSDB-5 specifies the runner pattern. OPSDB-6 specifies the API gate. OPSDB-7 specifies schema construction. OPSDB-1 introduces the architecture to new readers. OPSDB-8 specifies the shared library suite. None of them say how to actually start.
+The prior eight papers in the OPSDB infrastructure series specify what to build. OPSDB-9 establishes the taxonomy. OPSDB-2 specifies the OpsDB design. OPSDB-4 demonstrates a schema. OPSDB-5 specifies the runner pattern. OPSDB-6 specifies the API gate. OPSDB-7 specifies schema construction. OPSDB-1 introduces the architecture to new readers. OPSDB-8 specifies the shared library suite. None of them say how to actually start.
 
 This paper specifies the implementation path: a defined sequence of six phases that take a team from "we have read the specifications" to "we have a working OpsDB serving real operational data." Each phase makes a specific decision, produces a specific deliverable, defers what the next phase will address, and has a validation criterion that determines whether the team can move forward. The phases are: decide cardinality, determine baseline schema, build the development API and start ingesting data, determine the shared library core, design and implement change management, and add operational logic beyond OpsDB management.
 

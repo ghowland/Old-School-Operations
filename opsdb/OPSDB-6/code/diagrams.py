@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-HOWL OPSDB-6 Diagrams — The OpsDB API Layer
+OPSDB OPSDB-6 Diagrams — The OpsDB API Layer
 8 figures covering the API gate, authorization, change_set lifecycle, versioning,
 optimistic concurrency, runner report keys, and audit chain.
 Output: PNG files to ../figures/

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-HOWL OPSDB-1 Diagrams - The OpsDB: A Substrate for Coherent Operations
+OPSDB OPSDB-1 Diagrams - The OpsDB: A Substrate for Coherent Operations
 8 figures covering fragmentation, architecture, scope, before/after workflows,
 continuous compliance, compounding benefits, and drift lifecycle.
 Output: PNG files to ../figures/

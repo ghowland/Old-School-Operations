@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-HOWL OPSDB-4 Diagrams — An Example OpsDB Schema
+OPSDB OPSDB-4 Diagrams — An Example OpsDB Schema
 8 figures covering top-level taxonomy, substrate nesting, change-set lifecycle,
 DSNC namespace scaling, service connection graph, versioning siblings,
 polymorphic bridges, and the audit/evidence/version stream distinction.
