@@ -1818,11 +1818,11 @@ INFRA-6|8|Cross-Field|CFS1-CFS4
 INFRA-6|9|JSON Payload|JV1-JV4
 INFRA-6|10|Bootstrap|MB1-MB7
 INFRA-6|12|Evolution|SX_A1-SX_A7,SX_F1-SX_F8,ST_1-ST_6
-INFRA-7|2|Starting Point|fragmentation-pattern
-INFRA-7|3|What OpsDB Is|AD1-AD7
-INFRA-7|4|What You Get|IC1-IC10,CB1-CB8
-INFRA-7|5|Workflows|WF1-WF8,UC1-UC4
-INFRA-7|6|Commitments|AC1-AC10,OC1-OC5,OD1-OD6
+OPSDB-1|2|Starting Point|fragmentation-pattern
+OPSDB-1|3|What OpsDB Is|AD1-AD7
+OPSDB-1|4|What You Get|IC1-IC10,CB1-CB8
+OPSDB-1|5|Workflows|WF1-WF8,UC1-UC4
+OPSDB-1|6|Commitments|AC1-AC10,OC1-OC5,OD1-OD6
 INFRA-8|1|Introduction|LL_P1-LL_P14
 INFRA-8|3|What Library Is|LF1-LF7
 INFRA-8|4|API Client|LL1,LA1-LA16
